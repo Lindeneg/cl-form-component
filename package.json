@@ -1,5 +1,5 @@
 {
-    "name": "react-form-input",
+    "name": "cl-form-component",
     "version": "1.0.0",
     "main": "lib/index.js",
     "module": "lib/index.esm.js",
