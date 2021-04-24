@@ -1,0 +1,5 @@
+node_modules
+.eslintcache
+storybook-static
+
+https://dev.to/denniskortsch/build-test-and-release-a-react-component-library-with-storybook-13d6
