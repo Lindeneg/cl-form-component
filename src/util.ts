@@ -2,9 +2,6 @@ import { CSSProperties } from 'react';
 
 export type Variant = 'dark' | 'light';
 
-export const negateVariant = (variant: Variant): Variant =>
-    variant === 'light' ? 'dark' : 'light';
-
 export const getVariantCSS = (variant?: Variant, hover?: boolean): CSSProperties => {
     const isLight = variant === 'light';
     return {
@@ -13,25 +10,15 @@ export const getVariantCSS = (variant?: Variant, hover?: boolean): CSSProperties
     };
 };
 
-export const defaultInputStyle: CSSProperties = {
-    display: 'block',
-    position: 'relative',
-    flex: '1 1 auto',
-    width: '1%',
-    minWidth: '0',
-    padding: '.375rem .75rem',
-    fontSize: '1rem',
-    lineHeight: '1.5',
-    color: '#495057', // use variant
-    backgroundColor: '#fff', // use variant
-    backgroundClip: 'padding-box',
-    border: '1px solid #ced4da',
-    borderRadius: '.25rem',
-    borderTopRightRadius: '0',
-    borderBottomRightRadius: '0',
-    margin: '0',
-    fontFamily: 'inherit',
-    outlineColor: '#007bff'
+export const getVariantChild = (variant?: Variant, opt?: 'bg' | 'tc'): CSSProperties => {
+    const isLight = variant === 'light';
+    const bg = { backgroundColor: isLight ? '#fff' : '#495057' };
+    const tc = { color: isLight ? '#fff' : '#495057' };
+    return typeof opt === 'undefined'
+        ? { ...bg, ...tc }
+        : opt === 'bg'
+        ? bg
+        : opt === 'tc'
+        ? tc
+        : {};
 };
-
-//text area: height: auto; overflow: auto; resize: vertical;
