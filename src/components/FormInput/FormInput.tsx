@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+import { FormValueType } from 'cl-use-form-state';
+
 import { Variant, getVariantChild, getVariantCSS } from '../../util';
 import * as style from '../shared-styles';
 
@@ -8,8 +10,10 @@ export interface FormInputProps {
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
     onBlur?: React.FocusEventHandler<HTMLInputElement>;
     variant?: Variant;
-    value?: string;
+    value?: FormValueType;
+    type?: 'text' | 'password' | 'number' | 'file' | 'email';
     label?: string;
+    width?: string;
     placeholder?: string;
     helperText?: string;
     validFeedback?: string;
@@ -22,7 +26,7 @@ const FormInput: FC<FormInputProps> = (props) => {
     const variant = typeof props.variant === 'undefined' ? 'light' : props.variant;
     const negatedVariant = variant === 'dark' ? 'light' : 'dark';
     return (
-        <div style={{ ...style.defaultInputWrapperStyle }}>
+        <div style={{ ...style.defaultInputWrapperStyle, width: props.width }}>
             {props.label && (
                 <label
                     style={{
@@ -34,10 +38,11 @@ const FormInput: FC<FormInputProps> = (props) => {
                 </label>
             )}
             <input
+                type={props.type || 'text'}
                 id={props.id}
                 onChange={props.onChange}
                 onBlur={props.onBlur}
-                value={props.value}
+                value={props.value?.toString()}
                 placeholder={props.placeholder}
                 style={{
                     ...{ ...style.defaultInputStyle, ...getVariantCSS(variant) },
