@@ -2,6 +2,10 @@ import { CSSProperties } from 'react';
 
 export type Variant = 'dark' | 'light';
 
+export const negateVariant = (variant?: Variant): Variant => {
+    return variant === 'light' ? 'dark' : 'light';
+};
+
 export const getVariantCSS = (variant?: Variant, hover?: boolean): CSSProperties => {
     const isLight = variant === 'light';
     return {
