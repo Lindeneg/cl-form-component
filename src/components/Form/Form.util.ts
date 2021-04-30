@@ -7,13 +7,16 @@ import {
 } from 'cl-use-form-state';
 
 import { FormInputProps } from '../FormInput/FormInput';
+import { FormTextFieldProps } from '../FormTextField/FormTextField';
+import { SharedBaseInputProps } from '../shared.props';
 
-type Input = Omit<
-    FormInputProps,
-    'id' | 'onChange' | 'onBlur' | 'variant' | 'isValid' | 'isInvalid'
->;
+interface Input
+    extends SharedBaseInputProps,
+        Pick<FormInputProps, 'type'>,
+        Pick<FormTextFieldProps, 'rows'> {}
 
 interface Entry<T extends FormEntryConstraint> extends Input {
+    elementType?: 'input' | 'text-field' | 'selection';
     options?: GetInputOptions<FormValueType, T>;
 }
 
@@ -25,7 +28,11 @@ export function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>
     const inputs: Record<string, unknown> = {};
     Object.keys(entries).forEach((key) => {
         const entry = entries[key];
-        inputs[key] = getInput(entry.value || '', entry.options);
+        let options = { ...entry.options };
+        if (entry.noValidation === true) {
+            options = { isValid: true };
+        }
+        inputs[key] = getInput(entry.value || '', options);
     });
     return inputs as Inputs<T>;
 }
