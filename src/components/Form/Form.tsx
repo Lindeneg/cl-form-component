@@ -1,70 +1,61 @@
 import React from 'react';
 
-import useForm, {
-    FormEntryConstraint,
-    Inputs,
-    FormValueType,
-    GetInputOptions,
-    getInput
-} from 'cl-use-form-state';
+import useForm, { FormEntryConstraint } from 'cl-use-form-state';
 
-import FormInput, { FormInputProps } from '../FormInput/FormInput';
+import FormInput from '../FormInput/FormInput';
 import FormButton from '../FormButton/FormButton';
-import { Variant } from '../../util';
-
-type Input = Omit<
-    FormInputProps,
-    'id' | 'onChange' | 'onBlur' | 'variant' | 'isValid' | 'isInvalid'
->;
-
-interface Entry<T extends FormEntryConstraint> extends Input {
-    options?: GetInputOptions<FormValueType, T>;
-}
-
-type Entries<T extends FormEntryConstraint> = { [K in keyof T]: Entry<T> };
-
-type SubmissionResult<T extends FormEntryConstraint> = { [K in keyof T]: T };
+import { Entries, SubmissionResult, getFormInputs, getSubmissionResult } from './Form.util';
+import { Variant, getVariantCSS, negateVariant } from '../../util';
 
 export interface FormProps<T extends FormEntryConstraint> {
     entries: Entries<T>;
     variant?: Variant;
     onSubmit: (submissionResult: SubmissionResult<T>) => void;
     onCancel?: () => void;
+    width?: string;
+    submissionText?: string;
+    headerText?: string;
     cancelText?: string;
-}
-
-function getInputs<T extends FormEntryConstraint>(entries: Entries<T>): Inputs<T> {
-    const inputs: Record<string, unknown> = {};
-    Object.keys(entries).forEach((key) => {
-        const entry = entries[key];
-        inputs[key] = getInput(entry.value || '', entry.options);
-    });
-    return inputs as Inputs<T>;
-}
-
-function getResult<T extends FormEntryConstraint>(inputs: Inputs<T>): SubmissionResult<T> {
-    const result: Record<string, unknown> = {};
-    Object.keys(inputs).forEach((key) => {
-        result[key] = inputs[key].value;
-    });
-    return result as SubmissionResult<T>;
 }
 
 function Form<T extends FormEntryConstraint = Record<string, never>>(
     props: FormProps<T>
 ): JSX.Element {
-    const { formState, onChangeHandler, onTouchHandler } = useForm<T>(getInputs(props.entries));
+    const { formState, onChangeHandler, onTouchHandler } = useForm<T>(getFormInputs(props.entries));
 
     const onSubmit: React.FormEventHandler<HTMLFormElement> = (e): void => {
         e.preventDefault();
-        props.onSubmit(getResult(formState.inputs));
+        props.onSubmit(getSubmissionResult(formState.inputs));
     };
 
     return (
-        <form onSubmit={onSubmit}>
-            <h1>Header Text</h1>
-            <hr />
-            <div>
+        <div
+            style={{
+                width: props.width || '100%',
+                paddingRight: '15px',
+                paddingLeft: '15px',
+                marginRight: 'auto',
+                marginLeft: 'auto',
+                boxSizing: 'border-box',
+                ...getVariantCSS(props.variant)
+            }}
+        >
+            {props.headerText && (
+                <h4
+                    style={{
+                        paddingTop: '1rem',
+                        fontSize: '1.5rem',
+                        marginBottom: '.5rem',
+                        fontWeight: 'normal',
+                        lineHeight: '1.2',
+                        marginTop: '0'
+                    }}
+                >
+                    {props.headerText}
+                </h4>
+            )}
+            <hr style={{ marginBottom: '1rem' }} />
+            <form style={{ paddingBottom: '1rem', boxSizing: 'border-box' }} onSubmit={onSubmit}>
                 {Object.keys(formState.inputs).map((id, index) => {
                     const target = props.entries[id];
                     const stateTarget = formState.inputs[id];
@@ -72,7 +63,7 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
                         id,
                         onChange: onChangeHandler,
                         onBlur: onTouchHandler,
-                        variant: 'light' as Variant,
+                        variant: props.variant,
                         type: target.type,
                         label: target.label,
                         value: stateTarget.value,
@@ -86,20 +77,36 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
                         <FormInput {...baseProps} key={index} placeholder={target.placeholder} />
                     );
                 })}
-            </div>
-            <div>
-                <FormButton disabled={!formState.isValid} type="submit" />
-                {props.onCancel && (
+                <div
+                    style={{
+                        display: 'flex',
+                        boxSizing: 'border-box',
+                        justifyContent: 'space-between'
+                    }}
+                >
                     <FormButton
-                        type="button"
-                        variant="light"
-                        buttonText={props.cancelText || 'CANCEL'}
-                        onClick={props.onCancel}
+                        buttonText={props.submissionText || 'SUBMIT'}
+                        variant={negateVariant(props.variant)}
+                        disabled={!formState.isValid}
+                        type="submit"
                     />
-                )}
-            </div>
-        </form>
+                    {props.onCancel && (
+                        <FormButton
+                            type="button"
+                            variant={props.variant}
+                            buttonText={props.cancelText || 'CANCEL'}
+                            onClick={props.onCancel}
+                        />
+                    )}
+                </div>
+            </form>
+        </div>
     );
 }
 
 export default Form;
+
+<Form<{ hello: number }>
+    entries={{ hello: { options: { maxLength: 2 } } }}
+    onSubmit={(result) => result.hello}
+/>;
