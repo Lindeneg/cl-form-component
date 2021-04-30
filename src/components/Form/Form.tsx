@@ -3,6 +3,7 @@ import React from 'react';
 import useForm, { FormEntryConstraint } from 'cl-use-form-state';
 
 import FormInput from '../FormInput/FormInput';
+import FormTextField from '../FormTextField/FormTextField';
 import FormButton from '../FormButton/FormButton';
 import { Entries, SubmissionResult, getFormInputs, getSubmissionResult } from './Form.util';
 import { Variant, getVariantCSS, negateVariant } from '../../util';
@@ -23,6 +24,8 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
 ): JSX.Element {
     const { formState, onChangeHandler, onTouchHandler } = useForm<T>(getFormInputs(props.entries));
 
+    const variant = props.variant || 'light';
+
     const onSubmit: React.FormEventHandler<HTMLFormElement> = (e): void => {
         e.preventDefault();
         props.onSubmit(getSubmissionResult(formState.inputs));
@@ -37,7 +40,7 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
                 marginRight: 'auto',
                 marginLeft: 'auto',
                 boxSizing: 'border-box',
-                ...getVariantCSS(props.variant)
+                ...getVariantCSS(variant)
             }}
         >
             {props.headerText && (
@@ -63,19 +66,39 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
                         id,
                         onChange: onChangeHandler,
                         onBlur: onTouchHandler,
-                        variant: props.variant,
+                        variant: variant,
                         type: target.type,
                         label: target.label,
                         value: stateTarget.value,
                         helperText: target.helperText,
                         validFeedback: target.validFeedback,
+                        noValidation: target.noValidation,
                         invalidFeedback: target.invalidFeedback,
                         isValid: stateTarget.isValid,
                         isInvalid: stateTarget.isTouched && !stateTarget.isValid
                     };
-                    return (
-                        <FormInput {...baseProps} key={index} placeholder={target.placeholder} />
-                    );
+                    switch (target.elementType) {
+                        case 'text-field':
+                            return (
+                                <FormTextField
+                                    {...baseProps}
+                                    rows={target.rows}
+                                    key={index}
+                                    placeholder={target.placeholder}
+                                />
+                            );
+                        case 'selection':
+                            return null;
+                        case 'input':
+                        default:
+                            return (
+                                <FormInput
+                                    {...baseProps}
+                                    key={index}
+                                    placeholder={target.placeholder}
+                                />
+                            );
+                    }
                 })}
                 <div
                     style={{
@@ -86,14 +109,14 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
                 >
                     <FormButton
                         buttonText={props.submissionText || 'SUBMIT'}
-                        variant={negateVariant(props.variant)}
+                        variant={negateVariant(variant)}
                         disabled={!formState.isValid}
                         type="submit"
                     />
                     {props.onCancel && (
                         <FormButton
                             type="button"
-                            variant={props.variant}
+                            variant={variant}
                             buttonText={props.cancelText || 'CANCEL'}
                             onClick={props.onCancel}
                         />
@@ -105,8 +128,3 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
 }
 
 export default Form;
-
-<Form<{ hello: number }>
-    entries={{ hello: { options: { maxLength: 2 } } }}
-    onSubmit={(result) => result.hello}
-/>;
