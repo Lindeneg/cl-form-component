@@ -33,6 +33,13 @@ export const defaultInputStyle: CSSProperties = {
     outline: 'transparent'
 };
 
+export const defaultTextAreaStyle: CSSProperties = {
+    ...defaultInputStyle,
+    height: 'auto',
+    overflow: 'auto',
+    resize: 'vertical'
+};
+
 export const defaultHelperTextStyle: CSSProperties = {
     display: 'block',
     width: '100%',
@@ -81,5 +88,3 @@ export const defaultLabelStyle: CSSProperties = {
     boxSizing: 'border-box',
     marginBottom: '.5rem'
 };
-
-//text area: height: auto; overflow: auto; resize: vertical;

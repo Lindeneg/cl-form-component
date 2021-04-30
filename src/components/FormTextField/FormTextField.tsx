@@ -5,22 +5,24 @@ import { getVariantCSS } from '../../util';
 import { SharedInputProps } from '../shared.props';
 import * as style from '../shared.styles';
 
-export interface FormInputProps extends SharedInputProps {
-    type?: 'text' | 'password' | 'number' | 'file' | 'email';
+export interface FormTextFieldProps extends SharedInputProps {
+    rows?: number;
 }
 
-const FormInput: FC<FormInputProps> = (props) => (
+const FormTextField: FC<FormTextFieldProps> = (props) => (
     <SharedElement {...props}>
-        <input
-            type={props.type || 'text'}
+        <textarea
             id={props.id}
             onChange={props.onChange}
             onBlur={props.onBlur}
             value={props.value?.toString()}
             placeholder={props.placeholder}
+            rows={props.rows}
             style={{
-                ...{ ...style.defaultInputStyle, ...getVariantCSS(props.variant || 'light') },
-                ...(props.isValid
+                ...{ ...style.defaultTextAreaStyle, ...getVariantCSS(props.variant || 'light') },
+                ...(props.noValidation === true
+                    ? {}
+                    : props.isValid
                     ? style.defaultValidStyle
                     : props.isInvalid
                     ? style.defaultInvalidStyle
@@ -30,4 +32,4 @@ const FormInput: FC<FormInputProps> = (props) => (
     </SharedElement>
 );
 
-export default FormInput;
+export default FormTextField;
