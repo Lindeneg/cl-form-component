@@ -4,6 +4,8 @@ export const defaultInputWrapperStyle: CSSProperties = {
     position: 'relative',
     display: 'flex',
     flexWrap: 'wrap',
+    boxSizing: 'border-box',
+    marginBottom: '1rem',
     alignItems: 'stretch',
     width: '100%'
 };
@@ -14,7 +16,10 @@ export const defaultInputStyle: CSSProperties = {
     flex: '1 1 auto',
     width: '1%',
     minWidth: '0',
-    padding: '.375rem .75rem',
+    paddingTop: '.375rem',
+    paddingBottom: '.375rem',
+    paddingRight: '.75rem',
+    paddingLeft: '.75rem',
     fontSize: '1rem',
     lineHeight: '1.5',
     backgroundClip: 'padding-box',
@@ -22,9 +27,10 @@ export const defaultInputStyle: CSSProperties = {
     borderRadius: '.25rem',
     borderTopRightRadius: '0',
     borderBottomRightRadius: '0',
+    boxSizing: 'border-box',
     margin: '0',
     fontFamily: 'inherit',
-    outlineColor: '#007bff'
+    outline: 'transparent'
 };
 
 export const defaultHelperTextStyle: CSSProperties = {
@@ -32,13 +38,15 @@ export const defaultHelperTextStyle: CSSProperties = {
     width: '100%',
     marginTop: '.25rem',
     fontSize: '80%',
+    boxSizing: 'border-box',
+    fontStyle: 'italic',
     fontWeight: 'normal'
 };
 
 export const defaultValidStyle: CSSProperties = {
-    borderColor: '#28a745',
+    border: '1px solid #28a745',
     paddingRight: 'calc(1.5em + .75rem)',
-    outline: 'transparent',
+    boxSizing: 'border-box',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'right calc(.375em + .1875rem) center',
     backgroundSize: 'calc(.75em + .375rem) calc(.75em + .375rem)',
@@ -48,7 +56,7 @@ export const defaultValidStyle: CSSProperties = {
 
 export const defaultInvalidStyle: CSSProperties = {
     ...defaultValidStyle,
-    borderColor: '#eb5765',
+    border: '1px solid #eb5765',
     backgroundImage:
         "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545'%3E%3Ccircle cx='6' cy='6' r='4.5'/%3E%3Cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3E%3Ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3E%3C/svg%3E\")"
 };
@@ -57,6 +65,7 @@ export const defaultValidFeedbackStyle: CSSProperties = {
     display: 'block',
     color: '#28a745',
     width: '100%',
+    boxSizing: 'border-box',
     marginTop: '.25rem',
     fontSize: '80%'
 };
@@ -69,6 +78,7 @@ export const defaultInvalidFeedbackStyle: CSSProperties = {
 export const defaultLabelStyle: CSSProperties = {
     display: 'inline-block',
     width: '100%',
+    boxSizing: 'border-box',
     marginBottom: '.5rem'
 };
 
