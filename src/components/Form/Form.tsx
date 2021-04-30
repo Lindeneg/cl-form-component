@@ -10,9 +10,9 @@ import { Variant, getVariantCSS, negateVariant } from '../../util';
 
 export interface FormProps<T extends FormEntryConstraint> {
     entries: Entries<T>;
-    variant?: Variant;
     onSubmit: (submissionResult: SubmissionResult<T>) => void;
     onCancel?: () => void;
+    variant?: Variant;
     width?: string;
     submissionText?: string;
     headerText?: string;
