@@ -8,7 +8,7 @@ import {
 
 import { FormInputProps } from '../FormInput/FormInput';
 import { FormTextFieldProps } from '../FormTextField/FormTextField';
-import { SharedBaseInputProps } from '../shared.props';
+import { SharedBaseInputProps } from '../SharedElement';
 
 interface Input
     extends SharedBaseInputProps,

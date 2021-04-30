@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 
+import { SharedInputProps, style } from './';
 import { getVariantChild } from '../../util';
-import { SharedInputProps } from '../shared.props';
-import * as style from '../shared.styles';
 
 const SharedElement: FC<SharedInputProps> = (props) => {
     const variant = typeof props.variant === 'undefined' ? 'light' : props.variant;
@@ -20,9 +19,9 @@ const SharedElement: FC<SharedInputProps> = (props) => {
                 </label>
             )}
             {props.children}
-            {props.validFeedback && props.isValid ? (
+            {!props.noValidation && props.validFeedback && props.isValid ? (
                 <div style={style.defaultValidFeedbackStyle}>{props.validFeedback}</div>
-            ) : props.invalidFeedback && props.isInvalid ? (
+            ) : !props.noValidation && props.invalidFeedback && props.isInvalid ? (
                 <div style={style.defaultInvalidFeedbackStyle}>{props.invalidFeedback}</div>
             ) : null}
             {props.helperText && (

@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
 
-import SharedElement from '../SharedElement/SharedElement';
+import SharedElement, { SharedInputProps, style } from '../SharedElement';
 import { getVariantCSS } from '../../util';
-import { SharedInputProps } from '../shared.props';
-import * as style from '../shared.styles';
 
 export interface FormInputProps extends SharedInputProps {
     type?: 'text' | 'password' | 'number' | 'file' | 'email';
@@ -20,7 +18,9 @@ const FormInput: FC<FormInputProps> = (props) => (
             placeholder={props.placeholder}
             style={{
                 ...{ ...style.defaultInputStyle, ...getVariantCSS(props.variant || 'light') },
-                ...(props.isValid
+                ...(props.noValidation === true
+                    ? {}
+                    : props.isValid && !props.isInvalid
                     ? style.defaultValidStyle
                     : props.isInvalid
                     ? style.defaultInvalidStyle

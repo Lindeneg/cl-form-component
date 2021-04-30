@@ -1,6 +1,6 @@
 import { FormValueType } from 'cl-use-form-state';
 
-import { Variant } from '../util';
+import { Variant } from '../../util';
 
 export type SharedBaseInputProps = {
     value?: FormValueType;
@@ -10,7 +10,7 @@ export type SharedBaseInputProps = {
     validFeedback?: string;
     invalidFeedback?: string;
     noValidation?: boolean;
-    width?: string | number;
+    width?: string;
 };
 
 export interface SharedInputProps extends SharedBaseInputProps {

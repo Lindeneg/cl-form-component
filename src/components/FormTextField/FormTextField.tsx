@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
-import SharedElement from '../SharedElement/SharedElement';
+import SharedElement, { SharedInputProps, style } from '../SharedElement';
 import { getVariantCSS } from '../../util';
-import { SharedInputProps } from '../shared.props';
-import * as style from '../shared.styles';
 
 export interface FormTextFieldProps extends SharedInputProps {
     rows?: number;
+    cols?: number;
+    wrap?: 'hard' | 'soft';
 }
 
 const FormTextField: FC<FormTextFieldProps> = (props) => (
@@ -17,17 +17,19 @@ const FormTextField: FC<FormTextFieldProps> = (props) => (
             onBlur={props.onBlur}
             value={props.value?.toString()}
             placeholder={props.placeholder}
-            rows={props.rows}
+            rows={props.rows || 3}
+            cols={props.cols || 1}
             style={{
                 ...{ ...style.defaultTextAreaStyle, ...getVariantCSS(props.variant || 'light') },
                 ...(props.noValidation === true
                     ? {}
-                    : props.isValid
+                    : props.isValid && !props.isInvalid
                     ? style.defaultValidStyle
                     : props.isInvalid
                     ? style.defaultInvalidStyle
                     : {})
             }}
+            wrap={props.wrap}
         />
     </SharedElement>
 );
