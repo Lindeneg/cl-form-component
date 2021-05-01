@@ -73,8 +73,6 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
         }
     };
 
-    console.log(formState);
-
     return (
         <div
             style={{
