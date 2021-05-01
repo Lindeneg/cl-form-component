@@ -9,8 +9,9 @@ export type SharedBaseInputProps = {
     helperText?: string;
     validFeedback?: string;
     invalidFeedback?: string;
-    noValidation?: boolean;
     width?: string;
+    noValidation?: boolean;
+    center?: boolean;
 };
 
 export interface SharedInputProps extends SharedBaseInputProps {

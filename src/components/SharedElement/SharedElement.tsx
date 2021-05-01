@@ -7,7 +7,13 @@ const SharedElement: FC<SharedInputProps> = (props) => {
     const variant = typeof props.variant === 'undefined' ? 'light' : props.variant;
     const negatedVariant = variant === 'dark' ? 'light' : 'dark';
     return (
-        <div style={{ ...style.defaultInputWrapperStyle, width: props.width }}>
+        <div
+            style={{
+                ...style.defaultInputWrapperStyle,
+                width: props.width,
+                ...(props.center ? { justifyContent: 'center', textAlign: 'center' } : {})
+            }}
+        >
             {props.label && (
                 <label
                     style={{
