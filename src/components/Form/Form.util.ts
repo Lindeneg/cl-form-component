@@ -6,17 +6,19 @@ import {
     getInput
 } from 'cl-use-form-state';
 
-import { FormInputProps } from '../FormInput/FormInput';
-import { FormTextFieldProps } from '../FormTextField/FormTextField';
+import { FormInputMetaProps } from '../FormInput/FormInput';
+import { FormTextFieldMetaProps } from '../FormTextField/FormTextField';
+import { FormImageMetaProps } from '../FormImage/FormImage';
 import { SharedBaseInputProps } from '../SharedElement';
 
 interface Input
     extends SharedBaseInputProps,
-        Pick<FormInputProps, 'type'>,
-        Pick<FormTextFieldProps, 'rows'> {}
+        FormInputMetaProps,
+        FormImageMetaProps,
+        FormTextFieldMetaProps {}
 
 interface Entry<T extends FormEntryConstraint> extends Input {
-    elementType?: 'input' | 'text-field' | 'selection';
+    elementType?: 'input' | 'text-field' | 'selection' | 'image';
     options?: GetInputOptions<FormValueType, T>;
 }
 
@@ -31,6 +33,9 @@ export function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>
         let options = { ...entry.options };
         if (entry.noValidation === true) {
             options = { isValid: true };
+        }
+        if (entry.elementType === 'image') {
+            options = { isValid: false, isTouched: true };
         }
         inputs[key] = getInput(entry.value || '', options);
     });

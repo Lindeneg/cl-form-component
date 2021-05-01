@@ -1,5 +1,7 @@
 import { CSSProperties } from 'react';
 
+import { Inputs, FormEntryConstraint } from 'cl-use-form-state';
+
 export type Variant = 'dark' | 'light';
 
 export const negateVariant = (variant?: Variant): Variant => {
@@ -25,4 +27,12 @@ export const getVariantChild = (variant?: Variant, opt?: 'bg' | 'tc'): CSSProper
         : opt === 'tc'
         ? tc
         : {};
+};
+
+export const checkInputValidity = (inputs: Inputs<FormEntryConstraint>): boolean => {
+    let isValid = true;
+    for (const key in inputs) {
+        isValid = isValid && inputs[key].isValid;
+    }
+    return isValid;
 };
