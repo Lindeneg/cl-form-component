@@ -3,11 +3,13 @@ import React, { FC } from 'react';
 import SharedElement, { SharedInputProps, style } from '../SharedElement';
 import { getVariantCSS } from '../../util';
 
-export interface FormTextFieldProps extends SharedInputProps {
+export type FormTextFieldMetaProps = {
     rows?: number;
     cols?: number;
     wrap?: 'hard' | 'soft';
-}
+};
+
+export interface FormTextFieldProps extends SharedInputProps, FormTextFieldMetaProps {}
 
 const FormTextField: FC<FormTextFieldProps> = (props) => (
     <SharedElement {...props}>

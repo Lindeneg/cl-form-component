@@ -3,9 +3,11 @@ import React, { FC } from 'react';
 import SharedElement, { SharedInputProps, style } from '../SharedElement';
 import { getVariantCSS } from '../../util';
 
-export interface FormInputProps extends SharedInputProps {
-    type?: 'text' | 'password' | 'number' | 'file' | 'email';
-}
+export type FormInputMetaProps = {
+    type?: 'text' | 'password' | 'number' | 'email';
+};
+
+export interface FormInputProps extends SharedInputProps, FormInputMetaProps {}
 
 const FormInput: FC<FormInputProps> = (props) => (
     <SharedElement {...props}>
