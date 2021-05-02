@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 
-import { SharedInputProps, style } from './';
+import { SharedInputProps } from './shared.props';
 import { getVariantChild } from '../../util';
+import style from './shared.styles';
 
 interface SharedElementProps extends SharedInputProps {
     center?: boolean;
