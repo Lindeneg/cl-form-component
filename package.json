@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "main": "lib/index.js",
     "module": "lib/index.esm.js",
+    "homepage": "http://lindeneg.github.io/cl-form-component",
     "author": {
         "name": "Christian Lindeneg",
         "email": "hi@lindeneg.org",
@@ -32,6 +33,7 @@
         "eslint": "^7.25.0",
         "eslint-plugin-react": "^7.23.2",
         "eslint-plugin-react-hooks": "^4.2.0",
+        "gh-pages": "^3.1.0",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^26.6.3",
         "prettier": "^2.2.1",
@@ -52,11 +54,18 @@
         "test": "jest",
         "test:watch": "jest --watch",
         "fix": "yarn run style:fix",
+        "clean": "yarn run clean:soft",
+        "clean:soft": "rm -rf lib story node_modules",
+        "clean:hard": "yarn run clean && rm -f yarn.lock",
         "style": "yarn run style:format && yarn run style:lint",
         "style:lint": "yarn eslint ./src --cache --config ./.eslintrc.json",
         "style:format": "yarn prettier ./src --check --config ./.prettierrc",
         "style:fix": "yarn prettier ./src --write --config ./.prettierrc",
-        "storybook": "start-storybook -p 6006",
-        "build-storybook": "build-storybook"
+        "storybook": "yarn run storybook:dev",
+        "storybook:dev": "start-storybook -p 6006",
+        "storybook:prod": "start-storybook -c ./.storybook/deploy -p 6006",
+        "build-storybook": "rm -rf story && build-storybook -c ./.storybook/deploy -o story",
+        "predeploy": "yarn run build-storybook",
+        "deploy": "gh-pages -d story"
     }
 }
