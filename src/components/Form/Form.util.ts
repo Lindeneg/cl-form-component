@@ -35,7 +35,7 @@ export function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>
             options = { isValid: true };
         }
         if (entry.elementType === 'image') {
-            options = { isValid: false, isTouched: true };
+            options = { isValid: entry.noValidation === true, isTouched: true };
         }
         inputs[key] = getInput(entry.value || '', options);
     });

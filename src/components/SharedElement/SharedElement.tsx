@@ -3,15 +3,19 @@ import React, { FC } from 'react';
 import { SharedInputProps, style } from './';
 import { getVariantChild } from '../../util';
 
-const SharedElement: FC<SharedInputProps> = (props) => {
+interface SharedElementProps extends SharedInputProps {
+    center?: boolean;
+}
+
+const SharedElement: FC<SharedElementProps> = (props) => {
     const variant = typeof props.variant === 'undefined' ? 'light' : props.variant;
     const negatedVariant = variant === 'dark' ? 'light' : 'dark';
     return (
         <div
             style={{
                 ...style.defaultInputWrapperStyle,
-                width: props.width,
-                ...(props.center ? { justifyContent: 'center', textAlign: 'center' } : {})
+                ...(props.center ? { justifyContent: 'center', textAlign: 'center' } : {}),
+                width: props.width
             }}
         >
             {props.label && (

@@ -11,7 +11,6 @@ export type SharedBaseInputProps = {
     invalidFeedback?: string;
     width?: string;
     noValidation?: boolean;
-    center?: boolean;
 };
 
 export interface SharedInputProps extends SharedBaseInputProps {

@@ -18,6 +18,7 @@ export interface FormProps<T extends FormEntryConstraint> {
     submissionText?: string;
     headerText?: string;
     cancelText?: string;
+    resetOnSubmit?: boolean;
 }
 
 function Form<T extends FormEntryConstraint = Record<string, never>>(
@@ -31,6 +32,7 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
 
     const onSubmit: React.FormEventHandler<HTMLFormElement> = (e): void => {
         e.preventDefault();
+        props.resetOnSubmit && setFormState(getFormInputs(props.entries));
         props.onSubmit(getSubmissionResult(formState.inputs));
     };
 
@@ -55,7 +57,7 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
         }
     };
 
-    const onImageInvalid = (id: string): void => {
+    const onImageInvalid = (id: string, noValidation = false): void => {
         if (formState.inputs[id].isValid) {
             setFormState({
                 ...formState,
@@ -64,11 +66,11 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
                     [id]: {
                         ...formState.inputs[id],
                         value: '',
-                        isValid: false,
+                        isValid: noValidation,
                         isTouched: true
                     }
                 },
-                isValid: false
+                isValid: formState.isValid && noValidation
             });
         }
     };
@@ -131,8 +133,8 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
                                 <FormImage
                                     {...baseProps}
                                     key={index}
-                                    onUpload={onImageUpload}
-                                    onInvalidUpload={onImageInvalid}
+                                    onImageUpload={onImageUpload}
+                                    onInvalidImageUpload={onImageInvalid}
                                 />
                             );
                         case 'input':

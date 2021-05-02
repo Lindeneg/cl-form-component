@@ -1,18 +1,15 @@
-import React, { FC, CSSProperties, useState, useRef, useEffect } from 'react';
+import React, { FC, useState, useRef, useEffect } from 'react';
 
 import FormButton from '../FormButton/FormButton';
 import SharedElement, { SharedInputProps } from '../SharedElement';
-import { negateVariant } from '../../util';
+import { negateVariant, getVariantChild } from '../../util';
 
 export type FormImageMetaProps = {
-    onUpload?: (id: string, file: File) => void;
-    onInvalidUpload?: (id: string) => void;
-    previewWrapperStyles?: CSSProperties;
-    previewImageStyles?: CSSProperties;
-    previewWrapperClassName?: string;
-    previewImageClassName?: string;
-    previewText?: string;
-    buttonText?: string;
+    onImageUpload?: (id: string, file: File) => void;
+    onInvalidImageUpload?: (id: string, noValidation: boolean) => void;
+    ImagepreviewText?: string;
+    ImagebuttonText?: string;
+    center?: boolean;
 };
 
 export interface FormImageProps extends SharedInputProps, FormImageMetaProps {}
@@ -22,6 +19,8 @@ const FormImage: FC<FormImageProps> = (props) => {
     const [preview, setPreview] = useState<string>();
 
     const ref = useRef<HTMLInputElement>(null);
+
+    const variant = props.variant || 'light';
 
     useEffect(() => {
         if (typeof file !== 'undefined') {
@@ -35,7 +34,8 @@ const FormImage: FC<FormImageProps> = (props) => {
 
     const onInvalidUpload = (): void => {
         setPreview('');
-        props.onInvalidUpload && props.onInvalidUpload(props.id);
+        props.onInvalidImageUpload &&
+            props.onInvalidImageUpload(props.id, props.noValidation === true);
     };
 
     const onImageChosenHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -46,7 +46,7 @@ const FormImage: FC<FormImageProps> = (props) => {
         ) {
             const file = event.target.files[0];
             setFile(file);
-            props.onUpload && props.onUpload(props.id, file);
+            props.onImageUpload && props.onImageUpload(props.id, file);
         } else {
             onInvalidUpload();
         }
@@ -74,31 +74,31 @@ const FormImage: FC<FormImageProps> = (props) => {
                         border: '1px solid #ccc',
                         alignItems: 'center',
                         textAlign: 'center',
-                        width: '256px',
+                        width: '13rem',
                         height: 'auto',
-                        marginBottom: '1rem',
-                        ...props.previewWrapperStyles
+                        marginBottom: '1rem'
                     }}
-                    className={props.previewWrapperClassName}
                 >
                     {preview && (
                         <img
                             style={{
                                 width: '100%',
                                 height: 'auto',
-                                objectFit: 'cover',
-                                ...props.previewImageStyles
+                                objectFit: 'cover'
                             }}
-                            className={props.previewImageClassName}
                             src={preview}
                             alt="Preview"
                         />
                     )}
-                    {!preview && <p>{props.previewText || 'Please choose an image.'}</p>}
+                    {!preview && (
+                        <p style={{ ...getVariantChild(negateVariant(variant), 'tc') }}>
+                            {props.ImagepreviewText || 'Please choose an image.'}
+                        </p>
+                    )}
                 </div>
                 <FormButton
-                    variant={negateVariant(props.variant)}
-                    buttonText={props.buttonText ? props.buttonText : 'UPLOAD'}
+                    variant={negateVariant(variant)}
+                    buttonText={props.ImagebuttonText ? props.ImagebuttonText : 'UPLOAD'}
                     type="button"
                     onClick={onImageUploadHandler}
                 />
