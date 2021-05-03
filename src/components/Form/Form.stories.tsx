@@ -92,7 +92,7 @@ FormSelectInput2.args = {
             helperText: 'multiple cities can be selected',
             options: {
                 minLength: 3
-            },
+            }
             //noValidation: true
         }
     },
