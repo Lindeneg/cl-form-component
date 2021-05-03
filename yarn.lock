@@ -3948,10 +3948,10 @@ cjs-module-lexer@^0.6.0:
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-0.6.0.tgz#4186fcca0eae175970aee870b9fe2d6cf8d5655f"
   integrity sha512-uc2Vix1frTfnuzxxu1Hp4ktSvM3QaI4oXl4ZUqL1wjTu/BGki9TrCWoqLTg/drR1KwAEarXuRFCG2Svr1GxPFw==
 
-cl-use-form-state@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/cl-use-form-state/-/cl-use-form-state-1.0.5.tgz#5856c3ac2bc254142d5a4b25bde8912f9db8f383"
-  integrity sha512-ZAPwnrcCrPc3CV5xEmxGWt/w+YU8Q6fWf2+/D/0ohnRuhH0da7Ol+u45pSwh9ieAIn6w3vUelUCVKNdgs3Yz5w==
+cl-use-form-state@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/cl-use-form-state/-/cl-use-form-state-1.1.0.tgz#a51db43e69b17405666724496b39225bb0df3dbe"
+  integrity sha512-rvaju9FqRxbYSjQR/NhZAOCdchhmsxVEvMv4mg63aPaHEEePAwqsKSNowM+wFMLrwRnLnirvATehr5eP6hBCjg==
 
 class-utils@^0.3.5:
   version "0.3.6"
