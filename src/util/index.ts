@@ -36,3 +36,5 @@ export const checkInputValidity = (inputs: Inputs<FormEntryConstraint>): boolean
     }
     return isValid;
 };
+
+export const capitalize = (target: string): string => target[0].toUpperCase() + target.substr(1);
