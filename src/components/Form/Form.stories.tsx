@@ -22,10 +22,117 @@ DefaultInput.args = {
         }
     },
     headerText: 'Some Input...',
-    onSubmit: (e) => {
-        console.log(e);
-        alert('Check console for submission result');
+    onCancel: undefined
+};
+
+export const FormSelectInput = MetaForm.bind({});
+FormSelectInput.args = {
+    entries: {
+        car: {
+            multipleSelect: true,
+            elementType: 'selection',
+            selectOptions: [
+                {
+                    value: 'volvo'
+                },
+                {
+                    value: 'porche'
+                },
+                {
+                    value: 'mercedes'
+                },
+                {
+                    value: 'fiat'
+                },
+                {
+                    value: 'ferrai'
+                },
+                {
+                    value: 'mclaren'
+                }
+            ],
+            invalidFeedback: 'A city is required. Please pick one.',
+            validFeedback: 'Looks good',
+            helperText: 'multiple cities can be selected',
+            noValidation: true
+        }
     },
+    headerText: 'Favourite Cities',
+    onCancel: undefined
+};
+
+export const FormSelectInput2 = MetaForm.bind({});
+FormSelectInput2.args = {
+    entries: {
+        car2: {
+            multipleSelect: true,
+            elementType: 'selection',
+            selectOptions: [
+                {
+                    value: 'volvo'
+                },
+                {
+                    value: 'porche'
+                },
+                {
+                    value: 'mercedes'
+                },
+                {
+                    value: 'fiat'
+                },
+                {
+                    value: 'ferrai'
+                },
+                {
+                    value: 'mclaren'
+                }
+            ],
+            invalidFeedback: 'A city is required. Please pick one.',
+            validFeedback: 'Looks good',
+            helperText: 'multiple cities can be selected',
+            options: {
+                minLength: 3
+            },
+            //noValidation: true
+        }
+    },
+    headerText: 'Favourite Cities',
+    onCancel: undefined
+};
+
+export const FormSelectInput3 = MetaForm.bind({});
+FormSelectInput3.args = {
+    entries: {
+        car3: {
+            //multipleSelect: true,
+            elementType: 'selection',
+            selectOptions: [
+                {
+                    value: 'volvo'
+                },
+                {
+                    value: 'porche'
+                },
+                {
+                    value: 'mercedes'
+                },
+                {
+                    value: 'fiat'
+                },
+                {
+                    value: 'ferrai'
+                },
+                {
+                    value: 'mclaren'
+                }
+            ],
+            invalidFeedback: 'A city is required. Please pick one.',
+            validFeedback: 'Looks good',
+            helperText: 'multiple cities can be selected'
+            //noValidation: true
+        }
+    },
+    headerText: 'Favourite Cities',
     onCancel: undefined
 };
 
@@ -76,10 +183,6 @@ SignupFormWithValidationAndImageUpload.args = {
     },
     submissionText: 'SIGNUP',
     headerText: 'Please Signup',
-    onSubmit: (e) => {
-        console.log(e);
-        alert('Check console for submission result');
-    },
     onCancel: undefined
 };
 
@@ -109,20 +212,17 @@ DarkLoginFormWithValidation.args = {
     submissionText: 'LOGIN',
     headerText: 'Please Login',
     variant: 'dark',
-    onSubmit: (e) => {
-        console.log(e);
-        alert('Check console for submission result');
-    },
     onCancel: undefined
 };
 DarkLoginFormWithValidation.parameters = {
     backgrounds: { default: 'dark' }
 };
 
-export const ImageUploadFormWithValidationAndCancelButton = MetaForm.bind({});
-ImageUploadFormWithValidationAndCancelButton.args = {
+export const CenteredImageUploadFormWithValidationAndCancelButton = MetaForm.bind({});
+CenteredImageUploadFormWithValidationAndCancelButton.args = {
     entries: {
         imageFile: {
+            center: true,
             helperText: 'Must be type .png, .jpg or .jpeg',
             invalidFeedback: 'An image is required',
             validFeedback: 'Looks Ok!',
@@ -140,44 +240,5 @@ ImageUploadFormWithValidationAndCancelButton.args = {
             }
         }
     },
-    headerText: 'Upload Image',
-    onSubmit: (e) => {
-        console.log(e);
-        alert('Check console for submission result');
-    },
-    onCancel: () => alert('onCancel called')
-};
-
-export const DarkCenteredImageUploadFormWithValidationAndCancelButton = MetaForm.bind({});
-DarkCenteredImageUploadFormWithValidationAndCancelButton.args = {
-    entries: {
-        imageFile2: {
-            helperText: 'Must be type .png, .jpg or .jpeg',
-            invalidFeedback: 'An image is required',
-            validFeedback: 'Looks Ok!',
-            elementType: 'image',
-            center: true
-        },
-        imageDescription2: {
-            elementType: 'text-field',
-            placeholder: 'Enter description...',
-            label: 'Please provide a description',
-            invalidFeedback: '8-128 characters',
-            validFeedback: 'Looks Ok!',
-            options: {
-                minLength: 8,
-                maxLength: 128
-            }
-        }
-    },
-    variant: 'dark',
-    headerText: 'Upload Image',
-    onSubmit: (e) => {
-        console.log(e);
-        alert('Check console for submission result');
-    },
-    onCancel: () => alert('onCancel called')
-};
-DarkCenteredImageUploadFormWithValidationAndCancelButton.parameters = {
-    backgrounds: { default: 'dark' }
+    headerText: 'Upload Image'
 };
