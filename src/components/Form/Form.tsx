@@ -5,9 +5,18 @@ import useForm, { FormEntryConstraint } from 'cl-use-form-state';
 import FormInput from '../FormInput/FormInput';
 import FormTextField from '../FormTextField/FormTextField';
 import FormImage from '../FormImage/FormImage';
+import FormSelect from '../FormSelect/FormSelect';
 import FormButton from '../FormButton/FormButton';
-import { Entries, SubmissionResult, getFormInputs, getSubmissionResult } from './Form.util';
-import { Variant, getVariantCSS, negateVariant, checkInputValidity } from '../../util';
+import {
+    Entries,
+    SubmissionResult,
+    getFormInputs,
+    getSubmissionResult,
+    onImageUpload,
+    onImageInvalidUpload,
+    metaSelect
+} from './Form.util';
+import { Variant, getVariantCSS, negateVariant } from '../../util';
 
 export interface FormProps<T extends FormEntryConstraint> {
     entries: Entries<T>;
@@ -36,42 +45,30 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
         props.onSubmit(getSubmissionResult(formState.inputs));
     };
 
-    const onImageUpload = (id: string, file: File): void => {
-        if (file instanceof File) {
-            const newState = {
-                ...formState,
-                inputs: {
-                    ...formState.inputs,
-                    [id]: {
-                        ...formState.inputs[id],
-                        value: file,
-                        isValid: true,
-                        isTouched: true
-                    }
-                }
-            };
-            setFormState({
-                ...newState,
-                isValid: checkInputValidity(newState.inputs)
-            });
+    const onValidUpload = (id: string, file: File): void => {
+        setFormState(onImageUpload(formState, id, file));
+    };
+
+    const onInvalidUpload = (id: string, noValidation = false): void => {
+        setFormState(onImageInvalidUpload(formState, id, noValidation));
+    };
+
+    const onMultipleSelect = (
+        noValidation: boolean,
+        e: React.MouseEvent<HTMLSelectElement, MouseEvent>
+    ): void => {
+        const value = (e.target as HTMLOptionElement).value;
+        const id = e.currentTarget.id;
+        if (e.currentTarget.hasAttribute('multiple')) {
+            setFormState(metaSelect(formState, id, value, noValidation));
+        } else {
+            onChangeHandler({ target: { id, value } } as React.ChangeEvent<HTMLSelectElement>);
         }
     };
 
-    const onImageInvalid = (id: string, noValidation = false): void => {
-        if (formState.inputs[id].isValid) {
-            setFormState({
-                ...formState,
-                inputs: {
-                    ...formState.inputs,
-                    [id]: {
-                        ...formState.inputs[id],
-                        value: '',
-                        isValid: noValidation,
-                        isTouched: true
-                    }
-                },
-                isValid: formState.isValid && noValidation
-            });
+    const onSelect: React.ChangeEventHandler<HTMLSelectElement> = (e): void => {
+        if (!e.target.hasAttribute('multiple')) {
+            onChangeHandler(e);
         }
     };
 
@@ -88,20 +85,22 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
             }}
         >
             {props.headerText && (
-                <h4
-                    style={{
-                        paddingTop: '1rem',
-                        fontSize: '1.5rem',
-                        marginBottom: '.5rem',
-                        fontWeight: 'normal',
-                        lineHeight: '1.2',
-                        marginTop: '0'
-                    }}
-                >
-                    {props.headerText}
-                </h4>
+                <>
+                    <h4
+                        style={{
+                            paddingTop: '1rem',
+                            fontSize: '1.5rem',
+                            marginBottom: '.5rem',
+                            fontWeight: 'normal',
+                            lineHeight: '1.2',
+                            marginTop: '0'
+                        }}
+                    >
+                        {props.headerText}
+                    </h4>
+                    <hr style={{ marginBottom: '1rem' }} />
+                </>
             )}
-            <hr style={{ marginBottom: '1rem' }} />
             <form style={{ paddingBottom: '1rem', boxSizing: 'border-box' }} onSubmit={onSubmit}>
                 {Object.keys(formState.inputs).map((id, index) => {
                     const target = props.entries[id];
@@ -118,34 +117,31 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
                     };
                     switch (target.elementType) {
                         case 'text-field':
+                            return <FormTextField {...baseProps} key={index} />;
+                        case 'selection':
                             return (
-                                <FormTextField
+                                <FormSelect
                                     {...baseProps}
-                                    rows={target.rows}
                                     key={index}
-                                    placeholder={target.placeholder}
+                                    onChange={onSelect}
+                                    onClick={onMultipleSelect.bind(
+                                        null,
+                                        baseProps.noValidation === true
+                                    )}
                                 />
                             );
-                        case 'selection':
-                            return null;
                         case 'image':
                             return (
                                 <FormImage
                                     {...baseProps}
                                     key={index}
-                                    onImageUpload={onImageUpload}
-                                    onInvalidImageUpload={onImageInvalid}
+                                    onImageUpload={onValidUpload}
+                                    onInvalidImageUpload={onInvalidUpload}
                                 />
                             );
                         case 'input':
                         default:
-                            return (
-                                <FormInput
-                                    {...baseProps}
-                                    key={index}
-                                    placeholder={target.placeholder}
-                                />
-                            );
+                            return <FormInput {...baseProps} key={index} />;
                     }
                 })}
                 <div

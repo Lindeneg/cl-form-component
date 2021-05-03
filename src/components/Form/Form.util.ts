@@ -2,6 +2,7 @@ import {
     FormEntryConstraint,
     Inputs,
     FormValueType,
+    FormState,
     GetInputOptions,
     getInput
 } from 'cl-use-form-state';
@@ -9,12 +10,15 @@ import {
 import { FormInputMetaProps } from '../FormInput/FormInput';
 import { FormTextFieldMetaProps } from '../FormTextField/FormTextField';
 import { FormImageMetaProps } from '../FormImage/FormImage';
+import { FormSelectMetaProps } from '../FormSelect/FormSelect';
 import { SharedBaseInputProps } from '../SharedElement';
+import { checkInputValidity } from '../../util';
 
 interface Input
     extends SharedBaseInputProps,
         FormInputMetaProps,
         FormImageMetaProps,
+        FormSelectMetaProps,
         FormTextFieldMetaProps {}
 
 interface Entry<T extends FormEntryConstraint> extends Input {
@@ -31,13 +35,33 @@ export function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>
     Object.keys(entries).forEach((key) => {
         const entry = entries[key];
         let options = { ...entry.options };
+        let value = entry.value || '';
+        if (
+            entry.elementType === 'selection' &&
+            typeof entry.selectOptions !== 'undefined' &&
+            entry.selectOptions.length > 0
+        ) {
+            const preSelected =
+                entry.selectOptions.filter((e) => e.selected === true).map((e) => e.value) || [];
+            let isValid = false;
+            if (entry.multipleSelect === true) {
+                value = preSelected;
+                isValid = preSelected.length > 0;
+            } else {
+                value = preSelected.length > 0 ? preSelected[0] : entry.selectOptions[0].value;
+                isValid = true;
+            }
+            if (value) {
+                options = { ...options, isValid };
+            }
+        }
         if (entry.noValidation === true) {
             options = { isValid: true };
         }
         if (entry.elementType === 'image') {
             options = { isValid: entry.noValidation === true, isTouched: true };
         }
-        inputs[key] = getInput(entry.value || '', options);
+        inputs[key] = getInput(value, options);
     });
     return inputs as Inputs<T>;
 }
@@ -50,4 +74,84 @@ export function getSubmissionResult<T extends FormEntryConstraint>(
         result[key] = inputs[key].value;
     });
     return result as SubmissionResult<T>;
+}
+
+export function onImageUpload<T extends FormEntryConstraint>(
+    formState: FormState<T>,
+    id: string,
+    file: File
+): FormState<T> {
+    if (file instanceof File) {
+        const newState: FormState<T> = {
+            ...formState,
+            inputs: {
+                ...formState.inputs,
+                [id]: {
+                    ...formState.inputs[id],
+                    value: file,
+                    isValid: true,
+                    isTouched: true
+                }
+            }
+        };
+        return {
+            ...newState,
+            isValid: checkInputValidity(newState.inputs)
+        };
+    }
+    return formState;
+}
+
+export function onImageInvalidUpload<T extends FormEntryConstraint>(
+    formState: FormState<T>,
+    id: string,
+    noValidation = false
+): FormState<T> {
+    if (formState.inputs[id].isValid) {
+        return {
+            ...formState,
+            inputs: {
+                ...formState.inputs,
+                [id]: {
+                    ...formState.inputs[id],
+                    value: '',
+                    isValid: noValidation,
+                    isTouched: true
+                }
+            },
+            isValid: formState.isValid && noValidation
+        };
+    }
+    return formState;
+}
+
+export function metaSelect<T extends FormEntryConstraint>(
+    formState: FormState<T>,
+    id: string,
+    value: string,
+    noValidation: boolean
+): FormState<T> {
+    const arr = [...(formState.inputs[id].value as string[])];
+    const idx = arr.findIndex((e) => e === value);
+    if (idx > -1) {
+        arr.splice(idx, 1);
+    } else {
+        arr.push(value);
+    }
+    const newState = {
+        ...formState,
+        inputs: {
+            ...formState.inputs,
+            [id]: {
+                ...formState.inputs[id],
+                value: arr,
+                isValid: noValidation === true || arr.length > 0, // TODO useForm.validation.validate()
+                isTouched: true
+            }
+        }
+    };
+    return {
+        ...newState,
+        isValid: checkInputValidity(newState.inputs)
+    };
 }
