@@ -64,7 +64,7 @@
         "storybook": "yarn run storybook:all",
         "storybook:all": "start-storybook -p 6006",
         "storybook:form": "start-storybook -c ./.storybook/deploy -p 6006",
-        "build-storybook": "yarn run build-storybook:all",
+        "build-storybook": "yarn run build-storybook:form",
         "build-storybook:form": "rm -rf story && build-storybook -c ./.storybook/deploy -o story",
         "build-storybook:all": "rm -rf story && build-storybook -c ./.storybook -o story",
         "predeploy": "yarn run build-storybook",
