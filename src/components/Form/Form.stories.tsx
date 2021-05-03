@@ -51,13 +51,13 @@ FormSelectInput.args = {
                     value: 'mclaren'
                 }
             ],
-            invalidFeedback: 'A city is required. Please pick one.',
+            invalidFeedback: 'A car is required. Please pick one.',
             validFeedback: 'Looks good',
-            helperText: 'multiple cities can be selected',
+            helperText: 'multiple cars can be selected',
             noValidation: true
         }
     },
-    headerText: 'Favourite Cities',
+    headerText: 'Favourite Cars',
     onCancel: undefined
 };
 
@@ -87,16 +87,16 @@ FormSelectInput2.args = {
                     value: 'mclaren'
                 }
             ],
-            invalidFeedback: 'A city is required. Please pick one.',
+            invalidFeedback: 'A car is required. Please pick one.',
             validFeedback: 'Looks good',
-            helperText: 'multiple cities can be selected',
+            helperText: 'multiple cars can be selected',
             options: {
                 minLength: 3
             }
             //noValidation: true
         }
     },
-    headerText: 'Favourite Cities',
+    headerText: 'Favourite Cars',
     onCancel: undefined
 };
 
@@ -104,7 +104,6 @@ export const FormSelectInput3 = MetaForm.bind({});
 FormSelectInput3.args = {
     entries: {
         car3: {
-            //multipleSelect: true,
             elementType: 'selection',
             selectOptions: [
                 {
@@ -125,14 +124,10 @@ FormSelectInput3.args = {
                 {
                     value: 'mclaren'
                 }
-            ],
-            invalidFeedback: 'A city is required. Please pick one.',
-            validFeedback: 'Looks good',
-            helperText: 'multiple cities can be selected'
-            //noValidation: true
+            ]
         }
     },
-    headerText: 'Favourite Cities',
+    headerText: 'Favourite Car',
     onCancel: undefined
 };
 
