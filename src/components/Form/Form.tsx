@@ -27,6 +27,7 @@ export interface FormProps<T extends FormEntryConstraint> {
     submissionText?: string;
     headerText?: string;
     cancelText?: string;
+    wrapperId?: string;
     resetOnSubmit?: boolean;
 }
 
@@ -74,6 +75,7 @@ function Form<T extends FormEntryConstraint = Record<string, never>>(
 
     return (
         <div
+            id={props.wrapperId}
             style={{
                 width: props.width || '100%',
                 paddingRight: '15px',
