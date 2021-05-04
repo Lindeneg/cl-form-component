@@ -4,7 +4,8 @@ import {
     FormValueType,
     FormState,
     GetInputOptions,
-    getInput
+    getInput,
+    validate
 } from 'cl-use-form-state';
 
 import { FormInputMetaProps } from '../FormInput/FormInput';
@@ -42,13 +43,21 @@ export function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>
             entry.selectOptions.length > 0
         ) {
             const preSelected =
-                entry.selectOptions.filter((e) => e.selected === true).map((e) => e.value) || [];
+                entry.selectOptions
+                    .filter((e) => (typeof e === 'string' ? false : e.selected === true))
+                    .map((e) => (typeof e === 'string' ? e : e.value)) || [];
             let isValid = false;
             if (entry.multipleSelect === true) {
                 value = preSelected;
                 isValid = preSelected.length > 0;
             } else {
-                value = preSelected.length > 0 ? preSelected[0] : entry.selectOptions[0].value;
+                const selected = entry.selectOptions[0];
+                value =
+                    preSelected.length > 0
+                        ? preSelected[0]
+                        : typeof selected === 'string'
+                        ? selected
+                        : selected.value;
                 isValid = true;
             }
             if (value) {
@@ -145,7 +154,9 @@ export function metaSelect<T extends FormEntryConstraint>(
             [id]: {
                 ...formState.inputs[id],
                 value: arr,
-                isValid: noValidation === true || arr.length > 0, // TODO useForm.validation.validate()
+                isValid:
+                    noValidation === true ||
+                    validate(arr, formState.inputs[id].validators, formState),
                 isTouched: true
             }
         }
