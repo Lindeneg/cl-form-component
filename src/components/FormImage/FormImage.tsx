@@ -7,8 +7,8 @@ import { negateVariant, getVariantChild } from '../../util';
 export type FormImageMetaProps = {
     onImageUpload?: (id: string, file: File) => void;
     onInvalidImageUpload?: (id: string, noValidation: boolean) => void;
-    ImagepreviewText?: string;
-    ImagebuttonText?: string;
+    imagePreviewText?: string;
+    imageButtonText?: string;
     center?: boolean;
 };
 
@@ -92,13 +92,13 @@ const FormImage: FC<FormImageProps> = (props) => {
                     )}
                     {!preview && (
                         <p style={{ ...getVariantChild(negateVariant(variant), 'tc') }}>
-                            {props.ImagepreviewText || 'Please choose an image.'}
+                            {props.imagePreviewText || 'Please choose an image.'}
                         </p>
                     )}
                 </div>
                 <FormButton
                     variant={negateVariant(variant)}
-                    buttonText={props.ImagebuttonText ? props.ImagebuttonText : 'UPLOAD'}
+                    buttonText={props.imageButtonText ? props.imageButtonText : 'UPLOAD'}
                     type="button"
                     onClick={onImageUploadHandler}
                 />

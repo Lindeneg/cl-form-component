@@ -152,7 +152,7 @@ SelectWithMultipleOptions.args = {
             options: { minLength: 1 }
         },
         cars: {
-            label: 'Favourite cars?',
+            label: 'Favorite cars?',
             helperText: 'you can select multiple cars',
             elementType: 'selection',
             multipleSelect: true,
@@ -176,7 +176,7 @@ DarkOptionalŚelectionWithPreSelectedOptions.args = {
             noValidation: true
         },
         carsDark: {
-            label: 'Favourite cars?',
+            label: 'Favorite cars?',
             helperText: 'you can select multiple cars',
             elementType: 'selection',
             multipleSelect: true,
