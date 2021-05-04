@@ -1,5 +1,6 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react/types-6-0';
+
 import Form, { FormProps } from './Form';
 
 export default {
@@ -7,7 +8,9 @@ export default {
     component: Form,
     description: `Form Component.`,
     argTypes: {
-        variant: { options: ['dark', 'light'] }
+        variant: { options: ['dark', 'light'] },
+        onSubmit: { action: 'onSubmit' },
+        onCancel: { action: 'onCancel' }
     }
 } as Meta;
 
@@ -120,8 +123,9 @@ ImageUploadWithSelect.args = {
             elementType: 'text-field',
             placeholder: 'Enter description...',
             label: 'Please provide a description',
-            invalidFeedback: '8-128 characters',
+            invalidFeedback: 'max 128 characters',
             validFeedback: 'Looks Ok!',
+            helperText: 'minimum 8 characters',
             options: {
                 minLength: 8,
                 maxLength: 128
@@ -162,8 +166,8 @@ SelectWithMultipleOptions.args = {
     onCancel: undefined
 };
 
-export const DarkŚelectionWithPreSelectedOptions = MetaForm.bind({});
-DarkŚelectionWithPreSelectedOptions.args = {
+export const DarkOptionalŚelectionWithPreSelectedOptions = MetaForm.bind({});
+DarkOptionalŚelectionWithPreSelectedOptions.args = {
     entries: {
         nameDark: {
             label: 'Name',
@@ -183,8 +187,7 @@ DarkŚelectionWithPreSelectedOptions.args = {
                 'Ferrari',
                 'McLaren'
             ],
-            options: { minLength: 1, maxLength: 3, isValid: true },
-            invalidFeedback: 'Please select 1-3 cars'
+            noValidation: true
         }
     },
     variant: 'dark',
