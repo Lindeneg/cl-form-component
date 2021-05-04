@@ -11,6 +11,7 @@ export interface FormProps<T extends FormEntryConstraint> {
     submissionText?: string;
     headerText?: string;
     cancelText?: string;
+    wrapperId?: string;
     resetOnSubmit?: boolean;
 }
 declare function Form<T extends FormEntryConstraint = Record<string, never>>(props: FormProps<T>): JSX.Element;

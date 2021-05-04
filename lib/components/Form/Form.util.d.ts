@@ -1,9 +1,10 @@
-import { FormEntryConstraint, Inputs, FormValueType, GetInputOptions } from 'cl-use-form-state';
+import { FormEntryConstraint, Inputs, FormValueType, FormState, GetInputOptions } from 'cl-use-form-state';
 import { FormInputMetaProps } from '../FormInput/FormInput';
 import { FormTextFieldMetaProps } from '../FormTextField/FormTextField';
 import { FormImageMetaProps } from '../FormImage/FormImage';
+import { FormSelectMetaProps } from '../FormSelect/FormSelect';
 import { SharedBaseInputProps } from '../SharedElement';
-interface Input extends SharedBaseInputProps, FormInputMetaProps, FormImageMetaProps, FormTextFieldMetaProps {
+interface Input extends SharedBaseInputProps, FormInputMetaProps, FormImageMetaProps, FormSelectMetaProps, FormTextFieldMetaProps {
 }
 interface Entry<T extends FormEntryConstraint> extends Input {
     elementType?: 'input' | 'text-field' | 'selection' | 'image';
@@ -17,4 +18,7 @@ export declare type SubmissionResult<T extends FormEntryConstraint> = {
 };
 export declare function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>): Inputs<T>;
 export declare function getSubmissionResult<T extends FormEntryConstraint>(inputs: Inputs<T>): SubmissionResult<T>;
+export declare function onImageUpload<T extends FormEntryConstraint>(formState: FormState<T>, id: string, file: File): FormState<T>;
+export declare function onImageInvalidUpload<T extends FormEntryConstraint>(formState: FormState<T>, id: string, noValidation?: boolean): FormState<T>;
+export declare function metaSelect<T extends FormEntryConstraint>(formState: FormState<T>, id: string, value: string, noValidation: boolean): FormState<T>;
 export {};
