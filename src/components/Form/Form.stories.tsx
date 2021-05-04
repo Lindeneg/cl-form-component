@@ -25,112 +25,6 @@ DefaultInput.args = {
     onCancel: undefined
 };
 
-export const FormSelectInput = MetaForm.bind({});
-FormSelectInput.args = {
-    entries: {
-        car: {
-            multipleSelect: true,
-            elementType: 'selection',
-            selectOptions: [
-                {
-                    value: 'volvo'
-                },
-                {
-                    value: 'porche'
-                },
-                {
-                    value: 'mercedes'
-                },
-                {
-                    value: 'fiat'
-                },
-                {
-                    value: 'ferrai'
-                },
-                {
-                    value: 'mclaren'
-                }
-            ],
-            invalidFeedback: 'A car is required. Please pick one.',
-            validFeedback: 'Looks good',
-            helperText: 'multiple cars can be selected',
-            noValidation: true
-        }
-    },
-    headerText: 'Favourite Cars',
-    onCancel: undefined
-};
-
-export const FormSelectInput2 = MetaForm.bind({});
-FormSelectInput2.args = {
-    entries: {
-        car2: {
-            multipleSelect: true,
-            elementType: 'selection',
-            selectOptions: [
-                {
-                    value: 'volvo'
-                },
-                {
-                    value: 'porche'
-                },
-                {
-                    value: 'mercedes'
-                },
-                {
-                    value: 'fiat'
-                },
-                {
-                    value: 'ferrai'
-                },
-                {
-                    value: 'mclaren'
-                }
-            ],
-            invalidFeedback: 'A car is required. Please pick one.',
-            validFeedback: 'Looks good',
-            helperText: 'multiple cars can be selected',
-            options: {
-                minLength: 3
-            }
-            //noValidation: true
-        }
-    },
-    headerText: 'Favourite Cars',
-    onCancel: undefined
-};
-
-export const FormSelectInput3 = MetaForm.bind({});
-FormSelectInput3.args = {
-    entries: {
-        car3: {
-            elementType: 'selection',
-            selectOptions: [
-                {
-                    value: 'volvo'
-                },
-                {
-                    value: 'porche'
-                },
-                {
-                    value: 'mercedes'
-                },
-                {
-                    value: 'fiat'
-                },
-                {
-                    value: 'ferrai'
-                },
-                {
-                    value: 'mclaren'
-                }
-            ]
-        }
-    },
-    headerText: 'Favourite Car',
-    onCancel: undefined
-};
-
 export const SignupFormWithValidationAndImageUpload = MetaForm.bind({});
 SignupFormWithValidationAndImageUpload.args = {
     entries: {
@@ -213,11 +107,10 @@ DarkLoginFormWithValidation.parameters = {
     backgrounds: { default: 'dark' }
 };
 
-export const CenteredImageUploadFormWithValidationAndCancelButton = MetaForm.bind({});
-CenteredImageUploadFormWithValidationAndCancelButton.args = {
+export const ImageUploadWithSelect = MetaForm.bind({});
+ImageUploadWithSelect.args = {
     entries: {
         imageFile: {
-            center: true,
             helperText: 'Must be type .png, .jpg or .jpeg',
             invalidFeedback: 'An image is required',
             validFeedback: 'Looks Ok!',
@@ -233,7 +126,68 @@ CenteredImageUploadFormWithValidationAndCancelButton.args = {
                 minLength: 8,
                 maxLength: 128
             }
+        },
+        visibility: {
+            elementType: 'selection',
+            label: 'Visibility',
+            selectOptions: ['Public', 'Private']
         }
     },
     headerText: 'Upload Image'
+};
+
+export const SelectWithMultipleOptions = MetaForm.bind({});
+SelectWithMultipleOptions.args = {
+    entries: {
+        name: {
+            label: 'Name',
+            placeholder: 'Enter here...',
+            helperText: 'name required',
+            validFeedback: 'Looks Ok!',
+            invalidFeedback: 'Please enter your name',
+            options: { minLength: 1 }
+        },
+        cars: {
+            label: 'Favourite cars?',
+            helperText: 'you can select multiple cars',
+            elementType: 'selection',
+            multipleSelect: true,
+            selectOptions: ['Porsche', 'Aston Martin', 'Mercedes', 'Ferrari', 'McLaren'],
+            options: { minLength: 1, maxLength: 3 },
+            invalidFeedback: 'Please select 1-3 cars',
+            validFeedback: 'Great choice!'
+        }
+    },
+    headerText: 'Example Form',
+    onCancel: undefined
+};
+
+export const DarkŚelectionWithPreSelectedOptions = MetaForm.bind({});
+DarkŚelectionWithPreSelectedOptions.args = {
+    entries: {
+        nameDark: {
+            label: 'Name',
+            placeholder: 'Enter here...',
+            helperText: 'name optional',
+            noValidation: true
+        },
+        carsDark: {
+            label: 'Favourite cars?',
+            helperText: 'you can select multiple cars',
+            elementType: 'selection',
+            multipleSelect: true,
+            selectOptions: [
+                { value: 'Porsche', selected: true },
+                'Aston Martin',
+                { value: 'Mercedes', selected: true },
+                'Ferrari',
+                'McLaren'
+            ],
+            options: { minLength: 1, maxLength: 3, isValid: true },
+            invalidFeedback: 'Please select 1-3 cars'
+        }
+    },
+    variant: 'dark',
+    headerText: 'Example Form',
+    onCancel: undefined
 };
