@@ -14,18 +14,57 @@ export default {
     }
 } as Meta;
 
-// TODO
-
 const MetaSelect: Story<FormSelectProps> = (args) => <FormSelect {...args} />;
 
 export const DefaultSelect = MetaSelect.bind({});
-DefaultSelect.args = {
-    selectOptions: [
-        {
-            value: 'hello'
-        },
-        {
-            value: 'there'
-        }
-    ]
+DefaultSelect.args = {};
+
+export const SelectWithEntriesWithoutOptions = MetaSelect.bind({});
+SelectWithEntriesWithoutOptions.args = {
+    label: 'Favourite Car',
+    selectOptions: ['Porsche', 'Aston Martin', 'Mercedes', 'Ferrari', 'McLaren']
+};
+
+export const SelectWithEntriesAndOptions = MetaSelect.bind({});
+SelectWithEntriesAndOptions.args = {
+    label: 'Favourite Cars',
+    helperText: 'Multiple cars can be selected',
+    multipleSelect: true,
+    selectOptions: ['Porsche', 'Aston Martin', 'Mercedes', 'Ferrari', 'McLaren'],
+    value: []
+};
+
+export const ValidSelectWithEntries = MetaSelect.bind({});
+ValidSelectWithEntries.args = {
+    label: 'Favourite Cars',
+    helperText: 'Multiple cars can be selected',
+    multipleSelect: true,
+    selectOptions: ['Porsche', 'Aston Martin', 'Mercedes', 'Ferrari', 'McLaren'],
+    value: ['Porsche', 'Mercedes'],
+    isValid: true,
+    validFeedback: 'Looks good!'
+};
+
+export const InvalidSelectWithEntries = MetaSelect.bind({});
+InvalidSelectWithEntries.args = {
+    label: 'Favourite Cars',
+    helperText: 'Multiple cars can be selected',
+    multipleSelect: true,
+    selectOptions: ['Porsche', 'Aston Martin', 'Mercedes', 'Ferrari', 'McLaren'],
+    value: [],
+    isInvalid: true,
+    invalidFeedback: 'Please pick a car!'
+};
+
+export const DarkSelectWithEntriesAndOptions = MetaSelect.bind({});
+DarkSelectWithEntriesAndOptions.args = {
+    label: 'Favourite Cars',
+    helperText: 'Multiple cars can be selected',
+    multipleSelect: true,
+    selectOptions: ['Porsche', 'Aston Martin', 'Mercedes', 'Ferrari', 'McLaren'],
+    value: [],
+    variant: 'dark'
+};
+DarkSelectWithEntriesAndOptions.parameters = {
+    backgrounds: { default: 'dark' }
 };
