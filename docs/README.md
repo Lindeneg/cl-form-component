@@ -21,7 +21,9 @@ Props for the `<Form />` component exposed by this library.
 `Entries` is an object where inputs and associated options can be defined.
 
 ```ts
-type Entries<T> = { [K in keyof T]: Entry<T> };
+type FormValueType                          = string | number | boolean | string[] | File;
+type FormEntryConstraint                    = { [key: string]: FormValueType };
+type Entries<T extends FormEntryConstraint> = { [K in keyof T]: Entry<T> };
 ```
 
 A bare-minimum `Entries` object with a single `Entry` without any options, could be like so:
@@ -32,12 +34,12 @@ However, that isn't much fun. Lets look at some options!
 
 There are four `Entry` elements supported `'input' | 'text-field' | 'selection' | 'image'` and while they each offer their own options, they all have the following in common:
 
-### `Entry`
+##### `Entry`
 
 | name              | type                                                                              | required | default     | note                                                                                                        |
 | ----------------- | --------------------------------------------------------------------------------- | -------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
 | `elementType`     | `'input' \| 'text-field' \| 'selection' \| 'image'`                               | `No`     | `'input'`   | -                                                                                                           |
-| `value`           | `string \| number \| boolean \| string[] \| File`                                 | `No`     | `''`        | initial value of the element                                                                                |
+| `value`           | `FormValueType`                                                                   | `No`     | `''`        | initial value of the element                                                                                |
 | `options`         | [GetInputOptions](https://github.com/Lindeneg/cl-use-form-state#getinput-options) | `No`     | `undefined` | validation options from [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state#getinput-options) |
 | `label`           | `string`                                                                          | `No`     | `undefined` | text label appearing over the input                                                                         |
 | `placeholder`     | `string`                                                                          | `No`     | `undefined` | text appearing in the input (if applicable)                                                                 |
