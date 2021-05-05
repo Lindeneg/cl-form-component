@@ -2,17 +2,17 @@
 
 Props for the `<Form />` component exposed by this library.
 
-| prop             | type                                                                    | required | default     | note                                               |
-| ---------------- | ----------------------------------------------------------------------- | -------- | ----------- | -------------------------------------------------- |
-| `entries`        | [Entries](https://github.com/lindeneg/cl-form-component/docs#Entries)   | `Yes`    | -           | object with inputs and options                     |
-| `onSubmit`       | [Function](https://github.com/lindeneg/cl-form-component/docs#onSubmit) | `Yes`    | -           | submission result always passed on as an argument  |
-| `onCancel`       | `Function`                                                              | `No`     | `undefined` | -                                                  |
-| `width`          | `string`                                                                | `No`     | `undefined` | width of the form, such as '100px'                 |
-| `headerText`     | `string`                                                                | `No`     | `undefined` | text used by the form header                       |
-| `cancelText`     | `string`                                                                | `No`     | `'CANCEL'`  | text used by the form cancel button                |
-| `submissionText` | `string`                                                                | `No`     | `'SUBMIT'`  | text used by the form submit button                |
-| `variant`        | `'dark' \| 'light' `                                                    | `No`     | `'light'`   |                                                    |
-| `resetOnSubmit`  | `boolean`                                                               | `No`     | `false`     | if true, all input values are reset on form submit |
+| prop             | type                                                                                          | required | default     | note                                               |
+| ---------------- | --------------------------------------------------------------------------------------------- | -------- | ----------- | -------------------------------------------------- |
+| `entries`        | [Entries](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#entries)   | `Yes`    | -           | object with inputs and options                     |
+| `onSubmit`       | [Function](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#onsubmit) | `Yes`    | -           | submission result always passed on as an argument  |
+| `onCancel`       | `Function`                                                                                    | `No`     | `undefined` | -                                                  |
+| `width`          | `string`                                                                                      | `No`     | `undefined` | width of the form, such as '100px'                 |
+| `headerText`     | `string`                                                                                      | `No`     | `undefined` | text used by the form header                       |
+| `cancelText`     | `string`                                                                                      | `No`     | `'CANCEL'`  | text used by the form cancel button                |
+| `submissionText` | `string`                                                                                      | `No`     | `'SUBMIT'`  | text used by the form submit button                |
+| `variant`        | `'dark' \| 'light' `                                                                          | `No`     | `'light'`   |                                                    |
+| `resetOnSubmit`  | `boolean`                                                                                     | `No`     | `false`     | if true, all input values are reset on form submit |
 
 ---
 
@@ -65,22 +65,22 @@ So know we can add, say, a label, a placeholder and some validation to that user
 
 Here's a overview of the individual options each `elementType` takes.
 
-| elementType      | name               | type                    | required   | default                     | note                                                           |
-| ---------------- | ------------------ | ----------------------- | ---------- | --------------------------- | -------------------------------------------------------------- | ------------------------------------------------------- | -------- | ---------------------------------------------------- |
-| **`input`**      | -                  | -                       | -          | -                           | -                                                              |
-| -                | `type`             | `'text'                 | 'password' | 'number'                    | 'email'`                                                       | `No`                                                    | `'text'` | `type` attribute passed on to the html input element |
-| **`text-field`** | -                  | -                       | -          | -                           | -                                                              |
-| -                | `rows`             | `number`                | `No`       | `3`                         | `rows` attribute passed on to the html textarea element        |
-| -                | `cols`             | `number`                | `No`       | `1`                         | `cols` attribute passed on to the html textarea element        |
-| -                | `wrap`             | `'soft'                 | 'hard'`    | `No`                        | `undefined`                                                    | `wrap` attribute passed on to the html textarea element |
-| **`image`**      | -                  | -                       | -          | -                           | -                                                              |
-| -                | `imagePreviewText` | `string`                | `No`       | `'Please choose an image.'` | text shown in the preview div before image upload              |
-| -                | `imageButtonText`  | `string`                | `No`       | `'UPLOAD'`                  | text shown in the image upload button                          |
-| -                | `center`           | `boolean`               | `No`       | `false`                     | if true, image upload will be centered relative to the form    |
-| **`selection`**  | -                  | -                       | -          | -                           | -                                                              |
-| -                | `selectOptions`    | `Array<FormSelectOption | string>`   | `No`                        | `undefined`                                                    | -                                                       |
-| -                | `multipleSelect`   | `boolean`               | `No`       | `false`                     | allows the selection of multiple `selectOption` entries        |
-| -                | `center`           | `boolean`               | `No`       | `false`                     | if true, selection input will be centered relative to the form |
+| elementType      | name               | type                                          | required | default                     | note                                                           |
+| ---------------- | ------------------ | --------------------------------------------- | -------- | --------------------------- | -------------------------------------------------------------- | ------------------------------------------------------- |
+| **`input`**      | -                  | -                                             | -        | -                           | -                                                              |
+| -                | `type`             | `'text' \| 'password' \| 'number' \| 'email'` | `No`     | `'text'`                    | `type` attribute passed on to the html input element           |
+| **`text-field`** | -                  | -                                             | -        | -                           | -                                                              |
+| -                | `rows`             | `number`                                      | `No`     | `3`                         | `rows` attribute passed on to the html textarea element        |
+| -                | `cols`             | `number`                                      | `No`     | `1`                         | `cols` attribute passed on to the html textarea element        |
+| -                | `wrap`             | `'soft'                                       | 'hard'`  | `No`                        | `undefined`                                                    | `wrap` attribute passed on to the html textarea element |
+| **`image`**      | -                  | -                                             | -        | -                           | -                                                              |
+| -                | `imagePreviewText` | `string`                                      | `No`     | `'Please choose an image.'` | text shown in the preview div before image upload              |
+| -                | `imageButtonText`  | `string`                                      | `No`     | `'UPLOAD'`                  | text shown in the image upload button                          |
+| -                | `center`           | `boolean`                                     | `No`     | `false`                     | if true, image upload will be centered relative to the form    |
+| **`selection`**  | -                  | -                                             | -        | -                           | -                                                              |
+| -                | `selectOptions`    | `Array<FormSelectOption \| string>`           | `No`     | `undefined`                 | -                                                              |
+| -                | `multipleSelect`   | `boolean`                                     | `No`     | `false`                     | allows the selection of multiple `selectOption` entries        |
+| -                | `center`           | `boolean`                                     | `No`     | `false`                     | if true, selection input will be centered relative to the form |
 
 ### FormSelectOption
 
