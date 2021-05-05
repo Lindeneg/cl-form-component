@@ -2,17 +2,17 @@
 
 Props for the `<Form />` component exposed by this library.
 
-| prop             | type                                                                    | required  | default     | note                                               |
-| ---------------- | ----------------------------------------------------------------------- | --------- | ----------- | -------------------------------------------------- |
-| `entries`        | [Entries](https://github.com/lindeneg/cl-form-component/docs#Entries)   | `Yes`     | -           | object with inputs and options                     |
-| `onSubmit`       | [Function](https://github.com/lindeneg/cl-form-component/docs#onSubmit) | `Yes`     | -           | submission result always passed on as an argument  |
-| `onCancel`       | `Function`                                                              | `No`      | `undefined` | -                                                  |
-| `width`          | `string`                                                                | `No`      | `undefined` | width of the form, such as '100px'                 |
-| `headerText`     | `string`                                                                | `No`      | `undefined` | text used by the form header                       |
-| `cancelText`     | `string`                                                                | `No`      | `'CANCEL'`  | text used by the form cancel button                |
-| `submissionText` | `string`                                                                | `No`      | `'SUBMIT'`  | text used by the form submit button                |
-| `variant`        | `'dark'                                                                 | 'light' ` | `No`        | `'light'`                                          |
-| `resetOnSubmit`  | `boolean`                                                               | `No`      | `false`     | if true, all input values are reset on form submit |
+| prop             | type                                                                    | required | default     | note                                               |
+| ---------------- | ----------------------------------------------------------------------- | -------- | ----------- | -------------------------------------------------- |
+| `entries`        | [Entries](https://github.com/lindeneg/cl-form-component/docs#Entries)   | `Yes`    | -           | object with inputs and options                     |
+| `onSubmit`       | [Function](https://github.com/lindeneg/cl-form-component/docs#onSubmit) | `Yes`    | -           | submission result always passed on as an argument  |
+| `onCancel`       | `Function`                                                              | `No`     | `undefined` | -                                                  |
+| `width`          | `string`                                                                | `No`     | `undefined` | width of the form, such as '100px'                 |
+| `headerText`     | `string`                                                                | `No`     | `undefined` | text used by the form header                       |
+| `cancelText`     | `string`                                                                | `No`     | `'CANCEL'`  | text used by the form cancel button                |
+| `submissionText` | `string`                                                                | `No`     | `'SUBMIT'`  | text used by the form submit button                |
+| `variant`        | `'dark' \| 'light' `                                                    | `No`     | `'light'`   |                                                    |
+| `resetOnSubmit`  | `boolean`                                                               | `No`     | `false`     | if true, all input values are reset on form submit |
 
 ---
 
@@ -26,18 +26,18 @@ However, that isn't much fun. Lets look at some options!
 
 There are four input elements supported `'input' | 'text-field' | 'selection' | 'image'` and while they each offer their own options, they all have the following in common:
 
-| name              | type                                                                              | required     | default     | note                                                                                                        |
-| ----------------- | --------------------------------------------------------------------------------- | ------------ | ----------- | ----------------------------------------------------------------------------------------------------------- | ----- | --------- | ---- | ---------------------------- |
-| `elementType`     | `'input'                                                                          | 'text-field' | 'selection' | 'image'`                                                                                                    | `No`  | `'input'` | -    |
-| `value`           | `string                                                                           | number       | boolean     | string[]                                                                                                    | File` | `No`      | `''` | initial value of the element |
-| `options`         | [GetInputOptions](https://github.com/Lindeneg/cl-use-form-state#getinput-options) | `No`         | `undefined` | validation options from [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state#getinput-options) |
-| `label`           | `string`                                                                          | `No`         | `undefined` | text label appearing over the input                                                                         |
-| `placeholder`     | `string`                                                                          | `No`         | `undefined` | text appearing in the input (if applicable)                                                                 |
-| `helperText`      | `string`                                                                          | `No`         | `undefined` | text appearing under the input                                                                              |
-| `validFeedback`   | `string`                                                                          | `No`         | `undefined` | text appearing when input is valid                                                                          |
-| `invalidFeedback` | `string`                                                                          | `No`         | `undefined` | text appearing when input is invalid                                                                        |
-| `width`           | `string`                                                                          | `No`         | `undefined` | width of the input, such as '20%'                                                                           |
-| `noValidation`    | `boolean`                                                                         | `No`         | `false`     | turn off all validation for input                                                                           |
+| name              | type                                                                              | required | default     | note                                                                                                        |
+| ----------------- | --------------------------------------------------------------------------------- | -------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
+| `elementType`     | `'input' \| 'text-field' \| 'selection' \| 'image'`                               | `No`     | `'input'`   | -                                                                                                           |
+| `value`           | `string \| number \| boolean \| string[] \| File`                                 | `No`     | `''`        | initial value of the element                                                                                |
+| `options`         | [GetInputOptions](https://github.com/Lindeneg/cl-use-form-state#getinput-options) | `No`     | `undefined` | validation options from [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state#getinput-options) |
+| `label`           | `string`                                                                          | `No`     | `undefined` | text label appearing over the input                                                                         |
+| `placeholder`     | `string`                                                                          | `No`     | `undefined` | text appearing in the input (if applicable)                                                                 |
+| `helperText`      | `string`                                                                          | `No`     | `undefined` | text appearing under the input                                                                              |
+| `validFeedback`   | `string`                                                                          | `No`     | `undefined` | text appearing when input is valid                                                                          |
+| `invalidFeedback` | `string`                                                                          | `No`     | `undefined` | text appearing when input is invalid                                                                        |
+| `width`           | `string`                                                                          | `No`     | `undefined` | width of the input, such as '20%'                                                                           |
+| `noValidation`    | `boolean`                                                                         | `No`     | `false`     | turn off all validation for input                                                                           |
 
 So know we can add, say, a label, a placeholder and some validation to that username entry:
 
@@ -81,8 +81,6 @@ Here's a overview of the individual options each `elementType` takes.
 | -                | `selectOptions`    | `Array<FormSelectOption | string>`   | `No`                        | `undefined`                                                    | -                                                       |
 | -                | `multipleSelect`   | `boolean`               | `No`       | `false`                     | allows the selection of multiple `selectOption` entries        |
 | -                | `center`           | `boolean`               | `No`       | `false`                     | if true, selection input will be centered relative to the form |
-
----
 
 ### FormSelectOption
 
