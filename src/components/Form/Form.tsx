@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useForm, { FormEntryConstraint } from 'cl-use-form-state';
+import useForm, { FormEntryConstraint, FormValueType } from 'cl-use-form-state';
 
 import FormInput from '../FormInput/FormInput';
 import FormTextField from '../FormTextField/FormTextField';
@@ -31,7 +31,7 @@ export interface FormProps<T extends FormEntryConstraint> {
     resetOnSubmit?: boolean;
 }
 
-function Form<T extends FormEntryConstraint = Record<string, never>>(
+function Form<T extends FormEntryConstraint = Record<string, FormValueType>>(
     props: FormProps<T>
 ): JSX.Element {
     const { formState, onChangeHandler, onTouchHandler, setFormState } = useForm<T>(

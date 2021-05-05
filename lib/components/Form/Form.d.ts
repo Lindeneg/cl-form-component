@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { FormEntryConstraint } from 'cl-use-form-state';
+import { FormEntryConstraint, FormValueType } from 'cl-use-form-state';
 import { Entries, SubmissionResult } from './Form.util';
 import { Variant } from '../../util';
 export interface FormProps<T extends FormEntryConstraint> {
@@ -14,5 +14,5 @@ export interface FormProps<T extends FormEntryConstraint> {
     wrapperId?: string;
     resetOnSubmit?: boolean;
 }
-declare function Form<T extends FormEntryConstraint = Record<string, never>>(props: FormProps<T>): JSX.Element;
+declare function Form<T extends FormEntryConstraint = Record<string, FormValueType>>(props: FormProps<T>): JSX.Element;
 export default Form;
