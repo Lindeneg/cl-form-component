@@ -4,10 +4,17 @@
 
 ---
 
-The form is _Bootstrap-esque_ styled and offers two variants by default, `dark` and `light`.
-Work in progress to allow customization of all styles used.
+### Dev Todo
 
-There are no dependencies besides [React](https://reactjs.org/) and [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state), the latter of which is used for state management and input validation.
+-   Allow customization of all form and input styles with a `CSSProperties` object or a `className` string.
+
+-   Allow the use of `<optgroup />` in a `selection` element.
+
+---
+
+The form is _Bootstrap-esque_ styled and offers two variants by default, `dark` and `light`.
+
+There are no dependencies besides [React](https://reactjs.org/) and [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state), the former is a peer dependency and the latter is used for state management and input validation.
 
 Four `elementTypes` are supported `'input' | 'text-field' | 'selection' | 'image'`
 
