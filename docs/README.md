@@ -86,11 +86,11 @@ Here's a overview of the individual options each `elementType` takes.
 
 `FormSelectOption` are the `<option />` values for the `selection` element type.
 
-| name         | type    | required | default   | note |
-| ------------ | ------- | -------- | --------- | ---- |
-| value        | string  | Yes      | -         | -    |
-| displayValue | string  | No       | undefined | -    |
-| selected     | boolean | No       | false     | -    |
+| name           | type      | required | default     | note                                         |
+| -------------- | --------- | -------- | ----------- | -------------------------------------------- |
+| `value`        | `string`  | `Yes`    | -           | `value` attribute of the html option element |
+| `displayValue` | `string`  | `No`     | `undefined` | actual text displayed on the option element  |
+| `selected`     | `boolean` | `No`     | `false`     | if true, the element is preselected.         |
 
 Thus, `selection` options can be created either by using a string array or by using a `FormSelectOption` object, which allows for the above options.
 

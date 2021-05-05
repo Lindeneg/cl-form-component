@@ -1,7 +1,5 @@
 # cl-form-component
 
-#### documentation in progress
-
 ###### Easily create forms in React with validation and TypeScript support.
 
 ---
@@ -11,7 +9,7 @@ Work in progress to allow customization of all styles used.
 
 There are no dependencies besides [React](https://reactjs.org/) and [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state), the latter of which is used for state management and input validation.
 
-##### Four form elements are supported:
+Four form elements are supported:
 
 -   **FormInput**
 
@@ -28,15 +26,8 @@ There are no dependencies besides [React](https://reactjs.org/) and [cl-use-form
 -   **FormSelect**
 
     -- _select/dropdown with options_
-    
 
 All elements offers the same predefined validation rules as well as the ability to create custom ones.
-
----
-
-#### Stories
-
-Check out [this](https://lindeneg.github.io/cl-form-component/?path=/story/form--default-input) link for a few stories or check out the full documentation [here](). _docs still in progress_
 
 ---
 
@@ -115,3 +106,9 @@ type Inputs = {
     submissionText="LOGIN"
 />;
 ```
+
+---
+
+#### Stories & Documentation
+
+Check out [this](https://lindeneg.github.io/cl-form-component/?path=/story/form--default-input) link for a few stories or check out the full documentation [here](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md).
