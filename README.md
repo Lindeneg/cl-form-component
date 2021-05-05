@@ -9,23 +9,7 @@ Work in progress to allow customization of all styles used.
 
 There are no dependencies besides [React](https://reactjs.org/) and [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state), the latter of which is used for state management and input validation.
 
-Four form elements are supported:
-
--   **FormInput**
-
-    -- _input field_
-
--   **FormTextField**
-
-    -- _textarea field_
-
--   **FormImage**
-
-    -- _image upload field with image preview_
-
--   **FormSelect**
-
-    -- _select/dropdown with options_
+Four `elementTypes` are supported `'input' | 'text-field' | 'selection' | 'image'`
 
 All elements offers the same predefined validation rules as well as the ability to create custom ones.
 

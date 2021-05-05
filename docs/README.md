@@ -18,13 +18,21 @@ Props for the `<Form />` component exposed by this library.
 
 ### Entries
 
-`Entries` is an object where inputs and associated options can be defined. A bare-minimum `Entries` object without any options could be like so:
+`Entries` is an object where inputs and associated options can be defined.
+
+```ts
+type Entries<T> = { [K in keyof T]: Entry<T> };
+```
+
+A bare-minimum `Entries` object without any options could be like so:
 
 `{username: {}}`
 
 However, that isn't much fun. Lets look at some options!
 
 There are four input elements supported `'input' | 'text-field' | 'selection' | 'image'` and while they each offer their own options, they all have the following in common:
+
+**`Entry`**
 
 | name              | type                                                                              | required | default     | note                                                                                                        |
 | ----------------- | --------------------------------------------------------------------------------- | -------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
@@ -39,7 +47,7 @@ There are four input elements supported `'input' | 'text-field' | 'selection' | 
 | `width`           | `string`                                                                          | `No`     | `undefined` | width of the input, such as '20%'                                                                           |
 | `noValidation`    | `boolean`                                                                         | `No`     | `false`     | turn off all validation for input                                                                           |
 
-So know we can add, say, a label, a placeholder and some validation to that username entry:
+So now we can add, say, a label, a placeholder and some validation to that username entry:
 
 ```ts
 {
@@ -152,6 +160,11 @@ Suppose we want `Content` as the default selected value. Then we can make use of
 ### onSubmit
 
 `onSubmit` is called when a form satisfying the given validation option is submitted. It **requires** one argument, lets call it `result`.
+
+```ts
+type SubmissionResult<T> = { [K in keyof T]: T[K] };
+type OnSubmit = (result: SubmissionResult<T>) => void;
+```
 
 The `result` argument is an object with input names as keys and its value at submission time as value.
 
