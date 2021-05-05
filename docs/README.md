@@ -24,15 +24,15 @@ Props for the `<Form />` component exposed by this library.
 type Entries<T> = { [K in keyof T]: Entry<T> };
 ```
 
-A bare-minimum `Entries` object without any options could be like so:
+A bare-minimum `Entries` object with a single `Entry` without any options, could be like so:
 
 `{username: {}}`
 
 However, that isn't much fun. Lets look at some options!
 
-There are four input elements supported `'input' | 'text-field' | 'selection' | 'image'` and while they each offer their own options, they all have the following in common:
+There are four `Entry` elements supported `'input' | 'text-field' | 'selection' | 'image'` and while they each offer their own options, they all have the following in common:
 
-**`Entry`**
+### `Entry`
 
 | name              | type                                                                              | required | default     | note                                                                                                        |
 | ----------------- | --------------------------------------------------------------------------------- | -------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
@@ -100,9 +100,9 @@ Here's a overview of the individual options each `elementType` takes.
 | `displayValue` | `string`  | `No`     | `undefined` | actual text displayed on the option element  |
 | `selected`     | `boolean` | `No`     | `false`     | if true, the element is preselected.         |
 
-Thus, `selection` options can be created either by using a string array or by using a `FormSelectOption` object, which allows for the above options.
+Thus, `selectOptions` can be created either by using an array of strings or by using a `FormSelectOption` object, which allows for the above options.
 
-So lets say we want to add a `selection` to the `Entries` object we created before with `username`.
+So lets say we want to add a `selection` to the `Entries` object we created before with the single `Entry` named `username`.
 
 ```ts
 {
@@ -119,6 +119,8 @@ So lets say we want to add a `selection` to the `Entries` object we created befo
         }
     },
     mood: {
+        // now we need to specify the elementType because
+        // the default value if undefined is 'input'
         elementType: 'selection',
         selectOptions: ['Happy', 'Content', 'Over the Moon!']
     }
