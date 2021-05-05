@@ -1,8 +1,8 @@
-import React, { FC, useState, useRef, useEffect } from 'react';
+import React, { ChangeEventHandler, useState, useRef, useEffect } from 'react';
 
 import FormButton from '../FormButton/FormButton';
 import SharedElement, { SharedInputProps } from '../SharedElement';
-import { negateVariant, getVariantChild } from '../../util';
+import { FC, negateVariant, getVariantChild } from '../../util';
 
 export type FormImageMetaProps = {
     onImageUpload?: (id: string, file: File) => void;
@@ -38,7 +38,7 @@ const FormImage: FC<FormImageProps> = (props) => {
             props.onInvalidImageUpload(props.id, props.noValidation === true);
     };
 
-    const onImageChosenHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    const onImageChosenHandler: ChangeEventHandler<HTMLInputElement> = (event) => {
         if (
             event.target.files &&
             event.target.files.length > 0 &&

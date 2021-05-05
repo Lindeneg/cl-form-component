@@ -1,14 +1,14 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import { SharedInputProps } from './shared.props';
-import { getVariantChild } from '../../util';
+import { FCC, getVariantChild } from '../../util';
 import style from './shared.styles';
 
 interface SharedElementProps extends SharedInputProps {
     center?: boolean;
 }
 
-const SharedElement: FC<SharedElementProps> = (props) => {
+const SharedElement: FCC<SharedElementProps> = (props) => {
     const variant = typeof props.variant === 'undefined' ? 'light' : props.variant;
     const negatedVariant = variant === 'dark' ? 'light' : 'dark';
     return (

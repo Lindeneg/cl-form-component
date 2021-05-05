@@ -33,7 +33,7 @@ export interface FormProps<T extends FormEntryConstraint> {
 
 function Form<T extends FormEntryConstraint = Record<string, FormValueType>>(
     props: FormProps<T>
-): JSX.Element {
+): React.ReactElement {
     const { formState, onChangeHandler, onTouchHandler, setFormState } = useForm<T>(
         getFormInputs(props.entries)
     );
