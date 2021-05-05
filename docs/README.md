@@ -3,7 +3,7 @@
 Props for the `<Form />` component exposed by this library.
 
 | prop             | type                                                                    | required  | default     | note                                               |
-| ---------------- | ----------------------------------------------------------------------- | --------- | ----------- | -------------------------------------------------- | --- |
+| ---------------- | ----------------------------------------------------------------------- | --------- | ----------- | -------------------------------------------------- |
 | `entries`        | [Entries](https://github.com/lindeneg/cl-form-component/docs#Entries)   | `Yes`     | -           | object with inputs and options                     |
 | `onSubmit`       | [Function](https://github.com/lindeneg/cl-form-component/docs#onSubmit) | `Yes`     | -           | submission result always passed on as an argument  |
 | `onCancel`       | `Function`                                                              | `No`      | `undefined` | -                                                  |
@@ -11,7 +11,7 @@ Props for the `<Form />` component exposed by this library.
 | `headerText`     | `string`                                                                | `No`      | `undefined` | text used by the form header                       |
 | `cancelText`     | `string`                                                                | `No`      | `'CANCEL'`  | text used by the form cancel button                |
 | `submissionText` | `string`                                                                | `No`      | `'SUBMIT'`  | text used by the form submit button                |
-| `variant`        | `'dark'                                                                 | 'light' ` | `No`        | `'light'`                                          | -   |
+| `variant`        | `'dark'                                                                 | 'light' ` | `No`        | `'light'`                                          |
 | `resetOnSubmit`  | `boolean`                                                               | `No`      | `false`     | if true, all input values are reset on form submit |
 
 ---
