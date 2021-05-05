@@ -1,6 +1,7 @@
 {
     "name": "cl-form-component",
-    "version": "1.0.0",
+    "description": "React Form component with built-in validation.",
+    "version": "1.0.1",
     "main": "lib/index.js",
     "module": "lib/index.esm.js",
     "homepage": "http://lindeneg.github.io/cl-form-component",
@@ -9,6 +10,17 @@
         "email": "hi@lindeneg.org",
         "url": "https://lindeneg.org"
     },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Lindeneg/cl-form-component.git"
+    },
+    "keywords": [
+        "react",
+        "react-form",
+        "react-component",
+        "form-state",
+        "form-validation"
+    ],
     "license": "MIT",
     "peerDependencies": {
         "react": "^17.0.2",

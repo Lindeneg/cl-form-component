@@ -15,6 +15,12 @@ All elements offers the same predefined validation rules as well as the ability 
 
 ---
 
+### Install
+
+`yarn add cl-form-component`
+
+---
+
 #### Simple Example
 
 Suppose you'd like a login form _with_ validation, then you can do it like so:
