@@ -33,44 +33,15 @@ All elements offers the same predefined validation rules as well as the ability 
 
 #### Simple Example
 
-Say you want a login form _with_ validation, then you can do it like so:
-
-`import { Form } from 'cl-form-component';`
-
-**JavaScript**
-
-```jsx
-<Form
-    entries={{
-        username: {
-            label: 'Username',
-            options: {
-                maxLength: 16,
-                maxNumericalSymbols: 0,
-                minLength: 4
-            },
-            placeholder: 'Enter Username'
-        },
-        password: {
-            label: 'Password',
-            options: {
-                maxLength: 32,
-                minLength: 8,
-                minUppercaseCharacters: 1
-            },
-            placeholder: 'Enter Password',
-            type: 'password'
-        }
-    }}
-    headerText="Please Login"
-    onSubmit={(result) => console.log('submission result: ', result)}
-    submissionText="LOGIN"
-/>
-```
+Suppose you'd like a login form _with_ validation, then you can do it like so:
 
 **TypeScript**
 
 ```tsx
+import React, { FC } from 'react';
+
+import { Form } from 'cl-form-component';
+
 type Inputs = {
     username: string;
     password: string;
@@ -79,32 +50,76 @@ type Inputs = {
 // By passing the inputs as a generic type argument to the Form component,
 // you'll have autocompletion and typechecking in the onSubmit 'result' variable
 // as well as for the 'value' and 'state' arguments in a customRule function.
-<Form<Inputs>
-    entries={{
-        username: {
-            label: 'Username',
-            options: {
-                maxLength: 16,
-                maxNumericalSymbols: 0,
-                minLength: 4
+const SomeComponent: FC = () => (
+    <Form<Inputs>
+        entries={{
+            username: {
+                label: 'Username',
+                options: {
+                    maxLength: 16,
+                    maxNumericalSymbols: 0,
+                    minLength: 4
+                },
+                placeholder: 'Enter Username'
             },
-            placeholder: 'Enter Username'
-        },
-        password: {
-            label: 'Password',
-            options: {
-                maxLength: 32,
-                minLength: 8,
-                minUppercaseCharacters: 1
-            },
-            placeholder: 'Enter Password',
-            type: 'password'
-        }
-    }}
-    headerText="Please Login"
-    onSubmit={(result) => console.log('submission result: ', result)}
-    submissionText="LOGIN"
-/>;
+            password: {
+                label: 'Password',
+                options: {
+                    maxLength: 32,
+                    minLength: 8,
+                    minUppercaseCharacters: 1
+                },
+                placeholder: 'Enter Password',
+                type: 'password'
+            }
+        }}
+        headerText="Please Login"
+        onSubmit={(result) => console.log('submission result: ', result)}
+        submissionText="LOGIN"
+    />
+);
+
+export default SomeComponent;
+```
+
+**JavaScript**
+
+```jsx
+import React from 'react';
+import { Form } from 'cl-form-component';
+
+const SomeComponent = () => {
+    return (
+        <Form
+            entries={{
+                username: {
+                    label: 'Username',
+                    options: {
+                        maxLength: 16,
+                        maxNumericalSymbols: 0,
+                        minLength: 4
+                    },
+                    placeholder: 'Enter Username'
+                },
+                password: {
+                    label: 'Password',
+                    options: {
+                        maxLength: 32,
+                        minLength: 8,
+                        minUppercaseCharacters: 1
+                    },
+                    placeholder: 'Enter Password',
+                    type: 'password'
+                }
+            }}
+            headerText="Please Login"
+            onSubmit={(result) => console.log('submission result: ', result)}
+            submissionText="LOGIN"
+        />
+    );
+};
+
+export default SomeComponent;
 ```
 
 ---
