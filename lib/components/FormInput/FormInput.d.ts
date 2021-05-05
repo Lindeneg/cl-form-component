@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import { SharedInputProps } from '../SharedElement';
+import { FC } from '../../util';
 export declare type FormInputMetaProps = {
     type?: 'text' | 'password' | 'number' | 'email';
 };

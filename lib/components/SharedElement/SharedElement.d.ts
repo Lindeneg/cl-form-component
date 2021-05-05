@@ -1,7 +1,7 @@
-import { FC } from 'react';
 import { SharedInputProps } from './shared.props';
+import { FCC } from '../../util';
 interface SharedElementProps extends SharedInputProps {
     center?: boolean;
 }
-declare const SharedElement: FC<SharedElementProps>;
+declare const SharedElement: FCC<SharedElementProps>;
 export default SharedElement;

@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { SharedInputProps } from '../SharedElement';
+import { FC } from '../../util';
 export declare type FormSelectOptionProps = {
     value: string;
     displayValue?: string;
