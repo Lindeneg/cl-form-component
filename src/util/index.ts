@@ -2,6 +2,12 @@ import { CSSProperties } from 'react';
 
 import { Inputs, FormEntryConstraint } from 'cl-use-form-state';
 
+export type FC<P = Record<string, never>> = (props: P) => React.ReactElement | null;
+
+export type FCC<P = Record<string, never>> = (
+    props: React.PropsWithChildren<P>
+) => React.ReactElement | null;
+
 export type Variant = 'dark' | 'light';
 
 export const negateVariant = (variant?: Variant): Variant => {
