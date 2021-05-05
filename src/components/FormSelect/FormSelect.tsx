@@ -1,7 +1,7 @@
-import React, { FC, CSSProperties } from 'react';
+import React, { CSSProperties } from 'react';
 
 import SharedElement, { SharedInputProps } from '../SharedElement';
-import { getVariantCSS, capitalize } from '../../util';
+import { FC, getVariantCSS, capitalize } from '../../util';
 
 const selectStyles: CSSProperties = {
     boxSizing: 'border-box',

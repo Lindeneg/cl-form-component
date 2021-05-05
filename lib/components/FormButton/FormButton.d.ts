@@ -1,5 +1,5 @@
-import { CSSProperties, FC } from 'react';
-import { Variant } from '../../util';
+import { CSSProperties } from 'react';
+import { FC, Variant } from '../../util';
 export interface FormButtonProps {
     type?: 'button' | 'submit' | 'reset';
     variant?: Variant;

@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React from 'react';
 
 import SharedElement, { SharedInputProps, style } from '../SharedElement';
-import { getVariantCSS } from '../../util';
+import { FC, getVariantCSS } from '../../util';
 
 export type FormTextFieldMetaProps = {
     rows?: number;

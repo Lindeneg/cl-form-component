@@ -1,6 +1,6 @@
-import React, { CSSProperties, FC, useEffect, useState, useCallback } from 'react';
+import React, { CSSProperties, useEffect, useState, useCallback } from 'react';
 
-import { Variant, getVariantCSS } from '../../util';
+import { FC, Variant, getVariantCSS } from '../../util';
 
 const defaultBaseStyle: CSSProperties = {
     display: 'inline-block',
