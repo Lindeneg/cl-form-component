@@ -66,13 +66,13 @@ So know we can add, say, a label, a placeholder and some validation to that user
 Here's a overview of the individual options each `elementType` takes.
 
 | elementType      | name               | type                                          | required | default                     | note                                                           |
-| ---------------- | ------------------ | --------------------------------------------- | -------- | --------------------------- | -------------------------------------------------------------- | ------------------------------------------------------- |
+| ---------------- | ------------------ | --------------------------------------------- | -------- | --------------------------- | -------------------------------------------------------------- |
 | **`input`**      | -                  | -                                             | -        | -                           | -                                                              |
 | -                | `type`             | `'text' \| 'password' \| 'number' \| 'email'` | `No`     | `'text'`                    | `type` attribute passed on to the html input element           |
 | **`text-field`** | -                  | -                                             | -        | -                           | -                                                              |
 | -                | `rows`             | `number`                                      | `No`     | `3`                         | `rows` attribute passed on to the html textarea element        |
 | -                | `cols`             | `number`                                      | `No`     | `1`                         | `cols` attribute passed on to the html textarea element        |
-| -                | `wrap`             | `'soft'                                       | 'hard'`  | `No`                        | `undefined`                                                    | `wrap` attribute passed on to the html textarea element |
+| -                | `wrap`             | `'soft' \| 'hard'`                            | `No`     | `undefined`                 | `wrap` attribute passed on to the html textarea element        |
 | **`image`**      | -                  | -                                             | -        | -                           | -                                                              |
 | -                | `imagePreviewText` | `string`                                      | `No`     | `'Please choose an image.'` | text shown in the preview div before image upload              |
 | -                | `imageButtonText`  | `string`                                      | `No`     | `'UPLOAD'`                  | text shown in the image upload button                          |
