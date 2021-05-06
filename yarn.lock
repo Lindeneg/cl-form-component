@@ -3955,9 +3955,10 @@ cjs-module-lexer@^0.6.0:
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-0.6.0.tgz#4186fcca0eae175970aee870b9fe2d6cf8d5655f"
   integrity sha512-uc2Vix1frTfnuzxxu1Hp4ktSvM3QaI4oXl4ZUqL1wjTu/BGki9TrCWoqLTg/drR1KwAEarXuRFCG2Svr1GxPFw==
 
-"cl-use-form-state@https://github.com/Lindeneg/cl-use-form-state#dev":
+cl-use-form-state@^1.2.1:
   version "1.2.1"
-  resolved "https://github.com/Lindeneg/cl-use-form-state#85afea5b4a0230fdc0e25f577ec0af4295e6ad97"
+  resolved "https://registry.yarnpkg.com/cl-use-form-state/-/cl-use-form-state-1.2.1.tgz#45920d9901cffdf6588a667a80cc131711cd7a30"
+  integrity sha512-w6eJ//pEja0dWHjlnSLiMm/4tG9Bm9M0BwLMQHo4vVF3KWIeIHperzGuXlBx0kDM1X6bhKOmK8l6yAZY4owq8A==
 
 class-utils@^0.3.5:
   version "0.3.6"
