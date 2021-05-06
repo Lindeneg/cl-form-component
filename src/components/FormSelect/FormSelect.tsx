@@ -54,7 +54,9 @@ const FormSelect: FC<FormSelectProps> = (props) => {
                     disabled={!!props.disableSelect}
                     multiple={!!props.multipleSelect}
                     value={
-                        typeof props.value === 'boolean' || props.value instanceof File
+                        typeof props.value === 'boolean' ||
+                        props.value instanceof File ||
+                        props.value === null
                             ? ''
                             : props.value
                     }
