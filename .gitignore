@@ -2,3 +2,4 @@ node_modules
 .eslintcache
 storybook-static
 story
+temp

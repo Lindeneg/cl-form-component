@@ -22,21 +22,27 @@ interface Input
         FormSelectMetaProps,
         FormTextFieldMetaProps {}
 
-interface Entry<T extends FormEntryConstraint> extends Input {
+interface Entry<T extends FormEntryConstraint, K extends FormValueType>
+    extends Omit<Input, 'value'> {
+    value?: K;
     elementType?: 'input' | 'text-field' | 'selection' | 'image';
-    options?: GetInputOptions<FormValueType, T>;
+    options?: GetInputOptions<K, T>;
 }
 
-export type Entries<T extends FormEntryConstraint> = { [K in keyof T]: Entry<T> };
+export type Entries<T extends FormEntryConstraint> = {
+    [K in keyof T]: Entry<T, T[K] extends File ? T[K] | null : T[K]>;
+};
 
-export type SubmissionResult<T extends FormEntryConstraint> = { [K in keyof T]: T[K] };
+export type SubmissionResult<T extends FormEntryConstraint> = {
+    [K in keyof T]: T[K] extends File ? T[K] | null : T[K];
+};
 
 export function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>): Inputs<T> {
     const inputs: Record<string, unknown> = {};
     Object.keys(entries).forEach((key) => {
-        const entry = entries[key];
+        const entry = entries[key] as Entry<FormEntryConstraint, FormValueType>;
+        let value: FormValueType = entry.value || '';
         let options = { ...entry.options };
-        let value = entry.value || '';
         if (
             entry.elementType === 'selection' &&
             typeof entry.selectOptions !== 'undefined' &&
@@ -68,6 +74,7 @@ export function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>
             options = { isValid: true };
         }
         if (entry.elementType === 'image') {
+            value = null;
             options = { isValid: entry.noValidation === true, isTouched: true };
         }
         inputs[key] = getInput(value, options);
@@ -123,7 +130,7 @@ export function onImageInvalidUpload<T extends FormEntryConstraint>(
                 ...formState.inputs,
                 [id]: {
                     ...formState.inputs[id],
-                    value: '',
+                    value: null,
                     isValid: noValidation,
                     isTouched: true
                 }
