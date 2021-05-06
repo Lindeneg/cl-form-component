@@ -41,7 +41,7 @@ export function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>
     const inputs: Record<string, unknown> = {};
     Object.keys(entries).forEach((key) => {
         const entry = entries[key] as Entry<FormEntryConstraint, FormValueType>;
-        let value = entry.value || '';
+        let value: FormValueType = entry.value || '';
         let options = { ...entry.options };
         if (
             entry.elementType === 'selection' &&
@@ -74,6 +74,7 @@ export function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>
             options = { isValid: true };
         }
         if (entry.elementType === 'image') {
+            value = null;
             options = { isValid: entry.noValidation === true, isTouched: true };
         }
         inputs[key] = getInput(value, options);
@@ -129,7 +130,7 @@ export function onImageInvalidUpload<T extends FormEntryConstraint>(
                 ...formState.inputs,
                 [id]: {
                     ...formState.inputs[id],
-                    value: '',
+                    value: null,
                     isValid: noValidation,
                     isTouched: true
                 }
