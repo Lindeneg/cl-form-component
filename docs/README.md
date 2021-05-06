@@ -1,3 +1,9 @@
+### Stories
+
+Play around with some stories using StoryBook [here](https://lindeneg.github.io/cl-form-component).
+
+---
+
 ### Form
 
 Props for the `<Form />` component exposed by this library.
@@ -21,8 +27,9 @@ Props for the `<Form />` component exposed by this library.
 `Entries` is an object where inputs and associated options can be defined.
 
 ```ts
-type FormValueType                          = string | number | boolean | string[] | File;
+type FormValueType                          = string | number | boolean | string[] | File | null | undefined;
 type FormEntryConstraint                    = { [key: string]: FormValueType };
+
 type Entries<T extends FormEntryConstraint> = { [K in keyof T]: Entry<T> };
 ```
 
@@ -32,22 +39,22 @@ A bare-minimum `Entries` object with a single `Entry` without any options, could
 
 However, that isn't much fun. Lets look at some options!
 
-There are four `Entry` elements supported `'input' | 'text-field' | 'selection' | 'image'` and while they each offer their own options, they all have the following in common:
+There are four `Entry` elements supported `'input' | 'text-field' | 'selection' | 'image'` and while they each offer [their own options](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#specific-options), they all have the following in common:
 
 ##### `Entry`
 
-| name              | type                                                                              | required | default     | note                                                                                                        |
-| ----------------- | --------------------------------------------------------------------------------- | -------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
-| `elementType`     | `'input' \| 'text-field' \| 'selection' \| 'image'`                               | `No`     | `'input'`   | -                                                                                                           |
-| `value`           | `FormValueType`                                                                   | `No`     | `''`        | initial value of the element                                                                                |
-| `options`         | [GetInputOptions](https://github.com/Lindeneg/cl-use-form-state#getinput-options) | `No`     | `undefined` | validation options from [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state#getinput-options) |
-| `label`           | `string`                                                                          | `No`     | `undefined` | text label appearing over the input                                                                         |
-| `placeholder`     | `string`                                                                          | `No`     | `undefined` | text appearing in the input (if applicable)                                                                 |
-| `helperText`      | `string`                                                                          | `No`     | `undefined` | text appearing under the input                                                                              |
-| `validFeedback`   | `string`                                                                          | `No`     | `undefined` | text appearing when input is valid                                                                          |
-| `invalidFeedback` | `string`                                                                          | `No`     | `undefined` | text appearing when input is invalid                                                                        |
-| `width`           | `string`                                                                          | `No`     | `undefined` | width of the input, such as '20%'                                                                           |
-| `noValidation`    | `boolean`                                                                         | `No`     | `false`     | turn off all validation for input                                                                           |
+| name              | type                                                                                              | required | default     | note                                                                                                        |
+| ----------------- | ------------------------------------------------------------------------------------------------- | -------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
+| `elementType`     | `'input' \| 'text-field' \| 'selection' \| 'image'`                                               | `No`     | `'input'`   | -                                                                                                           |
+| `value`           | `T[K]`                                                                                            | `No`     | -           | initial value of the element                                                                                |
+| `options`         | [Validation](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#validation) | `No`     | `undefined` | validation options from [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state#getinput-options) |
+| `label`           | `string`                                                                                          | `No`     | `undefined` | text label appearing over the input                                                                         |
+| `placeholder`     | `string`                                                                                          | `No`     | `undefined` | text appearing in the input (if applicable)                                                                 |
+| `helperText`      | `string`                                                                                          | `No`     | `undefined` | text appearing under the input                                                                              |
+| `validFeedback`   | `string`                                                                                          | `No`     | `undefined` | text appearing when input is valid                                                                          |
+| `invalidFeedback` | `string`                                                                                          | `No`     | `undefined` | text appearing when input is invalid                                                                        |
+| `width`           | `string`                                                                                          | `No`     | `undefined` | width of the input, such as '20%'                                                                           |
+| `noValidation`    | `boolean`                                                                                         | `No`     | `false`     | turn off all validation for input                                                                           |
 
 So now we can add, say, a label, a placeholder and some validation to that username entry:
 
@@ -68,6 +75,61 @@ So now we can add, say, a label, a placeholder and some validation to that usern
 }
 
 ```
+
+---
+
+### Validation
+
+The `options` object can take the following validation properties
+
+| name                     | type                                                   | default     | note                                                          |
+| ------------------------ | ------------------------------------------------------ | ----------- | ------------------------------------------------------------- |
+| `isValid`                | `boolean`                                              | `false`     | initial validity state                                        |
+| `isTouched`              | `boolean`                                              | `false`     | initial focus state                                           |
+| `minLength`              | `number`                                               | `undefined` | -                                                             |
+| `maxLength`              | `number`                                               | `undefined` | -                                                             |
+| `minValue`               | `number`                                               | `undefined` | -                                                             |
+| `maxValue`               | `number`                                               | `undefined` | -                                                             |
+| `minUppercaseCharacters` | `number`                                               | `undefined` | -                                                             |
+| `maxUppercaseCharacters` | `number`                                               | `undefined` | -                                                             |
+| `minNumericalSymbols`    | `number`                                               | `undefined` | -                                                             |
+| `maxNumericalSymbols`    | `number`                                               | `undefined` | -                                                             |
+| `customRule`             | `(value: InputValueType, state: FormState) => boolean` | `undefined` | can be used to create any validation rule for any input field |
+| `connectFields`          | `string[]`                                             | `undefined` | can be used to make fields dependant upon each other          |
+
+An example for a `customRule` could be to check that a `passwordConfirmation` field is equal to a `password` field.
+
+```tsx
+type Auth = {
+    password: string;
+    passwordConfirmation: string;
+};
+
+<Form<Auth>
+    entries={{
+        password: {
+            label: 'Password',
+            placeholder: 'Enter password here..',
+            options: {
+                minLength: 6,
+                connectFields: ['passwordConfirmation']
+            }
+        },
+        passwordConfirmation: {
+            label: 'Confirm Password',
+            placeholder: 'Confirm password here..',
+            invalidFeedback: 'Please confirm a valid password',
+            options: {
+                customRule: (value, state) =>
+                    state.inputs.password.isValid && state.inputs.password.value === value
+            }
+        }
+    }}
+    onSubmit={(result) => console.log(result)}
+/>
+```
+
+The `connectFields` option forces the validation of connected fields to run each time the parent field changes. In this case the validation for `passwordConfirmation` runs each time the valu`password` changes.
 
 ---
 
@@ -99,7 +161,7 @@ Here's a overview of the individual options each `elementType` takes.
 | name           | type      | required | default     | note                                         |
 | -------------- | --------- | -------- | ----------- | -------------------------------------------- |
 | `value`        | `string`  | `Yes`    | -           | `value` attribute of the html option element |
-| `displayValue` | `string`  | `No`     | `undefined` | actual text displayed on the option element  |
+| `displayValue` | `string`  | `No`     | `undefined` | actual text displayed on the option element, if undefined the text shown is `value` capitalized  |
 | `selected`     | `boolean` | `No`     | `false`     | if true, the element is preselected.         |
 
 Thus, `selectOptions` can be created either by using an array of strings or by using a `FormSelectOption` object, which allows for the above options.
@@ -163,21 +225,29 @@ Suppose we want `Content` as the default selected value. Then we can make use of
 
 ### onSubmit
 
-`onSubmit` is called when a form satisfying the given validation option is submitted. It **requires** one argument, lets call it `result`.
+`onSubmit` is called when a form satisfying the given validation option is submitted.
 
 ```ts
-type SubmissionResult<T> = { [K in keyof T]: T[K] };
-type OnSubmit = (result: SubmissionResult<T>) => void;
+type FormValueType                                   = string | number | boolean | string[] | File | null | undefined;
+type FormEntryConstraint                             = { [key: string]: FormValueType };
+
+type SubmissionResult<T extends FormEntryConstraint> = { [K in keyof T]: T[K] };
+
+type OnSubmit                                        = (result: SubmissionResult<T>) => void;
 ```
+
+It **requires** one argument, lets call it `result`.
 
 The `result` argument is an object with input names as keys and its value at submission time as value.
 
-In other words, if the above `Entries` object is what is used to create the `<Form />` then `result` will be something like this:
+In other words, if the above `Entries` object is what is used to create the `<Form />`, and we assume some user input action, then
 
-`{username: 'someValue', mood: 'Content'}`
+```js
+onSubmit(result) => console.log(result);
+```
 
----
+will output this:
 
-### Stories
-
-Play around with some stories using StoryBook [here](https://lindeneg.github.io/cl-form-component).
+```js
+{username: 'someValue', mood: 'Content'}
+```
