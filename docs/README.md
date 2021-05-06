@@ -108,6 +108,7 @@ type Auth = {
 <Form<Auth>
     entries={{
         password: {
+            type: 'password',
             label: 'Password',
             placeholder: 'Enter password here..',
             options: {
@@ -116,6 +117,7 @@ type Auth = {
             }
         },
         passwordConfirmation: {
+            type: 'password',
             label: 'Confirm Password',
             placeholder: 'Confirm password here..',
             invalidFeedback: 'Please confirm a valid password',
