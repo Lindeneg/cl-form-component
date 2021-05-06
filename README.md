@@ -4,16 +4,6 @@
 
 ---
 
-### Dev Todo
-
--   Allow customization of all form and input styles with a `CSSProperties` object or a `className` string.
-
--   Allow the use of `<optgroup />` in a `selection` element.
-
--   Restyle the default styles used by `<select />` element if `multipleSelect` is `true`.
-
----
-
 The form is _Bootstrap-esque_ styled and offers two variants by default, `dark` and `light`.
 
 There are no dependencies besides [React](https://reactjs.org/) and [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state), the former is a [peer dependency](https://yarnpkg.com/configuration/manifest/#peerDependencies) and the latter is used for state management and input validation.
