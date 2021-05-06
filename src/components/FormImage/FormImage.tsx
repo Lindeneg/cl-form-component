@@ -79,7 +79,7 @@ const FormImage: FC<FormImageProps> = (props) => {
                         marginBottom: '1rem'
                     }}
                 >
-                    {preview && (
+                    {props.value ? (
                         <img
                             style={{
                                 width: '100%',
@@ -89,8 +89,7 @@ const FormImage: FC<FormImageProps> = (props) => {
                             src={preview}
                             alt="Preview"
                         />
-                    )}
-                    {!preview && (
+                    ) : (
                         <p style={{ ...getVariantChild(negateVariant(variant), 'tc') }}>
                             {props.imagePreviewText || 'Please choose an image.'}
                         </p>
