@@ -6,15 +6,16 @@ import { FormSelectMetaProps } from '../FormSelect/FormSelect';
 import { SharedBaseInputProps } from '../SharedElement';
 interface Input extends SharedBaseInputProps, FormInputMetaProps, FormImageMetaProps, FormSelectMetaProps, FormTextFieldMetaProps {
 }
-interface Entry<T extends FormEntryConstraint> extends Input {
+interface Entry<T extends FormEntryConstraint, K extends FormValueType> extends Omit<Input, 'value'> {
+    value?: K;
     elementType?: 'input' | 'text-field' | 'selection' | 'image';
-    options?: GetInputOptions<FormValueType, T>;
+    options?: GetInputOptions<K, T>;
 }
 export declare type Entries<T extends FormEntryConstraint> = {
-    [K in keyof T]: Entry<T>;
+    [K in keyof T]: Entry<T, T[K] extends File ? T[K] | null : T[K]>;
 };
 export declare type SubmissionResult<T extends FormEntryConstraint> = {
-    [K in keyof T]: T[K];
+    [K in keyof T]: T[K] extends File ? T[K] | null : T[K];
 };
 export declare function getFormInputs<T extends FormEntryConstraint>(entries: Entries<T>): Inputs<T>;
 export declare function getSubmissionResult<T extends FormEntryConstraint>(inputs: Inputs<T>): SubmissionResult<T>;
