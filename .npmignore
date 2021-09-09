@@ -1,0 +1,15 @@
+__mocks__
+docs
+node_modules
+.eslintcache
+storybook-static
+story
+temp
+.eslintrc.json
+.gitignore
+jest-setup.ts
+jest.config.js
+rollup.config.js
+tsconfig.json
+tsconfig.prod.json
+yarn.lock
