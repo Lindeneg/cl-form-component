@@ -1,3 +1,2 @@
-//export { default as Form } from "./components/Form/Form";
-//export type { FormProps } from "./components/Form/Form";
-export {};
+export { Input } from "./components/elements/input/Input";
+export type { InputProps } from "./components/elements/input/Input";
