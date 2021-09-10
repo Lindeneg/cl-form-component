@@ -6,11 +6,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { Shared, SharedProps } from "../Shared";
 
 export type InputProps = SharedProps & {
-  onInputChange: React.ChangeEventHandler;
-  onInputBlur: React.FocusEventHandler;
+  onInputChange: React.ChangeEventHandler<HTMLInputElement>;
+  onInputBlur: React.FocusEventHandler<HTMLInputElement>;
   type?: string;
-  multiline?: boolean;
-  rows?: number;
   placeholder?: string;
   muiInputProps?: Omit<
     MaterialInputProps,
@@ -18,8 +16,6 @@ export type InputProps = SharedProps & {
     | "type"
     | "placeholder"
     | "value"
-    | "multiline"
-    | "rows"
     | "onChange"
     | "onBlur"
     | "endAdornment"
@@ -32,9 +28,7 @@ export function Input({
   value,
   onInputChange,
   onInputBlur,
-  rows,
   muiInputProps = {},
-  multiline = false,
   type = "text",
   placeholder = "",
   adornment = {
@@ -51,8 +45,6 @@ export function Input({
         type={type}
         placeholder={placeholder}
         value={value}
-        multiline={multiline}
-        rows={rows}
         onChange={onInputChange}
         onBlur={onInputBlur}
         endAdornment={
