@@ -1,5 +1,7 @@
 import React from "react";
 import { useForm, countNumbers, countUpperCase } from "cl-use-form-state";
+import TimelapseIcon from "@material-ui/icons/Timelapse";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { Input, InputProps } from "./Input";
@@ -9,11 +11,35 @@ export default {
   component: Input,
 };
 
-export const EmptySingleLineInput = ({ label = "", ...args }: InputProps) => {
-  return <Input {...args} id="story-single-input-el" label={label} />;
+export const EmptySingleLineInput = ({
+  id = "story-single-input-el",
+  ...args
+}: InputProps) => {
+  return <Input {...args} id={id} />;
+};
+
+export const EmptyMultiLineInput = ({
+  id = "story-multi-input-el",
+  label = "Multi Line Input",
+  helperEl = "Please enter something..",
+  fullWidth = true,
+  multiline = true,
+  ...args
+}: InputProps) => {
+  return (
+    <Input
+      {...args}
+      label={label}
+      id={id}
+      helperEl={helperEl}
+      multiline={multiline}
+      fullWidth={fullWidth}
+    />
+  );
 };
 
 export function SingleInputWithValidation() {
+  // using library: 'cl-use-form-state'
   const { inputs, onChangeHandler, onTouchHandler } = useForm<{
     fullName: string;
   }>((input) => ({
@@ -36,14 +62,17 @@ export function SingleInputWithValidation() {
   );
 }
 
-export function MultipleInputsWithValidationAndAdornment() {
+export function InputsWithValidationAndAdornment() {
+  // using library: 'cl-use-form-state'
   const { inputs, updateInput, onChangeHandler, onTouchHandler } = useForm<{
     username: string;
+    description: string;
     password: { entry: string; visible: boolean };
     passwordConfirm: { entry: string; visible: boolean };
     age: number | null;
   }>((input) => ({
     username: input("", { minLength: 2, maxNumericalSymbols: 0 }),
+    description: input("", { maxLength: 128 }),
     password: input(
       { entry: "", visible: false },
       {
@@ -70,15 +99,15 @@ export function MultipleInputsWithValidationAndAdornment() {
     ),
     age: input(null, { isValid: true }),
   }));
-  const { username, password, passwordConfirm, age } = inputs;
+  const { username, password, passwordConfirm, age, description } = inputs;
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ display: "inline-flex", justifyContent: "space-evenly" }}>
         <Input
           id="username"
           label="Username"
-          helperEl="please enter a username"
-          errorEl="2-52 characters | no numbers"
+          helperEl="choose a personal username"
+          errorEl="2-52 characters with no numbers"
           validEl={<span style={{ color: "#0ca60c" }}>Looks good!</span>}
           valid={username.isValid}
           error={username.isTouched && !username.isValid}
@@ -86,6 +115,9 @@ export function MultipleInputsWithValidationAndAdornment() {
           onInputChange={onChangeHandler}
           onInputBlur={onTouchHandler}
           wrapperStyle={{ width: "15rem" }}
+          adornment={{
+            start: <AccountCircleIcon />,
+          }}
           required
         />
         <Input
@@ -97,6 +129,9 @@ export function MultipleInputsWithValidationAndAdornment() {
           onInputChange={onChangeHandler}
           onInputBlur={onTouchHandler}
           wrapperStyle={{ width: "15rem" }}
+          adornment={{
+            start: <TimelapseIcon />,
+          }}
         />
       </div>
       <div
@@ -110,8 +145,8 @@ export function MultipleInputsWithValidationAndAdornment() {
           id="password"
           label="Password"
           type={password.value.visible ? "text" : "password"}
-          helperEl="please enter a password"
-          errorEl="8-32 characters, min. one number and one uppercase"
+          helperEl="choose a secure password"
+          errorEl="8-32 characters, with at least one number and uppercase character"
           validEl={<span style={{ color: "#0ca60c" }}>Looks good!</span>}
           valid={password.isValid}
           error={password.isTouched && !password.isValid}
@@ -184,6 +219,30 @@ export function MultipleInputsWithValidationAndAdornment() {
               />
             ),
           }}
+          required
+        />
+      </div>
+      <div
+        style={{
+          display: "inline-flex",
+          justifyContent: "space-evenly",
+          marginTop: "2rem",
+        }}
+      >
+        <Input
+          id="description"
+          label="Description"
+          helperEl="please enter a description"
+          errorEl="description is required and cannot exceed 128 characters.."
+          validEl={<span style={{ color: "#0ca60c" }}>Looks good!</span>}
+          wrapperStyle={{ width: "40rem" }}
+          valid={description.isValid}
+          error={description.isTouched && !description.isValid}
+          value={description.value}
+          onInputBlur={onTouchHandler}
+          onInputChange={onChangeHandler}
+          fullWidth
+          multiline
           required
         />
       </div>
