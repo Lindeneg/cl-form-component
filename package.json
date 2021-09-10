@@ -1,9 +1,8 @@
 {
   "name": "cl-form-component",
   "description": "React Form component with built-in validation.",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "main": "lib/index.js",
-  "module": "lib/index.esm.js",
   "homepage": "http://lindeneg.github.io/cl-form-component",
   "author": {
     "name": "Christian Lindeneg",
@@ -30,6 +29,7 @@
   "devDependencies": {
     "@babel/core": "^7.13.16",
     "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
     "@storybook/addon-actions": "^6.3.8",
