@@ -1,7 +1,9 @@
 import React from "react";
-import MaterialInput from "@material-ui/core/Input";
+import MaterialInput, {
+  InputProps as MaterialInputProps,
+} from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import { Shared, SharedProps } from "./Shared";
+import { Shared, SharedProps } from "../Shared";
 
 export type InputProps = SharedProps & {
   onInputChange: React.ChangeEventHandler;
@@ -10,6 +12,19 @@ export type InputProps = SharedProps & {
   multiline?: boolean;
   rows?: number;
   placeholder?: string;
+  muiInputProps?: Omit<
+    MaterialInputProps,
+    | "id"
+    | "type"
+    | "placeholder"
+    | "value"
+    | "multiline"
+    | "rows"
+    | "onChange"
+    | "onBlur"
+    | "endAdornment"
+    | "startAdornment"
+  >;
 };
 
 export function Input({
@@ -18,6 +33,7 @@ export function Input({
   onInputChange,
   onInputBlur,
   rows,
+  muiInputProps = {},
   multiline = false,
   type = "text",
   placeholder = "",
@@ -30,6 +46,7 @@ export function Input({
   return (
     <Shared {...sharedProps}>
       <MaterialInput
+        {...muiInputProps}
         id={id}
         type={type}
         placeholder={placeholder}

@@ -4,6 +4,7 @@ import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
 import FormHelperText, {
   FormHelperTextProps,
 } from "@material-ui/core/FormHelperText";
+import { CSSProperties } from "@material-ui/styles";
 
 export type SharedProps = {
   id: string;
@@ -11,51 +12,60 @@ export type SharedProps = {
   value: unknown;
   required?: boolean;
   disabled?: boolean;
+  valid?: boolean;
   error?: boolean;
-  errorText?: string;
-  helperText?: string;
+  validEl?: string | React.ReactElement;
+  errorEl?: string | React.ReactElement;
+  helperEl?: string | React.ReactElement;
   wrapperClass?: string;
+  wrapperStyle?: CSSProperties;
   adornment?: {
-    start?: React.ReactNode | null;
-    end?: React.ReactNode | null;
+    start?: React.ReactElement | null;
+    end?: React.ReactElement | null;
   };
-  formControlOpts?: Omit<FormControlProps, "disabled" | "error" | "required">;
-  inputLabelOpts?: Omit<InputLabelProps, "htmlFor">;
-  formHelperTextOpts?: FormHelperTextProps;
+  muiFormControlOpts?: Omit<
+    FormControlProps,
+    "disabled" | "error" | "required"
+  >;
+  muiInputLabelOpts?: Omit<InputLabelProps, "htmlFor">;
+  muiFormHelperTextOpts?: FormHelperTextProps;
 };
 
 type SharedMetaProps = Omit<SharedProps, "id" | "value" | "adornment"> & {
-  children: React.ReactNode;
+  children: React.ReactElement;
 };
 
 export function Shared({
   label,
   children,
+  validEl,
+  errorEl,
+  helperEl = "",
   required = false,
   disabled = false,
+  valid = false,
   error = false,
-  errorText = "",
-  helperText = "",
+  wrapperStyle = {},
   wrapperClass = "",
   ...rest
 }: SharedMetaProps) {
   return (
-    <div className={wrapperClass}>
+    <div className={wrapperClass} style={wrapperStyle}>
       <FormControl
-        {...rest.formControlOpts}
+        {...rest.muiFormControlOpts}
         disabled={disabled}
         error={error}
         required={required}
       >
         <InputLabel
-          {...rest.inputLabelOpts}
-          htmlFor={`component-${label.toLowerCase()}`}
+          {...rest.muiInputLabelOpts}
+          htmlFor={`cl-form-component-${label}`}
         >
           {label}
         </InputLabel>
         {children}
-        <FormHelperText {...rest.formHelperTextOpts}>
-          {error && errorText ? errorText : helperText}
+        <FormHelperText {...rest.muiFormHelperTextOpts}>
+          {error && errorEl ? errorEl : valid && validEl ? validEl : helperEl}
         </FormHelperText>
       </FormControl>
     </div>
