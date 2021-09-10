@@ -1,5 +1,7 @@
 import React from "react";
-import { useForm } from "cl-use-form-state";
+import { useForm, countNumbers, countUpperCase } from "cl-use-form-state";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { Input, InputProps } from "./Input";
 
 export default {
@@ -7,7 +9,7 @@ export default {
   component: Input,
 };
 
-export const EmptyInput = ({ label = "", ...args }: InputProps) => {
+export const EmptySingleLineInput = ({ label = "", ...args }: InputProps) => {
   return <Input {...args} id="story-single-input-el" label={label} />;
 };
 
@@ -34,32 +36,43 @@ export function SingleInputWithValidation() {
   );
 }
 
-export function MultipleInputsWithValidation() {
-  const { inputs, onChangeHandler, onTouchHandler } = useForm<{
+export function MultipleInputsWithValidationAndAdornment() {
+  const { inputs, updateInput, onChangeHandler, onTouchHandler } = useForm<{
     username: string;
-    password: string;
-    passwordConfirm: string;
+    password: { entry: string; visible: boolean };
+    passwordConfirm: { entry: string; visible: boolean };
     age: number | null;
   }>((input) => ({
     username: input("", { minLength: 2, maxNumericalSymbols: 0 }),
-    password: input("", {
-      minLength: 8,
-      maxLength: 32,
-      minNumericalSymbols: 1,
-      minUppercaseCharacters: 1,
-      connectFields: ["passwordConfirm"],
-    }),
-    passwordConfirm: input("", {
-      customRule: (value, state) => {
-        const { password } = state.inputs;
-        return password.isValid && password.value === value;
-      },
-    }),
+    password: input(
+      { entry: "", visible: false },
+      {
+        customRule: ({ entry }) => {
+          return (
+            entry.length >= 8 &&
+            entry.length <= 32 &&
+            countNumbers(entry) >= 1 &&
+            countUpperCase(entry) >= 1
+          );
+        },
+        connectFields: ["passwordConfirm"],
+      }
+    ),
+    passwordConfirm: input(
+      { entry: "", visible: false },
+      {
+        customRule: ({ entry }, { inputs }) => {
+          return (
+            inputs.password.isValid && inputs.password.value.entry === entry
+          );
+        },
+      }
+    ),
     age: input(null, { isValid: true }),
   }));
   const { username, password, passwordConfirm, age } = inputs;
   return (
-    <form style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ display: "inline-flex", justifyContent: "space-evenly" }}>
         <Input
           id="username"
@@ -96,40 +109,84 @@ export function MultipleInputsWithValidation() {
         <Input
           id="password"
           label="Password"
-          type="password"
+          type={password.value.visible ? "text" : "password"}
           helperEl="please enter a password"
           errorEl="8-32 characters, min. one number and one uppercase"
           validEl={<span style={{ color: "#0ca60c" }}>Looks good!</span>}
           valid={password.isValid}
           error={password.isTouched && !password.isValid}
-          value={password.value}
-          onInputChange={onChangeHandler}
+          value={password.value.entry}
+          onInputChange={(e) =>
+            updateInput("password", {
+              ...password.value,
+              entry: e.target.value,
+            })
+          }
           onInputBlur={onTouchHandler}
           wrapperStyle={{ width: "15rem" }}
           adornment={{
-            end: <span>show</span>,
+            start: password.value.visible ? (
+              <VisibilityOffIcon
+                onClick={() =>
+                  updateInput("password", { ...password.value, visible: false })
+                }
+                style={{ cursor: "pointer" }}
+              />
+            ) : (
+              <VisibilityIcon
+                onClick={() =>
+                  updateInput("password", { ...password.value, visible: true })
+                }
+                style={{ cursor: "pointer" }}
+              />
+            ),
           }}
           required
         />
         <Input
           id="passwordConfirm"
           label="Confirm password"
-          type="password"
+          type={passwordConfirm.value.visible ? "text" : "password"}
           helperEl="please confirm your password"
           errorEl="passwords does not match.."
           validEl={<span style={{ color: "#0ca60c" }}>Looks good!</span>}
           valid={passwordConfirm.isValid}
           error={passwordConfirm.isTouched && !passwordConfirm.isValid}
-          value={passwordConfirm.value}
-          onInputChange={onChangeHandler}
+          value={passwordConfirm.value.entry}
+          onInputChange={(e) =>
+            updateInput("passwordConfirm", {
+              ...passwordConfirm.value,
+              entry: e.target.value,
+            })
+          }
           onInputBlur={onTouchHandler}
           wrapperStyle={{ width: "15rem" }}
           adornment={{
-            end: <span>show</span>,
+            start: passwordConfirm.value.visible ? (
+              <VisibilityOffIcon
+                onClick={() =>
+                  updateInput("passwordConfirm", {
+                    ...passwordConfirm.value,
+                    visible: false,
+                  })
+                }
+                style={{ cursor: "pointer" }}
+              />
+            ) : (
+              <VisibilityIcon
+                onClick={() =>
+                  updateInput("passwordConfirm", {
+                    ...passwordConfirm.value,
+                    visible: true,
+                  })
+                }
+                style={{ cursor: "pointer" }}
+              />
+            ),
           }}
           required
         />
       </div>
-    </form>
+    </div>
   );
 }
