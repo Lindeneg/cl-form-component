@@ -6,11 +6,27 @@ import FormHelperText, {
 } from "@material-ui/core/FormHelperText";
 import { CSSProperties } from "@material-ui/styles";
 
+type ExcludeKeys = "id" | "value" | "onChange" | "onBlur" | "fullWidth";
+
+export type Adornment = {
+  start?: React.ReactElement | null;
+  end?: React.ReactElement | null;
+};
+
+export type ExcludeProps<
+  K extends Record<string, any>,
+  T extends keyof K,
+  M extends "omit" | "partial" = "omit"
+> = M extends "partial"
+  ? Partial<Omit<K, ExcludeKeys | T>>
+  : Omit<K, ExcludeKeys | T>;
+
 export type SharedProps = {
   id: string;
-  label: string;
   value: unknown;
+  label?: string;
   required?: boolean;
+  fullWidth?: boolean;
   disabled?: boolean;
   valid?: boolean;
   error?: boolean;
@@ -19,15 +35,11 @@ export type SharedProps = {
   helperEl?: string | React.ReactElement;
   wrapperClass?: string;
   wrapperStyle?: CSSProperties;
-  adornment?: {
-    start?: React.ReactElement | null;
-    end?: React.ReactElement | null;
-  };
   muiFormControlOpts?: Omit<
     FormControlProps,
-    "disabled" | "error" | "required"
+    "disabled" | "error" | "required" | "fullWidth"
   >;
-  muiInputLabelOpts?: Omit<InputLabelProps, "htmlFor">;
+  muiInputLabelOpts?: InputLabelProps;
   muiFormHelperTextOpts?: FormHelperTextProps;
 };
 
@@ -36,10 +48,11 @@ type SharedMetaProps = Omit<SharedProps, "id" | "value" | "adornment"> & {
 };
 
 export function Shared({
-  label,
   children,
   validEl,
   errorEl,
+  fullWidth,
+  label = "",
   helperEl = "",
   required = false,
   disabled = false,
@@ -53,13 +66,14 @@ export function Shared({
     <div className={wrapperClass} style={wrapperStyle}>
       <FormControl
         {...rest.muiFormControlOpts}
+        fullWidth={fullWidth}
         disabled={disabled}
         error={error}
         required={required}
       >
         <InputLabel
-          {...rest.muiInputLabelOpts}
           htmlFor={`cl-form-component-${label}`}
+          {...rest.muiInputLabelOpts}
         >
           {label}
         </InputLabel>
