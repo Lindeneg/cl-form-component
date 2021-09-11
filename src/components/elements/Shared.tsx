@@ -43,7 +43,7 @@ export type SharedProps = {
   muiFormHelperTextOpts?: FormHelperTextProps;
 };
 
-type SharedMetaProps = Omit<SharedProps, "id" | "value" | "adornment"> & {
+type SharedMetaProps = Omit<SharedProps, "id" | "value"> & {
   children: React.ReactElement;
 };
 

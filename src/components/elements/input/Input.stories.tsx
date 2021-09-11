@@ -18,10 +18,10 @@ export const EmptySingleLineInput = ({
   return <Input {...args} id={id} />;
 };
 
-export const EmptyMultiLineInput = ({
+export const EmptyOutlinedMultiLineInput = ({
   id = "story-multi-input-el",
-  label = "Multi Line Input",
   helperEl = "Please enter something..",
+  element = "outlined",
   fullWidth = true,
   multiline = true,
   ...args
@@ -29,7 +29,7 @@ export const EmptyMultiLineInput = ({
   return (
     <Input
       {...args}
-      label={label}
+      element={element}
       id={id}
       helperEl={helperEl}
       multiline={multiline}
@@ -38,7 +38,7 @@ export const EmptyMultiLineInput = ({
   );
 };
 
-export function SingleInputWithValidation() {
+export function SingleInputWithValidationAndAdornment() {
   // using library: 'cl-use-form-state'
   const { inputs, onChangeHandler, onTouchHandler } = useForm<{
     fullName: string;
@@ -57,6 +57,9 @@ export function SingleInputWithValidation() {
       value={inputs.fullName.value}
       onInputChange={onChangeHandler}
       onInputBlur={onTouchHandler}
+      adornment={{
+        start: <AccountCircleIcon />,
+      }}
       required
     />
   );
