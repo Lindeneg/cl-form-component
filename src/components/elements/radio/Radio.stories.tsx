@@ -7,11 +7,6 @@ export default {
   component: Radio,
 };
 
-export function SingleRadios({ ...args }: RadioProps) {
-  const { inputs, updateInput } = useForm<{
-    checkbox: boolean;
-  }>((cl) => ({
-    checkbox: cl(false, { isValid: true }),
-  }));
-  return <Radio {...args} />;
+export function SingleRadios({ data = [], ...args }: RadioProps) {
+  return <Radio {...args} data={data} />;
 }
