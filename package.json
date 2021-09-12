@@ -2,7 +2,11 @@
   "name": "cl-form-component",
   "description": "React Form component with built-in validation.",
   "version": "2.0.0",
-  "main": "lib/index.js",
+  "main": "lib/index.esm.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "homepage": "http://lindeneg.github.io/cl-form-component",
   "author": {
     "name": "Christian Lindeneg",

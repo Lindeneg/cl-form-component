@@ -1,12 +1,9 @@
 __mocks__
 docs
 node_modules
-.eslintcache
 .storybook
 storybook-static
 story
-temp
-.eslintrc.json
 jest-setup.ts
 jest.config.js
 rollup.config.js

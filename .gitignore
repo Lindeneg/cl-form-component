@@ -1,7 +1,5 @@
 node_modules
-.eslintcache
 storybook-static
 story
-temp
 lib
 __mocks__
