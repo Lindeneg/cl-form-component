@@ -1,5 +1,8 @@
 import React from "react";
 import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
+import FormControlLabel, {
+  FormControlLabelProps,
+} from "@material-ui/core/FormControlLabel";
 import FormHelperText, {
   FormHelperTextProps,
 } from "@material-ui/core/FormHelperText";
@@ -14,7 +17,7 @@ export type Adornment = {
 
 export type ExcludeProps<
   K extends Record<string, any>,
-  T extends keyof K,
+  T extends keyof K = "",
   M extends "omit" | "partial" = "partial"
 > = M extends "partial"
   ? Partial<Omit<K, ExcludeKeys | T>>
@@ -77,5 +80,31 @@ export function Shared({
         </FormHelperText>
       </FormControl>
     </div>
+  );
+}
+
+export type MetaSharedProps<T extends Record<string, any>> = {
+  name: string;
+  control: React.ReactElement<T>;
+  value?: unknown;
+  muiFormControlLabelOpts?: ExcludeProps<
+    FormControlLabelProps,
+    "control" | "label" | "value"
+  >;
+};
+
+export function MetaShared<T extends Record<string, any>>({
+  name,
+  control,
+  value,
+  muiFormControlLabelOpts = {},
+}: MetaSharedProps<T>) {
+  return (
+    <FormControlLabel
+      {...muiFormControlLabelOpts}
+      value={value}
+      control={control}
+      label={name}
+    />
   );
 }
