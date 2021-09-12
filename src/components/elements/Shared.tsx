@@ -53,12 +53,12 @@ export function Shared({
   labelEl,
   fullWidth,
   helperEl = "",
+  wrapperClass = "",
   required = false,
   disabled = false,
   valid = false,
   error = false,
   wrapperStyle = {},
-  wrapperClass = "",
   ...rest
 }: SharedMetaProps) {
   return (
