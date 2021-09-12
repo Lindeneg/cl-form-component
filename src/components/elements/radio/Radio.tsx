@@ -5,16 +5,15 @@ import MaterialRadio, {
 import RadioGroup, { RadioGroupProps } from "@material-ui/core/RadioGroup";
 import { FormControlLabelProps } from "@material-ui/core/FormControlLabel";
 import FormLabel, { FormLabelProps } from "@material-ui/core/FormLabel";
+import { capitalize } from "@material-ui/core";
 import { Shared, SharedProps, ExcludeProps, MetaShared } from "../Shared";
 
 type MetaRadioProps = Pick<SharedProps, "id" | "value"> & {
-  name: string;
-  label: string;
   muiFormControlLabelOpts?: ExcludeProps<
     FormControlLabelProps,
     "control" | "label"
   >;
-  muiRadioOpts?: MaterialRadioProps;
+  muiRadioOpts?: ExcludeProps<MaterialRadioProps>;
 };
 
 export interface RadioProps extends Omit<SharedProps, "id" | "value"> {
@@ -44,11 +43,12 @@ export function Radio({
         value={selectedValue}
         onChange={onRadioChange}
       >
-        {data.map(({ muiRadioOpts, ...rest }, idx) => (
+        {data.map(({ id, value, muiRadioOpts, ...rest }, idx) => (
           <MetaShared<MetaRadioProps>
             {...rest}
             key={idx}
-            control={<MaterialRadio {...muiRadioOpts} />}
+            name={capitalize(id)}
+            control={<MaterialRadio {...muiRadioOpts} id={id} value={value} />}
           />
         ))}
       </RadioGroup>
