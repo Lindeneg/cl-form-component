@@ -19,7 +19,6 @@ type MetaCheckboxProps = MetaSharedPick & {
   >;
   muiCheckboxOpts?: ExcludeProps<MaterialCheckboxProps, "checked" | "name">;
 };
-type Data = MetaCheckboxProps;
 
 function MetaCheckbox({
   id,
@@ -47,7 +46,7 @@ function MetaCheckbox({
 }
 
 export interface CheckboxProps extends Omit<SharedProps, "id" | "value"> {
-  data: Data | Data[];
+  data: MetaCheckboxProps | MetaCheckboxProps[];
   muiFormLabelOpts?: ExcludeProps<FormLabelProps, "children">;
   muiFormGroupOpts?: FormGroupProps;
 }
