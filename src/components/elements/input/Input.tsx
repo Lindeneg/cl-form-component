@@ -8,6 +8,7 @@ import MaterialFilledInput, {
 import MaterialOutlinedInput, {
   OutlinedInputProps as MaterialOutlinedInputProps,
 } from "@material-ui/core/OutlinedInput";
+import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Shared, SharedProps, ExcludeProps, Adornment } from "../Shared";
 
@@ -20,11 +21,27 @@ export interface InputProps<T extends InputElement = InputElement>
   onInputBlur: React.FocusEventHandler<InputHTMLElementConstraint>;
   element?: T;
   adornment?: Adornment;
-  type?: string;
+  type?:
+    | "text"
+    | "number"
+    | "password"
+    | "color"
+    | "date"
+    | "datetime-local"
+    | "file"
+    | "month"
+    | "week"
+    | "range"
+    | "search"
+    | "tel"
+    | "time"
+    | "url"
+    | "email";
   multiline?: boolean;
   minRows?: string | number;
   maxRows?: string | number;
   placeholder?: string;
+  muiInputLabelOpts?: InputLabelProps;
   muiInputProps?: ExcludeProps<
     T extends "filled"
       ? MaterialFilledInputProps
@@ -55,6 +72,8 @@ export function Input<T extends InputElement>({
   element,
   fullWidth = false,
   muiInputProps = {},
+  muiInputLabelOpts = {},
+  label = "",
   type = "text",
   multiline = false,
   adornment = {
@@ -95,7 +114,18 @@ export function Input<T extends InputElement>({
       break;
   }
   return (
-    <Shared {...sharedProps} fullWidth={fullWidth}>
+    <Shared
+      {...sharedProps}
+      labelEl={
+        <InputLabel
+          htmlFor={`cl-form-component-${label}`}
+          {...muiInputLabelOpts}
+        >
+          {label}
+        </InputLabel>
+      }
+      fullWidth={fullWidth}
+    >
       {jsx}
     </Shared>
   );

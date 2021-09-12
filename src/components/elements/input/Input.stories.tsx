@@ -11,21 +11,21 @@ export default {
   component: Input,
 };
 
-export const EmptySingleLineInput = ({
+export function EmptySingleLineInput({
   id = "story-single-input-el",
   ...args
-}: InputProps) => {
+}: InputProps) {
   return <Input {...args} id={id} />;
-};
+}
 
-export const EmptyOutlinedMultiLineInput = ({
+export function EmptyOutlinedMultiLineInput({
   id = "story-multi-input-el",
   helperEl = "Please enter something..",
   element = "outlined",
   fullWidth = true,
   multiline = true,
   ...args
-}: InputProps) => {
+}: InputProps) {
   return (
     <Input
       {...args}
@@ -36,14 +36,14 @@ export const EmptyOutlinedMultiLineInput = ({
       fullWidth={fullWidth}
     />
   );
-};
+}
 
 export function SingleInputWithValidationAndAdornment() {
   // using library: 'cl-use-form-state'
   const { inputs, onChangeHandler, onTouchHandler } = useForm<{
     fullName: string;
-  }>((input) => ({
-    fullName: input("", { minLength: 2, maxNumericalSymbols: 0 }),
+  }>((cl) => ({
+    fullName: cl("", { minLength: 2, maxNumericalSymbols: 0 }),
   }));
   return (
     <Input
@@ -73,10 +73,10 @@ export function InputsWithValidationAndAdornment() {
     password: { entry: string; visible: boolean };
     passwordConfirm: { entry: string; visible: boolean };
     age: number | null;
-  }>((input) => ({
-    username: input("", { minLength: 2, maxNumericalSymbols: 0 }),
-    description: input("", { maxLength: 128 }),
-    password: input(
+  }>((cl) => ({
+    username: cl("", { minLength: 2, maxNumericalSymbols: 0 }),
+    description: cl("", { maxLength: 128 }),
+    password: cl(
       { entry: "", visible: false },
       {
         customRule: ({ entry }) => {
@@ -90,7 +90,7 @@ export function InputsWithValidationAndAdornment() {
         connectFields: ["passwordConfirm"],
       }
     ),
-    passwordConfirm: input(
+    passwordConfirm: cl(
       { entry: "", visible: false },
       {
         customRule: ({ entry }, { inputs }) => {
@@ -100,7 +100,7 @@ export function InputsWithValidationAndAdornment() {
         },
       }
     ),
-    age: input(null, { isValid: true }),
+    age: cl(null, { isValid: true }),
   }));
   const { username, password, passwordConfirm, age, description } = inputs;
   return (
@@ -186,7 +186,7 @@ export function InputsWithValidationAndAdornment() {
           label="Confirm password"
           type={passwordConfirm.value.visible ? "text" : "password"}
           helperEl="please confirm your password"
-          errorEl="passwords does not match.."
+          errorEl="no valid passwords match.."
           validEl={<span style={{ color: "#0ca60c" }}>Looks good!</span>}
           valid={passwordConfirm.isValid}
           error={passwordConfirm.isTouched && !passwordConfirm.isValid}
