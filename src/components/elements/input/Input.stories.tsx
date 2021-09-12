@@ -38,7 +38,14 @@ export function EmptyOutlinedMultiLineInput({
   );
 }
 
-export function SingleInputWithValidationAndAdornment() {
+export function SingleInputWithValidationAndAdornment({
+  id = "fullName",
+  label = "Full name",
+  helperEl = "please enter your full name",
+  errorEl = "between 2-52 characters with no numbers",
+  validEl = <span style={{ color: "#0ca60c" }}>Looks good!</span>,
+  ...args
+}: InputProps) {
   // using library: 'cl-use-form-state'
   const { inputs, onChangeHandler, onTouchHandler } = useForm<{
     fullName: string;
@@ -47,11 +54,12 @@ export function SingleInputWithValidationAndAdornment() {
   }));
   return (
     <Input
-      id="fullName"
-      label="Full name"
-      helperEl="please enter your full name"
-      errorEl="between 2-52 characters with no numbers"
-      validEl={<span style={{ color: "#0ca60c" }}>Looks good!</span>}
+      {...args}
+      id={id}
+      label={label}
+      helperEl={helperEl}
+      errorEl={errorEl}
+      validEl={validEl}
       valid={inputs.fullName.isValid}
       error={inputs.fullName.isTouched && !inputs.fullName.isValid}
       value={inputs.fullName.value}
