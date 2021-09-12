@@ -1,6 +1,5 @@
 import React from "react";
 import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
-import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
 import FormHelperText, {
   FormHelperTextProps,
 } from "@material-ui/core/FormHelperText";
@@ -16,7 +15,7 @@ export type Adornment = {
 export type ExcludeProps<
   K extends Record<string, any>,
   T extends keyof K,
-  M extends "omit" | "partial" = "omit"
+  M extends "omit" | "partial" = "partial"
 > = M extends "partial"
   ? Partial<Omit<K, ExcludeKeys | T>>
   : Omit<K, ExcludeKeys | T>;
@@ -39,11 +38,11 @@ export type SharedProps = {
     FormControlProps,
     "disabled" | "error" | "required" | "fullWidth"
   >;
-  muiInputLabelOpts?: InputLabelProps;
   muiFormHelperTextOpts?: FormHelperTextProps;
 };
 
-type SharedMetaProps = Omit<SharedProps, "id" | "value"> & {
+type SharedMetaProps = Omit<SharedProps, "id" | "value" | "label"> & {
+  labelEl: React.ReactElement;
   children: React.ReactElement;
 };
 
@@ -51,8 +50,8 @@ export function Shared({
   children,
   validEl,
   errorEl,
+  labelEl,
   fullWidth,
-  label = "",
   helperEl = "",
   required = false,
   disabled = false,
@@ -71,12 +70,7 @@ export function Shared({
         error={error}
         required={required}
       >
-        <InputLabel
-          htmlFor={`cl-form-component-${label}`}
-          {...rest.muiInputLabelOpts}
-        >
-          {label}
-        </InputLabel>
+        {labelEl}
         {children}
         <FormHelperText {...rest.muiFormHelperTextOpts}>
           {error && errorEl ? errorEl : valid && validEl ? validEl : helperEl}
