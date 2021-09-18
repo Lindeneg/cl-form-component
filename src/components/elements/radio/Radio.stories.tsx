@@ -7,14 +7,19 @@ export default {
   component: Radio,
 };
 
-export function SingleRadio({ ...args }: RadioProps) {
+export function DuoRadios({ ...args }: RadioProps) {
   return (
     <Radio
       {...args}
       data={[
         {
-          id: "radio",
-          value: "someValue",
+          id: "some-option",
+          value: "some-value",
+        },
+        {
+          id: "another-option",
+          name: "Another option",
+          value: "another-value",
         },
       ]}
     />

@@ -1,19 +1,15 @@
 import React from "react";
-import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
+import FormControl, { FormControlProps } from "@mui/material/FormControl";
+import { InputLabelProps } from "@mui/material/InputLabel";
+import { FormLabelProps } from "@mui/material/FormLabel";
 import FormControlLabel, {
   FormControlLabelProps,
-} from "@material-ui/core/FormControlLabel";
+} from "@mui/material/FormControlLabel";
 import FormHelperText, {
   FormHelperTextProps,
-} from "@material-ui/core/FormHelperText";
-import { CSSProperties } from "@material-ui/styles";
+} from "@mui/material/FormHelperText";
 
 type ExcludeKeys = "id" | "value" | "onChange" | "onBlur" | "fullWidth";
-
-export type Adornment = {
-  start?: React.ReactElement | null;
-  end?: React.ReactElement | null;
-};
 
 export type ExcludeProps<
   K extends Record<string, any>,
@@ -22,6 +18,19 @@ export type ExcludeProps<
 > = M extends "partial"
   ? Partial<Omit<K, ExcludeKeys | T>>
   : Omit<K, ExcludeKeys | T>;
+
+export type AdornmentOpts = {
+  start?: React.ReactElement | null;
+  end?: React.ReactElement | null;
+};
+
+export interface InputLabelOpts {
+  muiInputLabelOpts?: ExcludeProps<InputLabelProps>;
+}
+
+export interface FormLabelOpts {
+  muiFormLabelOpts?: ExcludeProps<FormLabelProps, "children">;
+}
 
 export type SharedProps = {
   id: string;
@@ -36,7 +45,7 @@ export type SharedProps = {
   errorEl?: string | React.ReactElement;
   helperEl?: string | React.ReactElement;
   wrapperClass?: string;
-  wrapperStyle?: CSSProperties;
+  wrapperStyle?: React.CSSProperties;
   muiFormControlOpts?: Omit<
     FormControlProps,
     "disabled" | "error" | "required" | "fullWidth"

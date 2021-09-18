@@ -1,11 +1,17 @@
 import React from "react";
 import MaterialCheckbox, {
   CheckboxProps as MaterialCheckboxProps,
-} from "@material-ui/core/Checkbox";
-import { Shared, SharedProps, ExcludeProps, MetaShared } from "../Shared";
-import FormLabel, { FormLabelProps } from "@material-ui/core/FormLabel";
-import FormGroup, { FormGroupProps } from "@material-ui/core/FormGroup";
-import { FormControlLabelProps } from "@material-ui/core/FormControlLabel";
+} from "@mui/material/Checkbox";
+import FormLabel from "@mui/material/FormLabel";
+import FormGroup, { FormGroupProps } from "@mui/material/FormGroup";
+import { FormControlLabelProps } from "@mui/material/FormControlLabel";
+import {
+  Shared,
+  SharedProps,
+  ExcludeProps,
+  MetaShared,
+  FormLabelOpts,
+} from "../Shared";
 
 type MetaCheckboxProps = Pick<SharedProps, "id" | "value"> & {
   name: string;
@@ -17,9 +23,10 @@ type MetaCheckboxProps = Pick<SharedProps, "id" | "value"> & {
   muiCheckboxOpts?: ExcludeProps<MaterialCheckboxProps, "checked" | "name">;
 };
 
-export interface CheckboxProps extends Omit<SharedProps, "id" | "value"> {
+export interface CheckboxProps
+  extends Omit<SharedProps, "id" | "value">,
+    FormLabelOpts {
   data: MetaCheckboxProps | MetaCheckboxProps[];
-  muiFormLabelOpts?: ExcludeProps<FormLabelProps, "children">;
   muiFormGroupOpts?: FormGroupProps;
 }
 
@@ -38,21 +45,21 @@ export function Checkbox({
       <FormGroup {...muiFormGroupOpts}>
         {(() => {
           if (Array.isArray(data)) {
-            return data.map(
-              (
-                { name, muiFormControlLabelOpts, value, ...sharedProps },
-                idx
-              ) => (
-                <MetaShared
-                  key={idx}
-                  name={name}
-                  muiFormControlLabelOpts={muiFormControlLabelOpts}
-                  control={
-                    <MaterialCheckbox {...sharedProps} checked={!!value} />
-                  }
-                />
-              )
-            );
+            return data.map((entry, idx) => (
+              <MetaShared
+                key={idx}
+                name={entry.name}
+                muiFormControlLabelOpts={entry.muiFormControlLabelOpts}
+                control={
+                  <MaterialCheckbox
+                    {...entry.muiCheckboxOpts}
+                    id={entry.id}
+                    onChange={entry.onCheckboxChange}
+                    checked={!!entry.value}
+                  />
+                }
+              />
+            ));
           }
           return (
             <MetaShared<MetaCheckboxProps>

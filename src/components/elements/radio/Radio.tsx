@@ -1,14 +1,21 @@
 import React from "react";
 import MaterialRadio, {
   RadioProps as MaterialRadioProps,
-} from "@material-ui/core/Radio";
-import RadioGroup, { RadioGroupProps } from "@material-ui/core/RadioGroup";
-import { FormControlLabelProps } from "@material-ui/core/FormControlLabel";
-import FormLabel, { FormLabelProps } from "@material-ui/core/FormLabel";
-import { capitalize } from "@material-ui/core";
-import { Shared, SharedProps, ExcludeProps, MetaShared } from "../Shared";
+} from "@mui/material/Radio";
+import RadioGroup, { RadioGroupProps } from "@mui/material/RadioGroup";
+import { FormControlLabelProps } from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import { capitalize } from "@mui/material";
+import {
+  Shared,
+  SharedProps,
+  ExcludeProps,
+  MetaShared,
+  FormLabelOpts,
+} from "../Shared";
 
 type MetaRadioProps = Pick<SharedProps, "id" | "value"> & {
+  name?: string;
   muiFormControlLabelOpts?: ExcludeProps<
     FormControlLabelProps,
     "control" | "label"
@@ -16,11 +23,12 @@ type MetaRadioProps = Pick<SharedProps, "id" | "value"> & {
   muiRadioOpts?: ExcludeProps<MaterialRadioProps>;
 };
 
-export interface RadioProps extends Omit<SharedProps, "id" | "value"> {
+export interface RadioProps
+  extends Omit<SharedProps, "id" | "value">,
+    FormLabelOpts {
   data: MetaRadioProps[];
   onRadioChange: React.ChangeEventHandler<HTMLInputElement>;
   selectedValue: unknown;
-  muiFormLabelOpts?: ExcludeProps<FormLabelProps, "children">;
   muiRadioGroupOpts?: ExcludeProps<RadioGroupProps>;
 }
 
@@ -43,11 +51,11 @@ export function Radio({
         value={selectedValue}
         onChange={onRadioChange}
       >
-        {data.map(({ id, value, muiRadioOpts, ...rest }, idx) => (
+        {data.map(({ id, value, name, muiRadioOpts, ...rest }, idx) => (
           <MetaShared<MetaRadioProps>
             {...rest}
             key={idx}
-            name={capitalize(id)}
+            name={name ? name : capitalize(id)}
             control={<MaterialRadio {...muiRadioOpts} id={id} value={value} />}
           />
         ))}

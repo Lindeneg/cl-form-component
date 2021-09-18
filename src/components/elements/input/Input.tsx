@@ -1,26 +1,33 @@
 import React from "react";
 import MaterialInput, {
   InputProps as MaterialInputProps,
-} from "@material-ui/core/Input";
+} from "@mui/material/Input";
 import MaterialFilledInput, {
   FilledInputProps as MaterialFilledInputProps,
-} from "@material-ui/core/FilledInput";
+} from "@mui/material/FilledInput";
 import MaterialOutlinedInput, {
   OutlinedInputProps as MaterialOutlinedInputProps,
-} from "@material-ui/core/OutlinedInput";
-import InputLabel, { InputLabelProps } from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import { Shared, SharedProps, ExcludeProps, Adornment } from "../Shared";
+} from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import {
+  Shared,
+  SharedProps,
+  ExcludeProps,
+  InputLabelOpts,
+  AdornmentOpts,
+} from "../Shared";
 
 export type InputHTMLElementConstraint = HTMLInputElement | HTMLTextAreaElement;
 export type InputElement = "standard" | "filled" | "outlined";
 
 export interface InputProps<T extends InputElement = InputElement>
-  extends SharedProps {
+  extends SharedProps,
+    InputLabelOpts {
   onInputChange: React.ChangeEventHandler<InputHTMLElementConstraint>;
-  onInputBlur: React.FocusEventHandler<InputHTMLElementConstraint>;
+  onInputBlur?: React.FocusEventHandler<InputHTMLElementConstraint>;
   element?: T;
-  adornment?: Adornment;
+  adornment?: AdornmentOpts;
   type?:
     | "text"
     | "number"
@@ -41,7 +48,6 @@ export interface InputProps<T extends InputElement = InputElement>
   minRows?: string | number;
   maxRows?: string | number;
   placeholder?: string;
-  muiInputLabelOpts?: InputLabelProps;
   muiInputProps?: ExcludeProps<
     T extends "filled"
       ? MaterialFilledInputProps
@@ -56,8 +62,7 @@ export interface InputProps<T extends InputElement = InputElement>
     | "startAdornment"
     | "multiline"
     | "minRows"
-    | "maxRows",
-    "partial"
+    | "maxRows"
   >;
 }
 
@@ -116,14 +121,7 @@ export function Input<T extends InputElement>({
   return (
     <Shared
       {...sharedProps}
-      labelEl={
-        <InputLabel
-          htmlFor={`cl-form-component-${label}`}
-          {...muiInputLabelOpts}
-        >
-          {label}
-        </InputLabel>
-      }
+      labelEl={<InputLabel {...muiInputLabelOpts}>{label}</InputLabel>}
       fullWidth={fullWidth}
     >
       {jsx}

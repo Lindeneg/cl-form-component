@@ -194,7 +194,6 @@ export function InputsWithValidationAndAdornment() {
           label="Confirm password"
           type={passwordConfirm.value.visible ? "text" : "password"}
           helperEl="please confirm your password"
-          errorEl="no valid passwords match.."
           validEl={<span style={{ color: "#0ca60c" }}>Looks good!</span>}
           valid={passwordConfirm.isValid}
           error={passwordConfirm.isTouched && !passwordConfirm.isValid}
