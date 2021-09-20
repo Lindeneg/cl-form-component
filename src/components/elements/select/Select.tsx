@@ -1,13 +1,13 @@
 import React from "react";
-import Input from "@mui/material/Input";
-import Checkbox from "@mui/material/Checkbox";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
+import Input from "@material-ui/core/Input";
+import Checkbox from "@material-ui/core/Checkbox";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import MaterialSelect, {
   SelectProps as MaterialSelectProps,
-} from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
+} from "@material-ui/core/Select";
+import Chip from "@material-ui/core/Chip";
 import { Shared, SharedProps, InputLabelOpts, ExcludeProps } from "../Shared";
 
 export type SelectTypeConstraint = "menu" | "tag" | "chip" | "native";
@@ -16,7 +16,7 @@ export type SelectTypeConstraint = "menu" | "tag" | "chip" | "native";
 export type SelectEntryProps<T extends SelectTypeConstraint> =
   | {
       name: string;
-      muiMenuItemProps?: ExcludeProps<MenuItemProps>;
+      muiMenuItemProps?: ExcludeProps<MenuItemProps, "button">;
     }
   | string;
 
@@ -48,7 +48,7 @@ export function Select<T extends SelectTypeConstraint>({
   label = "",
   containerStyle = { margin: "1px", minWidth: "120px", maxWidth: "320px" },
   muiInputLabelOpts = {},
-  muiSelectOpts = {},
+  muiSelectOpts = { MenuProps: { getContentAnchorEl: null } },
   ...sharedProps
 }: SelectProps<T>) {
   const labelId = `${id}-label`;
@@ -92,7 +92,6 @@ export function Select<T extends SelectTypeConstraint>({
         input={<Input id={id} />}
         multiple={multiple}
         native={type === "native"}
-        MenuProps={{ anchorEl: null }}
         renderValue={
           type === "tag" || type === "chip" ? renderValue : undefined
         }

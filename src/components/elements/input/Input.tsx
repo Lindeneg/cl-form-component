@@ -1,15 +1,15 @@
 import React from "react";
 import MaterialInput, {
   InputProps as MaterialInputProps,
-} from "@mui/material/Input";
+} from "@material-ui/core/Input";
 import MaterialFilledInput, {
   FilledInputProps as MaterialFilledInputProps,
-} from "@mui/material/FilledInput";
+} from "@material-ui/core/FilledInput";
 import MaterialOutlinedInput, {
   OutlinedInputProps as MaterialOutlinedInputProps,
-} from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
+} from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import {
   Shared,
   SharedProps,

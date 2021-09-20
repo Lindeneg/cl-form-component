@@ -1,10 +1,10 @@
 import React from "react";
 import MaterialCheckbox, {
   CheckboxProps as MaterialCheckboxProps,
-} from "@mui/material/Checkbox";
-import FormLabel from "@mui/material/FormLabel";
-import FormGroup, { FormGroupProps } from "@mui/material/FormGroup";
-import { FormControlLabelProps } from "@mui/material/FormControlLabel";
+} from "@material-ui/core/Checkbox";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormGroup, { FormGroupProps } from "@material-ui/core/FormGroup";
+import { FormControlLabelProps } from "@material-ui/core/FormControlLabel";
 import {
   Shared,
   SharedProps,

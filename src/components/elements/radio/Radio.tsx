@@ -1,11 +1,11 @@
 import React from "react";
 import MaterialRadio, {
   RadioProps as MaterialRadioProps,
-} from "@mui/material/Radio";
-import RadioGroup, { RadioGroupProps } from "@mui/material/RadioGroup";
-import { FormControlLabelProps } from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
-import { capitalize } from "@mui/material";
+} from "@material-ui/core/Radio";
+import RadioGroup, { RadioGroupProps } from "@material-ui/core/RadioGroup";
+import { FormControlLabelProps } from "@material-ui/core/FormControlLabel";
+import FormLabel from "@material-ui/core/FormLabel";
+import { capitalize } from "@material-ui/core";
 import {
   Shared,
   SharedProps,

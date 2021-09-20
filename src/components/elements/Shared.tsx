@@ -1,13 +1,13 @@
 import React from "react";
-import FormControl, { FormControlProps } from "@mui/material/FormControl";
-import { InputLabelProps } from "@mui/material/InputLabel";
-import { FormLabelProps } from "@mui/material/FormLabel";
+import FormControl, { FormControlProps } from "@material-ui/core/FormControl";
+import { InputLabelProps } from "@material-ui/core/InputLabel";
+import { FormLabelProps } from "@material-ui/core/FormLabel";
 import FormControlLabel, {
   FormControlLabelProps,
-} from "@mui/material/FormControlLabel";
+} from "@material-ui/core/FormControlLabel";
 import FormHelperText, {
   FormHelperTextProps,
-} from "@mui/material/FormHelperText";
+} from "@material-ui/core/FormHelperText";
 
 type ExcludeKeys = "id" | "value" | "onChange" | "onBlur" | "fullWidth";
 
