@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "cl-use-form-state";
-import { Radio, RadioProps } from "./Radio";
+import { Radio, RadioProps } from ".";
 
 export default {
   title: "Radio ",

@@ -1,10 +1,16 @@
 import React from "react";
 import { useForm } from "cl-use-form-state";
-import { Checkbox, CheckboxProps } from "./Checkbox";
+import { Checkbox, CheckboxProps } from ".";
 
 export default {
   title: "Checkbox",
   component: Checkbox,
+  argTypes: {
+    validEl: { control: "none" },
+    errorEl: { control: "none" },
+    helperEl: { control: "none" },
+    data: { control: "none" },
+  },
 };
 
 export function SingleCheckbox({ ...args }: CheckboxProps) {
@@ -19,7 +25,7 @@ export function SingleCheckbox({ ...args }: CheckboxProps) {
       data={{
         id: "checkbox",
         name: "Check",
-        value: inputs.checkbox.value,
+        checked: inputs.checkbox.value,
         onCheckboxChange: () => updateInput("checkbox", !inputs.checkbox.value),
       }}
     />
@@ -38,7 +44,7 @@ export function SingleCheckboxWithLabelAndHelper() {
       data={{
         id: "private",
         name: "Private",
-        value: inputs.private.value,
+        checked: inputs.private.value,
         onCheckboxChange: () => updateInput("private", !inputs.private.value),
       }}
     />
@@ -68,7 +74,7 @@ export function MultipleCheckboxesWithLabelAndHelper() {
           {
             id: "ferrari",
             name: "Ferrari",
-            value: inputs.ferrari.value,
+            checked: inputs.ferrari.value,
             onCheckboxChange: () =>
               updateInput("ferrari", !inputs.ferrari.value),
             muiCheckboxOpts: { disabled: !!inputs.mercedes.value },
@@ -76,7 +82,7 @@ export function MultipleCheckboxesWithLabelAndHelper() {
           {
             id: "mercedes",
             name: "Mercedes",
-            value: inputs.mercedes.value,
+            checked: inputs.mercedes.value,
             onCheckboxChange: () =>
               updateInput("mercedes", !inputs.mercedes.value),
             muiCheckboxOpts: { disabled: !!inputs.ferrari.value },
@@ -95,13 +101,13 @@ export function MultipleCheckboxesWithLabelAndHelper() {
           {
             id: "private",
             name: "Bill Evans",
-            value: inputs.bill.value,
+            checked: inputs.bill.value,
             onCheckboxChange: () => updateInput("bill", !inputs.bill.value),
           },
           {
             id: "billie",
             name: "Billie Holiday",
-            value: inputs.billie.value,
+            checked: inputs.billie.value,
             onCheckboxChange: () => updateInput("billie", !inputs.billie.value),
           },
         ]}

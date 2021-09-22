@@ -4,11 +4,21 @@ import TimelapseIcon from "@material-ui/icons/Timelapse";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import { Input, InputProps } from "./Input";
+import { Input, InputProps } from ".";
 
 export default {
   title: "Input",
   component: Input,
+  argTypes: {
+    id: { control: "none" },
+    value: { control: "none" },
+    onInputChange: { control: "none" },
+    onInputBlur: { control: "none" },
+    adornment: { control: "none" },
+    validEl: { control: "none" },
+    errorEl: { control: "none" },
+    helperEl: { control: "none" },
+  },
 };
 
 export function EmptySingleLineInput({
