@@ -1,4 +1,5 @@
 __mocks__
+src
 docs
 node_modules
 .storybook
