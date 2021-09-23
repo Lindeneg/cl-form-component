@@ -7,7 +7,7 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { Input, InputProps } from ".";
 
 export default {
-  title: "Input",
+  title: "Components/Input",
   component: Input,
   argTypes: {
     id: { control: "none" },

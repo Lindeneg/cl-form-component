@@ -3,7 +3,7 @@ import { useForm } from "cl-use-form-state";
 import { Select, SelectProps } from ".";
 
 export default {
-  title: "Select ",
+  title: "Components/Select ",
   component: Select,
   argTypes: {
     type: { control: "none" },

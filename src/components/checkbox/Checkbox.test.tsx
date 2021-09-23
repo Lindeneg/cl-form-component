@@ -15,7 +15,7 @@ function getCheckbox(
         id: "some-id",
         checked: state,
         name: "some-name",
-        onCheckboxChange: onChange,
+        onChange: onChange,
       }}
     />
   );

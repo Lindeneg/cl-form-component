@@ -3,7 +3,7 @@ import { useForm } from "cl-use-form-state";
 import { Radio, RadioProps } from ".";
 
 export default {
-  title: "Radio ",
+  title: "Components/Radio ",
   component: Radio,
 };
 
