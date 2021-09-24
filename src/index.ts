@@ -1,10 +1,10 @@
-export { Form } from "./components/form";
 export { Input } from "./components/input";
 export { Radio } from "./components/radio";
 export { Checkbox } from "./components/checkbox";
 export { Switch } from "./components/switch";
 export { Select } from "./components/select";
 export { Shared, MetaShared } from "./components/Shared";
+export { Form } from "./components/form";
 export type { InputProps } from "./components/input";
 export type { RadioProps, MetaRadioProps } from "./components/radio";
 export type { CheckboxProps, MetaCheckboxProps } from "./components/checkbox";
@@ -20,3 +20,10 @@ export type {
   SharedProps,
   MetaSharedProps,
 } from "./components/Shared";
+export type {
+  FormProps,
+  FormElement,
+  FormElementConstraint,
+  FormElementProps,
+  FormEntryConstraint,
+} from "./components/form";
