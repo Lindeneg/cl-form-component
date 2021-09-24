@@ -22,6 +22,10 @@ export type FormEntryConstraint = {
   [key: string]: { type: InputValueType; element: FormElementConstraint };
 };
 
+export type MappedEntry<T extends FormEntryConstraint> = {
+  [K in keyof T]: T[K]["type"];
+};
+
 export type FormElementProps<T extends FormElementConstraint> = Omit<
   T extends "checkbox"
     ? CheckboxProps
@@ -34,7 +38,7 @@ export type FormElementProps<T extends FormElementConstraint> = Omit<
     : T extends "switch"
     ? SwitchProps
     : Record<string, unknown>,
-  "value"
+  "id" | "value"
 >;
 
 export type FormElement<
@@ -42,20 +46,19 @@ export type FormElement<
   K extends InputValueType,
   P extends FormElementConstraint
 > = {
-  value: K;
   options?: GetInputOptions<K, T>;
 } & FormElementProps<P>;
 
 export type Entries<T extends FormEntryConstraint> = {
   [K in keyof T]: FormElement<
-    { T: T[K]["type"] },
-    T[K]["type"],
-    T[K]["element"]
+    MappedEntry<T>, // i.e { key: string }
+    T[K]["type"], // i.e string
+    T[K]["element"] // i.e checkbox
   >;
 };
 
 export type FormProps<T extends FormEntryConstraint> = {
-  data: Entries<T>;
+  entries: Entries<T>;
   wrapperClass?: string;
   wrapperStyle?: React.CSSProperties;
   formClass?: string;
@@ -68,6 +71,7 @@ export function Form<T extends FormEntryConstraint>({
   formClass,
   formStyle,
 }: FormProps<T>) {
+  //const { inputs } = useForm<MappedEntry<T>>((cl) => ({}));
   return (
     <div className={wrapperClass} style={wrapperStyle}>
       <form className={formClass} style={formStyle}></form>
