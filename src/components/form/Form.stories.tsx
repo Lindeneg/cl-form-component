@@ -7,21 +7,27 @@ export default {
 };
 
 type Inputs = {
-  test: {
-    type: number;
-    element: "input";
-  };
+  username: string;
+  car: string;
 };
 
-export function SimpleForm({ ...args }: {}) {
+export function SimpleForm({ ...args }: FormProps<Inputs>) {
   return (
     <Form<Inputs>
       {...args}
+      onSubmit2={(e, i) => console.log(e, i)}
       entries={{
-        test: {
-          helperEl: <p>Hello</p>,
-          options: { customRule: (v, s) => s.inputs.test.value === v },
-          onInputChange: () => null,
+        username: {
+          initialValue: "",
+          input: {
+            label: "Hello",
+          },
+        },
+        car: {
+          initialValue: "",
+          checkbox: {
+            data: [{ name: "Something" }, { name: "Else" }],
+          },
         },
       }}
     />
