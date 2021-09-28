@@ -9,7 +9,9 @@ import FormHelperText, {
   FormHelperTextProps,
 } from "@material-ui/core/FormHelperText";
 
-type ExcludeKeys = "id" | "value" | "onChange" | "onBlur" | "fullWidth";
+type ExcludeKeys = "id" | "value" | "onChange" | "onBlur";
+
+export type ExcludeSharedKeys = "valid" | "error";
 
 export type ExcludeProps<
   K extends Record<string, any>,
