@@ -10,6 +10,7 @@ import {
   Shared,
   SharedProps,
   ExcludeProps,
+  ExcludeSharedKeys,
   MetaShared,
   FormLabelOpts,
 } from "../Shared";
@@ -31,6 +32,11 @@ export interface RadioProps
   selectedValue: unknown;
   muiRadioGroupOpts?: ExcludeProps<RadioGroupProps>;
 }
+
+export type RadioFormProps = Omit<
+  RadioProps,
+  "onRadioChange" | "selectedValue" | "data" | ExcludeSharedKeys
+> & { data: Array<Omit<MetaRadioProps, "id" | "value">> };
 
 export function Radio({
   data,

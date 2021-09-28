@@ -9,6 +9,7 @@ import {
   Shared,
   SharedProps,
   ExcludeProps,
+  ExcludeSharedKeys,
   MetaShared,
   FormLabelOpts,
 } from "../Shared";
@@ -26,12 +27,25 @@ export type MetaCheckboxProps = Pick<SharedProps, "id"> & {
   controlComponent?: React.ReactElement;
 };
 
+type ExcludedMetaProps = ExcludeProps<
+  MetaCheckboxProps,
+  "checked" | "id",
+  "omit"
+>;
+
 export interface CheckboxProps
   extends Omit<SharedProps, "id" | "value">,
     FormLabelOpts {
   data: MetaCheckboxProps | MetaCheckboxProps[];
   muiFormGroupOpts?: FormGroupProps;
 }
+
+export type CheckboxFormProps = Omit<
+  CheckboxProps,
+  "data" | ExcludeSharedKeys
+> & {
+  data: ExcludedMetaProps | ExcludedMetaProps[];
+};
 
 export function Checkbox({
   data,

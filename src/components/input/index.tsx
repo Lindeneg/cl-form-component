@@ -14,6 +14,7 @@ import {
   Shared,
   SharedProps,
   ExcludeProps,
+  ExcludeSharedKeys,
   InputLabelOpts,
   AdornmentOpts,
 } from "../Shared";
@@ -65,6 +66,12 @@ export interface InputProps<T extends InputElement = InputElement>
     | "maxRows"
   >;
 }
+
+export type InputFormProps = ExcludeProps<
+  InputProps,
+  "onInputChange" | "onInputBlur" | ExcludeSharedKeys,
+  "omit"
+>;
 
 export function Input<T extends InputElement>({
   id,
