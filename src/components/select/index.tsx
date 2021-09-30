@@ -72,7 +72,7 @@ export interface SelectProps<
 }
 
 export type SelectFormProps = ExcludeProps<
-  SelectProps<SelectTypeConstraint, unknown>,
+  SelectProps<SelectTypeConstraint, string | number>,
   "onSelect" | "onSelectBlur" | "multiple" | "type" | ExcludeSharedKeys,
   "omit"
 > & { type?: SelectTypeConstraint };

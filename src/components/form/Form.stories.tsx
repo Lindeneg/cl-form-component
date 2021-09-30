@@ -18,11 +18,18 @@ export function SimpleForm({ ...args }: FormProps<Inputs>) {
   return (
     <Form<Inputs>
       {...args}
-      submit={{ on: (e, i) => console.log(e, i) }}
+      header="Form Header"
+      wrapperStyle={{ display: "flex", flexDirection: "column" }}
+      onFormSubmit={(e, i) => console.log(e, i)}
       entries={{
         username: {
           initialValue: "",
+          validation: {
+            minLength: 1,
+          },
           input: {
+            wrapperStyle: { marginTop: "1rem", marginBottom: "2rem" },
+            fullWidth: true,
             label: "Input Form",
             helperEl: "Write something",
           },
@@ -34,6 +41,7 @@ export function SimpleForm({ ...args }: FormProps<Inputs>) {
               "Ferrari",
               { name: "Porsche", muiCheckboxOpts: { disabled: true } },
             ],
+            wrapperStyle: { display: "inline-flex", justifyContent: "center" },
             label: "Checkbox Form",
             helperEl: "Pick a car",
           },
@@ -57,6 +65,7 @@ export function SimpleForm({ ...args }: FormProps<Inputs>) {
         age: {
           initialValue: [],
           select: {
+            type: "chip",
             data: [20, 21, 22, { val: "2" }],
           },
         },
