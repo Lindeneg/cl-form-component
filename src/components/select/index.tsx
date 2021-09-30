@@ -1,4 +1,5 @@
 import React from "react";
+import { InputValueType } from "cl-use-form-state";
 import Input from "@material-ui/core/Input";
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -10,14 +11,24 @@ import MaterialSelect, {
   SelectProps as MaterialSelectProps,
 } from "@material-ui/core/Select";
 import Chip, { ChipProps } from "@material-ui/core/Chip";
-import { Shared, SharedProps, InputLabelOpts, ExcludeProps } from "../Shared";
+import {
+  Shared,
+  SharedProps,
+  InputLabelOpts,
+  ExcludeProps,
+  ExcludeSharedKeys,
+} from "../Shared";
 
 type MetaMenu = { muiMenuItemProps?: ExcludeProps<MenuItemProps, "button"> };
 
 export type SelectTypeConstraint = "menu" | "tag" | "chip" | "native";
 
-export type SelectMetaEntry<T extends SelectTypeConstraint> = {
-  name: string;
+export type SelectMetaEntry<
+  T extends SelectTypeConstraint,
+  K extends InputValueType
+> = {
+  val: K;
+  text?: string;
 } & (T extends "tag"
   ? {
       muiCheckboxOpts?: ExcludeProps<CheckboxProps, "checked">;
@@ -32,17 +43,20 @@ export type SelectMetaEntry<T extends SelectTypeConstraint> = {
         "value"
       >;
     }
-  : {});
+  : Record<string, unknown>);
 
-export type SelectEntryProps<T extends SelectTypeConstraint> =
-  | SelectMetaEntry<T>
-  | string;
+export type SelectEntryProps<
+  T extends SelectTypeConstraint,
+  K extends InputValueType
+> = SelectMetaEntry<T, K> | K;
 
-export interface SelectProps<T extends SelectTypeConstraint>
-  extends SharedProps,
+export interface SelectProps<
+  T extends SelectTypeConstraint,
+  K extends InputValueType
+> extends SharedProps,
     InputLabelOpts {
   type: T;
-  data: SelectEntryProps<T>[];
+  data: SelectEntryProps<T, K>[];
   onSelect: (
     event: React.ChangeEvent<{ value: unknown; name?: string }>
   ) => void;
@@ -57,7 +71,16 @@ export interface SelectProps<T extends SelectTypeConstraint>
   muiChipOpts?: ExcludeProps<ChipProps, "label">;
 }
 
-export function Select<T extends SelectTypeConstraint>({
+export type SelectFormProps = ExcludeProps<
+  SelectProps<SelectTypeConstraint, unknown>,
+  "onSelect" | "onSelectBlur" | "multiple" | "type" | ExcludeSharedKeys,
+  "omit"
+> & { type?: SelectTypeConstraint };
+
+export function Select<
+  T extends SelectTypeConstraint,
+  K extends string | readonly string[] | number = string
+>({
   id,
   value,
   data,
@@ -72,7 +95,7 @@ export function Select<T extends SelectTypeConstraint>({
   muiSelectOpts = { MenuProps: { getContentAnchorEl: null } },
   tagRenderValueCb = (selected) => selected.join(", "),
   ...sharedProps
-}: SelectProps<T>) {
+}: SelectProps<T, K>) {
   const labelId = `${id}-label`;
 
   const renderValue = (selected: unknown) => {
@@ -119,40 +142,50 @@ export function Select<T extends SelectTypeConstraint>({
       >
         {data.map((entry, idx) => {
           const isStr = typeof entry === "string";
-          const name = isStr ? entry : entry.name;
-          const menuItemProps =
-            !isStr && type !== "native"
-              ? (entry as MetaMenu).muiMenuItemProps
-              : {};
-          const key = `${name}-${idx}`;
+          const { val, text, ...rest } =
+            typeof entry === "object"
+              ? (entry as SelectMetaEntry<T, K>)
+              : { val: entry, text: "", muiMenuItemProps: {} };
+          const key = `${val}-${idx}`;
           switch (type) {
             case "tag":
               const { muiCheckboxOpts, muiListItemTextOpts } = !isStr
-                ? (entry as SelectMetaEntry<"tag">)
+                ? (entry as SelectMetaEntry<"tag", K>)
                 : { muiCheckboxOpts: {}, muiListItemTextOpts: {} };
               return (
-                <MenuItem {...menuItemProps} key={key} value={name}>
+                <MenuItem
+                  {...(rest as SelectMetaEntry<"tag", K>).muiMenuItemProps}
+                  key={key}
+                  value={val}
+                >
                   <Checkbox
                     {...muiCheckboxOpts}
-                    checked={(value as string[]).indexOf(name) > -1}
+                    checked={(value as string[]).indexOf(String(val)) > -1}
                   />
-                  <ListItemText {...muiListItemTextOpts} primary={name} />
+                  <ListItemText
+                    {...muiListItemTextOpts}
+                    primary={text || String(val)}
+                  />
                 </MenuItem>
               );
             case "native":
               const { muiOptionOpts } = !isStr
-                ? (entry as SelectMetaEntry<"native">)
+                ? (entry as SelectMetaEntry<"native", K>)
                 : { muiOptionOpts: {} };
               return (
-                <option {...muiOptionOpts} key={key} value={name}>
-                  {name}
+                <option {...muiOptionOpts} key={key} value={val}>
+                  {text || String(val)}
                 </option>
               );
             case "chip":
             default:
               return (
-                <MenuItem {...menuItemProps} key={key} value={name}>
-                  {name}
+                <MenuItem
+                  {...(rest as SelectMetaEntry<"chip", K>).muiMenuItemProps}
+                  key={key}
+                  value={val}
+                >
+                  {text || String(val)}
                 </MenuItem>
               );
           }

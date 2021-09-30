@@ -11,8 +11,13 @@ import { onArrayChange } from "./util";
 import { Checkbox, CheckboxFormProps } from "../checkbox";
 import { Input, InputFormProps } from "../input";
 import { Radio, RadioFormProps } from "../radio";
-import { Select, SelectProps, SelectTypeConstraint } from "../select";
-import { Switch, SwitchProps } from "../switch";
+import {
+  Select,
+  SelectFormProps,
+  SelectMetaEntry,
+  SelectTypeConstraint,
+} from "../select";
+import { Switch, SwitchFormProps } from "../switch";
 
 export type Entries<T extends FormEntryConstraint> = {
   [K in keyof T]: {
@@ -22,12 +27,17 @@ export type Entries<T extends FormEntryConstraint> = {
     checkbox?: CheckboxFormProps;
     input?: InputFormProps;
     radio?: RadioFormProps;
+    switch?: SwitchFormProps;
+    select?: SelectFormProps;
   };
 };
 
 export type FormProps<T extends FormEntryConstraint> = {
   entries: Entries<T>;
-  onSubmit2: (isValid: boolean, values: T) => void;
+  submit: {
+    on?: (isValid: boolean, values: T) => void;
+    btn?: {};
+  };
   wrapperClass?: string;
   wrapperStyle?: React.CSSProperties;
   formClass?: string;
@@ -36,7 +46,7 @@ export type FormProps<T extends FormEntryConstraint> = {
 
 export function Form<T extends FormEntryConstraint>({
   entries,
-  onSubmit2,
+  submit,
   wrapperClass,
   wrapperStyle,
   formClass,
@@ -78,28 +88,11 @@ export function Form<T extends FormEntryConstraint>({
               />
             );
           } else if (typeof entry.checkbox !== "undefined") {
-            let data;
-            if (Array.isArray(entry.checkbox.data)) {
-              data = entry.checkbox.data.map((el) => ({
-                ...el,
-                id: key,
-                checked: Array.isArray(input.value)
-                  ? !!input.value.find((e) => e === el.name)
-                  : el.name === input.value,
-                onChange: () =>
-                  updateInput(
-                    key,
-                    (Array.isArray(input.value)
-                      ? onArrayChange(input.value, el.name)
-                      : el.name === input.value
-                      ? ""
-                      : el.name) as T[string]
-                  ),
-                onBlur: onTouchHandler,
-              }));
-            } else {
-              const { name, ...rest } = entry.checkbox.data;
-              data = {
+            const { data, ...props } = entry.checkbox;
+            const validData = data.map((el) => {
+              const { name, ...rest } =
+                typeof el === "string" ? { name: el } : el;
+              return {
                 ...rest,
                 name,
                 id: key,
@@ -117,16 +110,93 @@ export function Form<T extends FormEntryConstraint>({
                   ),
                 onBlur: onTouchHandler,
               };
-            }
-            return <Checkbox {...entry.checkbox} key={key} data={data} />;
+            });
+            return <Checkbox {...props} key={key} data={validData} />;
           } else if (typeof entry.radio !== "undefined") {
+            const { data, ...props } = entry.radio;
+            const validData = data.map((el) => {
+              const { name, ...rest } =
+                typeof el === "string" ? { name: el } : el;
+              return {
+                ...rest,
+                name,
+                id: key,
+                value: name,
+              };
+            });
+            return (
+              <Radio
+                {...props}
+                key={key}
+                data={validData}
+                selectedValue={input.value}
+                onRadioChange={onChangeHandler}
+                onRadioBlur={onTouchHandler}
+              />
+            );
+          } else if (typeof entry.switch !== "undefined") {
+            const { data, ...props } = entry.switch;
+            const validData = data.map((el) => {
+              const { name, ...rest } =
+                typeof el === "string" ? { name: el } : el;
+              return {
+                ...rest,
+                name,
+                id: key,
+                checked: Array.isArray(input.value)
+                  ? !!input.value.find((e) => e === name)
+                  : name === input.value,
+                onChange: () =>
+                  updateInput(
+                    key,
+                    (Array.isArray(input.value)
+                      ? onArrayChange(input.value, name)
+                      : name === input.value
+                      ? ""
+                      : name) as T[string]
+                  ),
+                onBlur: onTouchHandler,
+              };
+            });
+            return <Switch {...props} key={key} data={validData} />;
+          } else if (typeof entry.select !== "undefined") {
+            const { data, type, ...props } = entry.select;
+            const validData = data.map((el) => {
+              const { val, ...rest } =
+                typeof el === "object"
+                  ? (el as SelectMetaEntry<SelectTypeConstraint, any>)
+                  : { val: el };
+              return { ...rest, val };
+            });
+            return (
+              <Select
+                {...props}
+                onSelect={({ target }) =>
+                  updateInput(
+                    key,
+                    (!Array.isArray(target.value) &&
+                    target.value === input.value
+                      ? ""
+                      : target.value) as T[string]
+                  )
+                }
+                onSelectBlur={onTouchHandler}
+                id={key}
+                key={key}
+                type={type || "menu"}
+                value={input.value}
+                multiple={Array.isArray(entry.initialValue)}
+                data={validData}
+              />
+            );
+          } else {
+            return null;
           }
-          return null;
         })}
         <button
           onClick={(e) => {
             e.preventDefault();
-            onSubmit2(isValid, getInputValues());
+            submit.on && submit.on(isValid, getInputValues());
           }}
           role="button"
         >

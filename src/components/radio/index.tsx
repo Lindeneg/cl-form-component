@@ -28,19 +28,25 @@ export interface RadioProps
   extends Omit<SharedProps, "id" | "value">,
     FormLabelOpts {
   data: MetaRadioProps[];
-  onRadioChange: React.ChangeEventHandler<HTMLInputElement>;
   selectedValue: unknown;
+  onRadioChange: React.ChangeEventHandler<HTMLInputElement>;
+  onRadioBlur?: React.FocusEventHandler<HTMLInputElement>;
   muiRadioGroupOpts?: ExcludeProps<RadioGroupProps>;
 }
 
 export type RadioFormProps = Omit<
   RadioProps,
   "onRadioChange" | "selectedValue" | "data" | ExcludeSharedKeys
-> & { data: Array<Omit<MetaRadioProps, "id" | "value">> };
+> & {
+  data: Array<
+    string | (Omit<MetaRadioProps, "id" | "value" | "name"> & { name: string })
+  >;
+};
 
 export function Radio({
   data,
   onRadioChange,
+  onRadioBlur,
   selectedValue,
   label = "",
   muiFormLabelOpts = {},
@@ -56,6 +62,7 @@ export function Radio({
         {...muiRadioGroupOpts}
         value={selectedValue}
         onChange={onRadioChange}
+        onBlur={onRadioBlur}
       >
         {data.map(({ id, value, name, muiRadioOpts, ...rest }, idx) => (
           <MetaShared<MetaRadioProps>

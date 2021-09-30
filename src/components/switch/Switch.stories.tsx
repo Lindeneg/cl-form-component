@@ -50,3 +50,30 @@ export function SingleSwitchWithLabelAndHelper() {
     />
   );
 }
+
+export function TODOMultipleSwitchesWithLabelAndHelperTODO() {
+  // using library: 'cl-use-form-state'
+  const { inputs, updateInput } = useForm<{ private: boolean }>((cl) => ({
+    private: cl(false, { isValid: true }),
+  }));
+  return (
+    <Switch
+      label="Visibility"
+      helperEl="Toggle privacy settings"
+      data={[
+        {
+          id: "private",
+          name: "Private",
+          checked: inputs.private.value,
+          onChange: () => updateInput("private", !inputs.private.value),
+        },
+        {
+          id: "private",
+          name: "Private 2",
+          checked: inputs.private.value,
+          onChange: () => updateInput("private", !inputs.private.value),
+        },
+      ]}
+    />
+  );
+}

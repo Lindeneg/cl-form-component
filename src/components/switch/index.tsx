@@ -3,7 +3,7 @@ import MaterialSwitch, {
   SwitchProps as MaterialSwitchProps,
 } from "@material-ui/core/Switch";
 import { Checkbox, CheckboxProps, MetaCheckboxProps } from "../checkbox";
-import { ExcludeProps } from "../Shared";
+import { ExcludeProps, ExcludeSharedKeys } from "../Shared";
 
 export type MetaSwitchProps<O extends string = ""> = Omit<
   MetaCheckboxProps,
@@ -17,6 +17,19 @@ export interface SwitchProps extends Omit<CheckboxProps, "data"> {
     | MetaSwitchProps<"controlComponent">
     | MetaSwitchProps<"controlComponent">[];
 }
+
+type ExcludedMetaProps = ExcludeProps<
+  MetaSwitchProps,
+  "checked" | "id",
+  "omit"
+>;
+
+export type SwitchFormProps = Omit<
+  CheckboxProps,
+  "data" | ExcludeSharedKeys
+> & {
+  data: Array<ExcludedMetaProps | string>;
+};
 
 export function Switch({ data, ...props }: SwitchProps) {
   let controlledData: MetaSwitchProps | MetaSwitchProps[];
