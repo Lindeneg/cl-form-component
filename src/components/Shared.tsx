@@ -76,7 +76,10 @@ export function Shared({
   ...rest
 }: SharedMetaProps) {
   return (
-    <div className={wrapperClass} style={wrapperStyle}>
+    <div
+      className={wrapperClass}
+      style={{ marginTop: "1rem", ...wrapperStyle }}
+    >
       <FormControl
         {...rest.muiFormControlOpts}
         fullWidth={fullWidth}

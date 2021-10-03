@@ -16,7 +16,8 @@ import {
 
 export type MetaCheckboxProps = Pick<SharedProps, "id"> & {
   checked: boolean;
-  name: string;
+  val: unknown;
+  text?: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler;
   muiFormControlLabelOpts?: ExcludeProps<
@@ -59,7 +60,7 @@ export function Checkbox({
     formGroupJsx = data.map((entry, idx) => (
       <MetaShared
         key={idx}
-        name={entry.name}
+        name={entry.text || String(entry.val)}
         muiFormControlLabelOpts={entry.muiFormControlLabelOpts}
         control={
           entry.controlComponent || (
@@ -69,7 +70,7 @@ export function Checkbox({
               onChange={entry.onChange}
               onBlur={entry.onBlur}
               checked={entry.checked}
-              value={entry.checked}
+              value={entry.val}
             />
           )
         }
@@ -78,7 +79,7 @@ export function Checkbox({
   } else {
     formGroupJsx = (
       <MetaShared<MetaCheckboxProps>
-        name={data.name}
+        name={data.text || String(data.val)}
         muiFormControlLabelOpts={data.muiFormControlLabelOpts}
         control={
           data.controlComponent || (

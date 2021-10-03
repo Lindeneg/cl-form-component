@@ -24,7 +24,7 @@ export function SingleCheckbox({ ...args }: CheckboxProps) {
       {...args}
       data={{
         id: "checkbox",
-        name: "Check",
+        val: "Check",
         checked: inputs.checkbox.value,
         onChange: () => updateInput("checkbox", !inputs.checkbox.value),
       }}
@@ -43,7 +43,7 @@ export function SingleCheckboxWithLabelAndHelper() {
       helperEl="Please specify privacy settings"
       data={{
         id: "private",
-        name: "Private",
+        val: "Private",
         checked: inputs.private.value,
         onChange: () => updateInput("private", !inputs.private.value),
       }}
@@ -73,14 +73,14 @@ export function MultipleCheckboxesWithLabelAndHelper() {
         data={[
           {
             id: "ferrari",
-            name: "Ferrari",
+            val: "Ferrari",
             checked: inputs.ferrari.value,
             onChange: () => updateInput("ferrari", !inputs.ferrari.value),
             muiCheckboxOpts: { disabled: !!inputs.mercedes.value },
           },
           {
             id: "mercedes",
-            name: "Mercedes",
+            val: "Mercedes",
             checked: inputs.mercedes.value,
             onChange: () => updateInput("mercedes", !inputs.mercedes.value),
             muiCheckboxOpts: { disabled: !!inputs.ferrari.value },
@@ -98,13 +98,13 @@ export function MultipleCheckboxesWithLabelAndHelper() {
         data={[
           {
             id: "private",
-            name: "Bill Evans",
+            val: "Bill Evans",
             checked: inputs.bill.value,
             onChange: () => updateInput("bill", !inputs.bill.value),
           },
           {
             id: "billie",
-            name: "Billie Holiday",
+            val: "Billie Holiday",
             checked: inputs.billie.value,
             onChange: () => updateInput("billie", !inputs.billie.value),
           },

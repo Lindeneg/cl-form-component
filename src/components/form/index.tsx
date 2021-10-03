@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   useForm,
   FormEntryConstraint,
@@ -18,7 +18,7 @@ import {
 import { Switch, SwitchFormProps } from "../switch";
 import { Divider } from "@material-ui/core";
 
-export function onArrayChange(arr: string[], target: string): string[] {
+export function onArrayChange(arr: unknown[], target: unknown): unknown[] {
   const newArr = [...arr];
   const idx = newArr.findIndex((e) => e === target);
   if (idx > -1) {
@@ -29,23 +29,64 @@ export function onArrayChange(arr: string[], target: string): string[] {
   return newArr;
 }
 
+function getElementKey(
+  entry: FormProps2<any, any>
+): keyof FormProps2<any, any> | "none" {
+  if (typeof entry.input !== "undefined") {
+    return "input";
+  } else if (typeof entry.checkbox !== "undefined") {
+    return "checkbox";
+  } else if (typeof entry.radio !== "undefined") {
+    return "radio";
+  } else if (typeof entry.select !== "undefined") {
+    return "select";
+  } else if (typeof entry.switch !== "undefined") {
+    return "switch";
+  }
+  return "none";
+}
+
+function getPosition(entry: FormProps2<any, any>) {
+  const key = getElementKey(entry);
+  if (key !== "none") {
+    return entry[key]?.position || 0;
+  }
+  return 0;
+}
+
+function getInputOpts(entry: FormProps2<any, any>): [any, any] {
+  const key = getElementKey(entry);
+  if (key !== "none") {
+    return [entry[key]?.initialValue, entry[key]?.validation];
+  }
+  return ["", {}];
+}
+
+type BaseProps<T extends FormEntryConstraint, K extends keyof T> = {
+  initialValue: T[K];
+  position?: number;
+  validation?: GetInputOptions<T[K], T>;
+};
+
+type FormProps2<T extends FormEntryConstraint, K extends keyof T> = {
+  checkbox?: CheckboxFormProps & BaseProps<T, K>;
+  input?: InputFormProps & BaseProps<T, K>;
+  radio?: RadioFormProps & BaseProps<T, K>;
+  switch?: SwitchFormProps & BaseProps<T, K>;
+  select?: SelectFormProps & BaseProps<T, K>;
+};
+
 export type Entries<T extends FormEntryConstraint> = {
-  [K in keyof T]: {
-    initialValue: T[K];
-    position?: number;
-    validation?: GetInputOptions<T[K], T>;
-    checkbox?: CheckboxFormProps;
-    input?: InputFormProps;
-    radio?: RadioFormProps;
-    switch?: SwitchFormProps;
-    select?: SelectFormProps;
-  };
+  [K in keyof T]: FormProps2<T, K>;
 };
 
 export type FormProps<T extends FormEntryConstraint> = {
   entries: Entries<T>;
   onFormSubmit: (isValid: boolean, values: T) => void;
-  submitBtnOpts?: Omit<ButtonProps, "onClick"> & { text?: string };
+  submitBtnOpts?: Omit<ButtonProps, "onClick" | "disabled"> & {
+    text?: string;
+    disableOnInvalidForm?: boolean;
+  };
   header?: string | React.ReactElement;
   wrapperClass?: string;
   wrapperStyle?: React.CSSProperties;
@@ -58,7 +99,7 @@ function FormHeader({ header }: { header?: string | React.ReactElement }) {
     if (typeof header === "string") {
       return (
         <>
-          <h1>Form Label</h1>
+          <h2>{header}</h2>
           <Divider />
         </>
       );
@@ -68,6 +109,7 @@ function FormHeader({ header }: { header?: string | React.ReactElement }) {
   return null;
 }
 
+// TODO: allow form to be reset on submit
 export function Form<T extends FormEntryConstraint>({
   entries,
   header,
@@ -79,8 +121,9 @@ export function Form<T extends FormEntryConstraint>({
   formStyle,
 }: FormProps<T>) {
   const keys = Object.keys(entries).sort(
-    (a, b) => (entries[b].position || 0) - (entries[a].position || 0)
+    (a, b) => getPosition(entries[b]) - getPosition(entries[a])
   );
+  const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
   const {
     inputs,
     isValid,
@@ -92,7 +135,7 @@ export function Form<T extends FormEntryConstraint>({
     (cl) =>
       keys
         .map((key) => ({
-          [key]: cl(entries[key].initialValue, entries[key].validation),
+          [key]: cl(...getInputOpts(entries[key])),
         }))
         .reduce((acc, cur) => ({ ...acc, ...cur }), {}) as Inputs<T>
   );
@@ -111,7 +154,7 @@ export function Form<T extends FormEntryConstraint>({
                 id={key}
                 value={input.value}
                 valid={input.isValid}
-                error={input.isTouched && !input.isValid}
+                error={(input.isTouched || hasSubmitted) && !input.isValid}
                 onInputChange={onChangeHandler}
                 onInputBlur={onTouchHandler}
               />
@@ -119,23 +162,24 @@ export function Form<T extends FormEntryConstraint>({
           } else if (typeof entry.checkbox !== "undefined") {
             const { data, ...props } = entry.checkbox;
             const validData = data.map((el) => {
-              const { name, ...rest } =
-                typeof el === "string" ? { name: el } : el;
+              const { val, text, ...rest } =
+                typeof el === "string" ? { val: el, text: "" } : el;
               return {
                 ...rest,
-                name,
+                val,
+                text: text || String(val),
                 id: key,
                 checked: Array.isArray(input.value)
-                  ? !!input.value.find((e) => e === name)
-                  : name === input.value,
+                  ? !!input.value.find((e) => e === val)
+                  : val === input.value,
                 onChange: () =>
                   updateInput(
                     key,
                     (Array.isArray(input.value)
-                      ? onArrayChange(input.value, name)
-                      : name === input.value
+                      ? onArrayChange(input.value, val)
+                      : val === input.value
                       ? ""
-                      : name) as T[string]
+                      : val) as T[string]
                   ),
                 onBlur: onTouchHandler,
               };
@@ -146,7 +190,7 @@ export function Form<T extends FormEntryConstraint>({
                 key={key}
                 data={validData}
                 valid={input.isValid}
-                error={input.isTouched && !input.isValid}
+                error={(input.isTouched || hasSubmitted) && !input.isValid}
               />
             );
           } else if (typeof entry.radio !== "undefined") {
@@ -168,7 +212,7 @@ export function Form<T extends FormEntryConstraint>({
                 data={validData}
                 selectedValue={input.value}
                 valid={input.isValid}
-                error={input.isTouched && !input.isValid}
+                error={(input.isTouched || hasSubmitted) && !input.isValid}
                 onRadioChange={onChangeHandler}
                 onRadioBlur={onTouchHandler}
               />
@@ -176,11 +220,12 @@ export function Form<T extends FormEntryConstraint>({
           } else if (typeof entry.switch !== "undefined") {
             const { data, ...props } = entry.switch;
             const validData = data.map((el) => {
-              const { name, ...rest } =
-                typeof el === "string" ? { name: el } : el;
+              const { val, text, ...rest } =
+                typeof el === "string" ? { val: el, text: "" } : el;
               return {
                 ...rest,
-                name,
+                val,
+                text: text || String(val),
                 id: key,
                 checked: Array.isArray(input.value)
                   ? !!input.value.find((e) => e === name)
@@ -203,7 +248,7 @@ export function Form<T extends FormEntryConstraint>({
                 key={key}
                 data={validData}
                 valid={input.isValid}
-                error={input.isTouched && !input.isValid}
+                error={(input.isTouched || hasSubmitted) && !input.isValid}
               />
             );
           } else if (typeof entry.select !== "undefined") {
@@ -231,10 +276,10 @@ export function Form<T extends FormEntryConstraint>({
                 id={key}
                 key={key}
                 valid={input.isValid}
-                error={input.isTouched && !input.isValid}
+                error={(input.isTouched || hasSubmitted) && !input.isValid}
                 type={type || "menu"}
                 value={input.value}
-                multiple={Array.isArray(entry.initialValue)}
+                multiple={Array.isArray(input.value)}
                 data={validData}
               />
             );
@@ -245,8 +290,10 @@ export function Form<T extends FormEntryConstraint>({
       </form>
       <Button
         {...submitBtnOpts}
+        disabled={!!submitBtnOpts?.disableOnInvalidForm && !isValid}
         onClick={(e) => {
           e.preventDefault();
+          !hasSubmitted && setHasSubmitted(true);
           onFormSubmit(isValid, getInputValues());
         }}
         role="button"

@@ -14,7 +14,7 @@ function getCheckbox(
       data={{
         id: "some-id",
         checked: state,
-        name: "some-name",
+        val: "some-name",
         onChange: onChange,
       }}
     />

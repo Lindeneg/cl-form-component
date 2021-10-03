@@ -14,7 +14,7 @@ export default {
   },
 };
 
-export function SimpleSelect({ ...args }: SelectProps<"menu">) {
+export function SimpleSelect({ ...args }: SelectProps<"menu", unknown>) {
   return (
     <Select {...args} type="menu" data={["Some Option", "Another Option"]} />
   );
@@ -24,7 +24,7 @@ export function SimpleSelectWithHelperAndLabel({
   label = "Delivery",
   helperEl = "Please choose a delivery option",
   ...args
-}: SelectProps<"menu">) {
+}: SelectProps<"menu", unknown>) {
   return (
     <Select
       {...args}

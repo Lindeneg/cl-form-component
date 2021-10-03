@@ -24,7 +24,8 @@ export function SingleSwitch({ ...args }: SwitchProps) {
       {...args}
       data={{
         id: "switch",
-        name: "Switch " + (inputs.switch.value ? "On" : "Off"),
+        val: "switch",
+        text: "Switch " + (inputs.switch.value ? "On" : "Off"),
         checked: inputs.switch.value,
         onChange: () => updateInput("switch", !inputs.switch.value),
       }}
@@ -43,7 +44,7 @@ export function SingleSwitchWithLabelAndHelper() {
       helperEl="Toggle privacy settings"
       data={{
         id: "private",
-        name: "Private",
+        val: "Private",
         checked: inputs.private.value,
         onChange: () => updateInput("private", !inputs.private.value),
       }}
@@ -63,13 +64,13 @@ export function TODOMultipleSwitchesWithLabelAndHelperTODO() {
       data={[
         {
           id: "private",
-          name: "Private",
+          val: "Private",
           checked: inputs.private.value,
           onChange: () => updateInput("private", !inputs.private.value),
         },
         {
           id: "private",
-          name: "Private 2",
+          val: "Private 2",
           checked: inputs.private.value,
           onChange: () => updateInput("private", !inputs.private.value),
         },
