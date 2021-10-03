@@ -121,7 +121,7 @@ export function Form<T extends FormEntryConstraint>({
   formStyle,
 }: FormProps<T>) {
   const keys = Object.keys(entries).sort(
-    (a, b) => getPosition(entries[b]) - getPosition(entries[a])
+    (a, b) => getPosition(entries[a]) - getPosition(entries[b])
   );
   const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
   const {
@@ -140,166 +140,173 @@ export function Form<T extends FormEntryConstraint>({
         .reduce((acc, cur) => ({ ...acc, ...cur }), {}) as Inputs<T>
   );
   return (
-    <div className={wrapperClass} style={wrapperStyle}>
+    <>
       <FormHeader header={header} />
-      <form className={formClass} style={formStyle}>
-        {keys.map((key) => {
-          const entry = entries[key];
-          const input = inputs[key];
-          if (typeof entry.input !== "undefined") {
-            return (
-              <Input
-                {...entry.input}
-                key={key}
-                id={key}
-                value={input.value}
-                valid={input.isValid}
-                error={(input.isTouched || hasSubmitted) && !input.isValid}
-                onInputChange={onChangeHandler}
-                onInputBlur={onTouchHandler}
-              />
-            );
-          } else if (typeof entry.checkbox !== "undefined") {
-            const { data, ...props } = entry.checkbox;
-            const validData = data.map((el) => {
-              const { val, text, ...rest } =
-                typeof el === "string" ? { val: el, text: "" } : el;
-              return {
-                ...rest,
-                val,
-                text: text || String(val),
-                id: key,
-                checked: Array.isArray(input.value)
-                  ? !!input.value.find((e) => e === val)
-                  : val === input.value,
-                onChange: () =>
-                  updateInput(
-                    key,
-                    (Array.isArray(input.value)
-                      ? onArrayChange(input.value, val)
-                      : val === input.value
-                      ? ""
-                      : val) as T[string]
-                  ),
-                onBlur: onTouchHandler,
-              };
-            });
-            return (
-              <Checkbox
-                {...props}
-                key={key}
-                data={validData}
-                valid={input.isValid}
-                error={(input.isTouched || hasSubmitted) && !input.isValid}
-              />
-            );
-          } else if (typeof entry.radio !== "undefined") {
-            const { data, ...props } = entry.radio;
-            const validData = data.map((el) => {
-              const { name, ...rest } =
-                typeof el === "string" ? { name: el } : el;
-              return {
-                ...rest,
-                name,
-                id: key,
-                value: name,
-              };
-            });
-            return (
-              <Radio
-                {...props}
-                key={key}
-                data={validData}
-                selectedValue={input.value}
-                valid={input.isValid}
-                error={(input.isTouched || hasSubmitted) && !input.isValid}
-                onRadioChange={onChangeHandler}
-                onRadioBlur={onTouchHandler}
-              />
-            );
-          } else if (typeof entry.switch !== "undefined") {
-            const { data, ...props } = entry.switch;
-            const validData = data.map((el) => {
-              const { val, text, ...rest } =
-                typeof el === "string" ? { val: el, text: "" } : el;
-              return {
-                ...rest,
-                val,
-                text: text || String(val),
-                id: key,
-                checked: Array.isArray(input.value)
-                  ? !!input.value.find((e) => e === name)
-                  : name === input.value,
-                onChange: () =>
-                  updateInput(
-                    key,
-                    (Array.isArray(input.value)
-                      ? onArrayChange(input.value, name)
-                      : name === input.value
-                      ? ""
-                      : name) as T[string]
-                  ),
-                onBlur: onTouchHandler,
-              };
-            });
-            return (
-              <Switch
-                {...props}
-                key={key}
-                data={validData}
-                valid={input.isValid}
-                error={(input.isTouched || hasSubmitted) && !input.isValid}
-              />
-            );
-          } else if (typeof entry.select !== "undefined") {
-            const { data, type, ...props } = entry.select;
-            const validData = data.map((el) => {
-              const { val, ...rest } =
-                typeof el === "object"
-                  ? (el as SelectMetaEntry<SelectTypeConstraint, any>)
-                  : { val: el };
-              return { ...rest, val };
-            });
-            return (
-              <Select
-                {...props}
-                onSelect={({ target }) =>
-                  updateInput(
-                    key,
-                    (!Array.isArray(target.value) &&
-                    target.value === input.value
-                      ? ""
-                      : target.value) as T[string]
-                  )
-                }
-                onSelectBlur={onTouchHandler}
-                id={key}
-                key={key}
-                valid={input.isValid}
-                error={(input.isTouched || hasSubmitted) && !input.isValid}
-                type={type || "menu"}
-                value={input.value}
-                multiple={Array.isArray(input.value)}
-                data={validData}
-              />
-            );
-          } else {
-            return null;
-          }
-        })}
-      </form>
-      <Button
-        {...submitBtnOpts}
-        disabled={!!submitBtnOpts?.disableOnInvalidForm && !isValid}
-        onClick={(e) => {
-          e.preventDefault();
-          !hasSubmitted && setHasSubmitted(true);
-          onFormSubmit(isValid, getInputValues());
-        }}
-        role="button"
-      >
-        {submitBtnOpts?.text || "Submit"}
-      </Button>
-    </div>
+      <div className={wrapperClass} style={wrapperStyle}>
+        <form className={formClass} style={formStyle}>
+          {keys.map((key) => {
+            const entry = entries[key];
+            const input = inputs[key];
+            if (typeof entry.input !== "undefined") {
+              return (
+                <Input
+                  {...entry.input}
+                  key={key}
+                  id={key}
+                  value={input.value}
+                  valid={input.isValid}
+                  error={(input.isTouched || hasSubmitted) && !input.isValid}
+                  onInputChange={onChangeHandler}
+                  onInputBlur={onTouchHandler}
+                />
+              );
+            } else if (typeof entry.checkbox !== "undefined") {
+              const { data, ...props } = entry.checkbox;
+              const validData = data.map((el) => {
+                const { val, text, ...rest } =
+                  typeof el === "string" ? { val: el, text: "" } : el;
+                return {
+                  ...rest,
+                  val,
+                  text: text || String(val),
+                  id: key,
+                  checked: Array.isArray(input.value)
+                    ? !!input.value.find((e) => e === val)
+                    : val === input.value,
+                  onChange: () =>
+                    updateInput(
+                      key,
+                      (Array.isArray(input.value)
+                        ? onArrayChange(input.value, val)
+                        : val === input.value
+                        ? ""
+                        : val) as T[string]
+                    ),
+                  onBlur: onTouchHandler,
+                };
+              });
+              return (
+                <Checkbox
+                  {...props}
+                  key={key}
+                  data={validData}
+                  valid={input.isValid}
+                  error={(input.isTouched || hasSubmitted) && !input.isValid}
+                />
+              );
+            } else if (typeof entry.radio !== "undefined") {
+              const { data, ...props } = entry.radio;
+              const validData = data.map((el) => {
+                const { name, ...rest } =
+                  typeof el === "string" ? { name: el } : el;
+                return {
+                  ...rest,
+                  name,
+                  id: key,
+                  value: name,
+                };
+              });
+              return (
+                <Radio
+                  {...props}
+                  key={key}
+                  data={validData}
+                  selectedValue={input.value}
+                  valid={input.isValid}
+                  error={(input.isTouched || hasSubmitted) && !input.isValid}
+                  onRadioChange={onChangeHandler}
+                  onRadioBlur={onTouchHandler}
+                />
+              );
+            } else if (typeof entry.switch !== "undefined") {
+              const { data, ...props } = entry.switch;
+              const validData = data.map((el) => {
+                const { val, text, ...rest } =
+                  typeof el === "string" ? { val: el, text: "" } : el;
+                return {
+                  ...rest,
+                  val,
+                  text: text || String(val),
+                  id: key,
+                  checked: Array.isArray(input.value)
+                    ? !!input.value.find((e) => e === name)
+                    : name === input.value,
+                  onChange: () =>
+                    updateInput(
+                      key,
+                      (Array.isArray(input.value)
+                        ? onArrayChange(input.value, name)
+                        : name === input.value
+                        ? ""
+                        : name) as T[string]
+                    ),
+                  onBlur: onTouchHandler,
+                };
+              });
+              return (
+                <Switch
+                  {...props}
+                  key={key}
+                  data={validData}
+                  valid={input.isValid}
+                  error={(input.isTouched || hasSubmitted) && !input.isValid}
+                />
+              );
+            } else if (typeof entry.select !== "undefined") {
+              const { data, type, ...props } = entry.select;
+              const validData = data.map((el) => {
+                const { val, ...rest } =
+                  typeof el === "object"
+                    ? (el as SelectMetaEntry<SelectTypeConstraint, any>)
+                    : { val: el };
+                return { ...rest, val };
+              });
+              return (
+                <Select
+                  {...props}
+                  onSelect={({ target }) =>
+                    updateInput(
+                      key,
+                      (!Array.isArray(target.value) &&
+                      target.value === input.value
+                        ? ""
+                        : target.value) as T[string]
+                    )
+                  }
+                  onSelectBlur={onTouchHandler}
+                  id={key}
+                  key={key}
+                  valid={input.isValid}
+                  error={(input.isTouched || hasSubmitted) && !input.isValid}
+                  type={type || "menu"}
+                  value={input.value}
+                  multiple={Array.isArray(input.value)}
+                  data={validData}
+                />
+              );
+            } else {
+              return null;
+            }
+          })}
+        </form>
+        {(() => {
+          const { text, disableOnInvalidForm, ...rest } = submitBtnOpts || {};
+          return (
+            <Button
+              {...rest}
+              disabled={!!disableOnInvalidForm && !isValid}
+              onClick={(e) => {
+                e.preventDefault();
+                !hasSubmitted && setHasSubmitted(true);
+                onFormSubmit(isValid, getInputValues());
+              }}
+              role="button"
+            >
+              {text || "Submit"}
+            </Button>
+          );
+        })()}
+      </div>
+    </>
   );
 }
