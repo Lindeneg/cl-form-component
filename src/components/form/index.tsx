@@ -5,79 +5,17 @@ import {
   Inputs,
   GetInputOptions,
 } from "cl-use-form-state";
-import Button, { ButtonProps } from "@material-ui/core/Button";
-import { Checkbox, CheckboxFormProps } from "../checkbox";
-import { Input, InputFormProps } from "../input";
-import { Radio, RadioFormProps } from "../radio";
-import {
-  Select,
-  SelectFormProps,
-  SelectMetaEntry,
-  SelectTypeConstraint,
-} from "../select";
-import { Switch, SwitchFormProps } from "../switch";
 import { Divider } from "@material-ui/core";
-
-export function onArrayChange(arr: unknown[], target: unknown): unknown[] {
-  const newArr = [...arr];
-  const idx = newArr.findIndex((e) => e === target);
-  if (idx > -1) {
-    newArr.splice(idx, 1);
-  } else {
-    newArr.push(target);
-  }
-  return newArr;
-}
-
-function getElementKey(
-  entry: FormProps2<any, any>
-): keyof FormProps2<any, any> | "none" {
-  if (typeof entry.input !== "undefined") {
-    return "input";
-  } else if (typeof entry.checkbox !== "undefined") {
-    return "checkbox";
-  } else if (typeof entry.radio !== "undefined") {
-    return "radio";
-  } else if (typeof entry.select !== "undefined") {
-    return "select";
-  } else if (typeof entry.switch !== "undefined") {
-    return "switch";
-  }
-  return "none";
-}
-
-function getPosition(entry: FormProps2<any, any>) {
-  const key = getElementKey(entry);
-  if (key !== "none") {
-    return entry[key]?.position || 0;
-  }
-  return 0;
-}
-
-function getInputOpts(entry: FormProps2<any, any>): [any, any] {
-  const key = getElementKey(entry);
-  if (key !== "none") {
-    return [entry[key]?.initialValue, entry[key]?.validation];
-  }
-  return ["", {}];
-}
-
-type BaseProps<T extends FormEntryConstraint, K extends keyof T> = {
-  initialValue: T[K];
-  position?: number;
-  validation?: GetInputOptions<T[K], T>;
-};
-
-type FormProps2<T extends FormEntryConstraint, K extends keyof T> = {
-  checkbox?: CheckboxFormProps & BaseProps<T, K>;
-  input?: InputFormProps & BaseProps<T, K>;
-  radio?: RadioFormProps & BaseProps<T, K>;
-  switch?: SwitchFormProps & BaseProps<T, K>;
-  select?: SelectFormProps & BaseProps<T, K>;
-};
+import Button, { ButtonProps } from "@material-ui/core/Button";
+import { FormEntry, getPosition, getInputOpts, onArrayChange } from "./util";
+import { Select, SelectMetaEntry, SelectTypeConstraint } from "../select";
+import { Checkbox } from "../checkbox";
+import { Input } from "../input";
+import { Radio } from "../radio";
+import { Switch } from "../switch";
 
 export type Entries<T extends FormEntryConstraint> = {
-  [K in keyof T]: FormProps2<T, K>;
+  [K in keyof T]: FormEntry<T, K>;
 };
 
 export type FormProps<T extends FormEntryConstraint> = {
@@ -86,6 +24,7 @@ export type FormProps<T extends FormEntryConstraint> = {
   submitBtnOpts?: Omit<ButtonProps, "onClick" | "disabled"> & {
     text?: string;
     disableOnInvalidForm?: boolean;
+    resetFormOnValidSubmit?: boolean;
   };
   header?: string | React.ReactElement;
   wrapperClass?: string;
@@ -109,7 +48,6 @@ function FormHeader({ header }: { header?: string | React.ReactElement }) {
   return null;
 }
 
-// TODO: allow form to be reset on submit
 export function Form<T extends FormEntryConstraint>({
   entries,
   header,
@@ -134,11 +72,28 @@ export function Form<T extends FormEntryConstraint>({
   } = useForm<T>(
     (cl) =>
       keys
-        .map((key) => ({
-          [key]: cl(...getInputOpts(entries[key])),
-        }))
+        .map((key) => {
+          const options = getInputOpts(entries[key]);
+          const args = (options !== null ? options : ["", {}]) as [
+            T[string],
+            GetInputOptions<T[string], T>
+          ];
+          return {
+            [key]: cl(...args),
+          };
+        })
         .reduce((acc, cur) => ({ ...acc, ...cur }), {}) as Inputs<T>
   );
+
+  const onResetFormInputs = () => {
+    keys.forEach((key) => {
+      const options = getInputOpts(entries[key]);
+      if (options !== null) {
+        updateInput(key, options[0]);
+      }
+    });
+  };
+
   return (
     <>
       <FormHeader header={header} />
@@ -290,15 +245,21 @@ export function Form<T extends FormEntryConstraint>({
           })}
         </form>
         {(() => {
-          const { text, disableOnInvalidForm, ...rest } = submitBtnOpts || {};
+          const {
+            text,
+            disableOnInvalidForm,
+            resetFormOnValidSubmit,
+            ...rest
+          } = submitBtnOpts || {};
           return (
             <Button
               {...rest}
               disabled={!!disableOnInvalidForm && !isValid}
               onClick={(e) => {
                 e.preventDefault();
-                !hasSubmitted && setHasSubmitted(true);
                 onFormSubmit(isValid, getInputValues());
+                !hasSubmitted && setHasSubmitted(true);
+                isValid && !!resetFormOnValidSubmit && onResetFormInputs();
               }}
               role="button"
             >
