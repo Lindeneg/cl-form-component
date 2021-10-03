@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { action } from "@storybook/addon-actions";
 import { useMediaQuery } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import FaceIcon from "@material-ui/icons/Face";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import { Form } from ".";
+import { Form, FormProps } from ".";
 
 export default {
   title: "Form",
@@ -12,12 +13,23 @@ export default {
   argTypes: {
     entries: { control: "none" },
     onFormSubmit: { control: "none" },
-    submitBtnOpts: { control: "none" },
     header: { control: "none" },
   },
 };
 
-export function SimpleForm({ ...args }: { onFormSubmit: () => {} }) {
+export function DefaultForm({ ...args }: FormProps<{ something: string }>) {
+  return (
+    <Form
+      {...args}
+      entries={{ something: { input: { initialValue: "" } } }}
+      onFormSubmit={(isValid, inputs) =>
+        action("onFormSubmit")({ isValid, inputs })
+      }
+    />
+  );
+}
+
+export function SimpleInputForm() {
   enum Visibility {
     PUBLIC,
     PRIVATE,
@@ -28,6 +40,8 @@ export function SimpleForm({ ...args }: { onFormSubmit: () => {} }) {
         visibility: {
           checkbox: {
             initialValue: "",
+            // position can optionally be specified
+            // entries are sorted ascendingly
             position: 1,
             // you can also just pass an array of strings instead such as
             // ["Private", "Public"]. Here we use objects with a value
@@ -63,7 +77,9 @@ export function SimpleForm({ ...args }: { onFormSubmit: () => {} }) {
           },
         },
       }}
-      onFormSubmit={args.onFormSubmit}
+      onFormSubmit={(isValid, inputs) => {
+        action("onFormSubmit")({ isValid, inputs });
+      }}
       submitBtnOpts={{
         style: { width: "100%", margin: "1rem 0" },
         variant: "outlined",
@@ -72,11 +88,13 @@ export function SimpleForm({ ...args }: { onFormSubmit: () => {} }) {
   );
 }
 
-export function AdvancedSignupForm({ ...args }: { onFormSubmit: () => {} }) {
+export function SignUpForm() {
+  // state used for (un)masking password fields
   const [show, setShow] = useState<{ password: boolean; confirm: boolean }>({
     password: false,
     confirm: false,
   });
+  // https://v4.mui.com/components/use-media-query/#usemediaquery
   const matches = useMediaQuery("(min-width:800px)");
   return (
     <Form<{
@@ -85,14 +103,6 @@ export function AdvancedSignupForm({ ...args }: { onFormSubmit: () => {} }) {
       password: string;
       confirmation: string;
     }>
-      wrapperStyle={{ width: "100%", display: "flex", flexDirection: "column" }}
-      formStyle={{
-        display: matches ? "grid" : "block",
-        gap: "10px",
-        justifyItems: "center",
-        marginTop: "2rem",
-      }}
-      header="Signup To Something!"
       entries={{
         fullName: {
           input: {
@@ -110,7 +120,7 @@ export function AdvancedSignupForm({ ...args }: { onFormSubmit: () => {} }) {
             adornment: {
               start: <FaceIcon />,
             },
-            wrapperStyle: { gridColumn: "1 / 3", gridRow: 1 },
+            wrapperStyle: { gridArea: "1 / 1 / auto / 3" },
             fullWidth: !matches,
           },
         },
@@ -119,16 +129,16 @@ export function AdvancedSignupForm({ ...args }: { onFormSubmit: () => {} }) {
             initialValue: "",
             label: "Username",
             helperEl: "Please provide a username",
-            errorEl: "Length 8-32",
+            errorEl: "Length 5-32",
             validEl: <span style={{ color: "#0ca60c" }}>Looks good!</span>,
             validation: {
-              minLength: 8,
+              minLength: 5,
               maxLength: 32,
             },
             adornment: {
               start: <AccountCircleIcon />,
             },
-            wrapperStyle: { gridColumn: "2 / 4", gridRow: "1 / 3" },
+            wrapperStyle: { gridArea: "1 / 2 / 3 / 4" },
             required: true,
             fullWidth: !matches,
           },
@@ -141,12 +151,14 @@ export function AdvancedSignupForm({ ...args }: { onFormSubmit: () => {} }) {
             helperEl: "Please provide a secure password",
             errorEl: "Length 8-32 with numbers & uppercase",
             validEl: <span style={{ color: "#0ca60c" }}>Looks good!</span>,
-            wrapperStyle: { gridColumn: "1 / 3", gridRow: 2 },
+            wrapperStyle: { gridArea: "2 / 1 / auto / 3" },
             validation: {
               minLength: 8,
               maxLength: 32,
               minNumericalSymbols: 1,
               minUppercaseCharacters: 1,
+              // run validation for 'confirmation'
+              // each time 'password' changes
               connectFields: ["confirmation"],
             },
             adornment: {
@@ -174,7 +186,7 @@ export function AdvancedSignupForm({ ...args }: { onFormSubmit: () => {} }) {
             helperEl: "Please confirm a secure password",
             errorEl: "Secure passwords does not match",
             validEl: <span style={{ color: "#0ca60c" }}>Looks good!</span>,
-            wrapperStyle: { gridColumn: "2 / 4", gridRow: "2 / 3" },
+            wrapperStyle: { gridArea: "2 / 2 / 3 / 4" },
             validation: {
               customRule: (v, s) =>
                 s.inputs.password.isValid && s.inputs.password.value === v,
@@ -197,7 +209,17 @@ export function AdvancedSignupForm({ ...args }: { onFormSubmit: () => {} }) {
           },
         },
       }}
-      onFormSubmit={args.onFormSubmit}
+      wrapperStyle={{ width: "100%", display: "flex", flexDirection: "column" }}
+      formStyle={{
+        display: matches ? "grid" : "block",
+        gap: "10px",
+        justifyItems: "center",
+        marginTop: "2rem",
+      }}
+      header="Signup To Something!"
+      onFormSubmit={(isValid, inputs) => {
+        action("onFormSubmit")({ isValid, inputs });
+      }}
       submitBtnOpts={{
         text: "SIGN UP",
         variant: "outlined",
@@ -207,57 +229,63 @@ export function AdvancedSignupForm({ ...args }: { onFormSubmit: () => {} }) {
   );
 }
 
-/*
-
-export function SimpleSignupForm() {
+export function LoginForm() {
   return (
     <Form<{
-      username: string;
-      fullName: string;
-      password: string;
-      confirmation: string;
+      user: string;
+      pass: string;
+      stayLoggedIn: string;
     }>
-      formStyle={{
-        width: "100%",
+      wrapperStyle={{
         display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
+        flexDirection: "column",
+        marginTop: "1rem",
+        alignItems: "center",
       }}
-      header="Signup"
       entries={{
-        username: {
+        user: {
           input: {
             initialValue: "",
+            position: 1,
             label: "Username",
+            required: true,
           },
         },
-        fullName: {
+        pass: {
           input: {
             initialValue: "",
+            type: "password",
+            position: 3,
+            label: "Password",
+            required: true,
           },
         },
-        password: {
-          input: {
+        stayLoggedIn: {
+          checkbox: {
             initialValue: "",
-          },
-        },
-        confirmation: {
-          input: {
-            initialValue: "",
+            position: 3,
+            data: [{ val: "in", text: "Stay Logged In" }],
+            validation: {
+              isRequired: false,
+            },
           },
         },
       }}
+      header="Please Login"
       onFormSubmit={(isValid, inputs) => {
-        console.log("isValid: ", isValid);
-        console.log("inputs: ", inputs);
+        action("onFormSubmit")({ isValid, inputs });
       }}
       submitBtnOpts={{
-        style: { width: "100%", marginTop: "1rem" },
-        variant: "outlined",
+        style: { margin: "1rem 0 1rem" },
+        text: "LOGIN",
+        color: "primary",
+        disableOnInvalidForm: true,
       }}
     />
   );
 }
+
+/*
 
 export function SimpleForm({ ...args }: FormProps<Inputs>) {
   return (
