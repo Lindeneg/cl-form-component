@@ -77,6 +77,24 @@ export type SelectFormProps = ExcludeProps<
   "omit"
 > & { type?: SelectTypeConstraint };
 
+function getRenderValue(
+  data: SelectEntryProps<SelectTypeConstraint, unknown>[],
+  value: unknown,
+  target?: unknown
+) {
+  const cmp = typeof target !== "undefined" ? target : value;
+  const stringifiedValue = String(value);
+  const entry = data.find((e) =>
+    typeof e === "object"
+      ? (e as SelectMetaEntry<SelectTypeConstraint, unknown>).val === cmp
+      : e === cmp
+  ) as { text?: string } | string;
+  if (entry) {
+    return typeof entry === "string" ? entry : entry.text || stringifiedValue;
+  }
+  return stringifiedValue;
+}
+
 export function Select<
   T extends SelectTypeConstraint,
   K extends string | readonly string[] | number = string
@@ -100,27 +118,19 @@ export function Select<
 
   const renderValue = (selected: unknown) => {
     if (type === "tag") {
-      return tagRenderValueCb(selected as string[]);
+      return tagRenderValueCb(
+        (selected as string[]).map((target) =>
+          getRenderValue(data, value, target)
+        )
+      );
     } else if (type === "chip") {
       return (
         <div>
-          {(selected as string[]).map((value) => (
+          {(selected as string[]).map((cur) => (
             <Chip
               {...muiChipOpts}
-              key={value}
-              label={(() => {
-                const entry = data.find((e) =>
-                  typeof e === "object"
-                    ? (e as SelectMetaEntry<T, K>).val === value
-                    : e === value
-                ) as { text?: string } | string;
-                if (entry) {
-                  return typeof entry === "string"
-                    ? entry
-                    : entry.text || value;
-                }
-                return value;
-              })()}
+              key={cur}
+              label={getRenderValue(data, cur)}
             />
           ))}
         </div>
@@ -176,7 +186,7 @@ export function Select<
                 >
                   <Checkbox
                     {...muiCheckboxOpts}
-                    checked={(value as string[]).indexOf(String(val)) > -1}
+                    checked={(value as unknown[]).indexOf(val) > -1}
                   />
                   <ListItemText
                     {...muiListItemTextOpts}
