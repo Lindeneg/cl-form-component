@@ -152,13 +152,13 @@ export function Form<T extends FormEntryConstraint>({
             } else if (typeof entry.radio !== "undefined") {
               const { data, ...props } = entry.radio;
               const validData = data.map((el) => {
-                const { name, ...rest } =
-                  typeof el === "string" ? { name: el } : el;
+                const { val, text, ...rest } =
+                  typeof el === "string" ? { val: el, text: "" } : el;
                 return {
                   ...rest,
-                  name,
+                  name: text || String(val),
                   id: key,
-                  value: name,
+                  value: val,
                 };
               });
               return (
@@ -184,16 +184,16 @@ export function Form<T extends FormEntryConstraint>({
                   text: text || String(val),
                   id: key,
                   checked: Array.isArray(input.value)
-                    ? !!input.value.find((e) => e === name)
-                    : name === input.value,
+                    ? !!input.value.find((e) => e === val)
+                    : val === input.value,
                   onChange: () =>
                     updateInput(
                       key,
                       (Array.isArray(input.value)
-                        ? onArrayChange(input.value, name)
-                        : name === input.value
+                        ? onArrayChange(input.value, val)
+                        : val === input.value
                         ? ""
-                        : name) as T[string]
+                        : val) as T[string]
                     ),
                   onBlur: onTouchHandler,
                 };
