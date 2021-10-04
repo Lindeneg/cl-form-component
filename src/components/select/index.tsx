@@ -105,7 +105,23 @@ export function Select<
       return (
         <div>
           {(selected as string[]).map((value) => (
-            <Chip {...muiChipOpts} key={value} label={value} />
+            <Chip
+              {...muiChipOpts}
+              key={value}
+              label={(() => {
+                const entry = data.find((e) =>
+                  typeof e === "object"
+                    ? (e as SelectMetaEntry<T, K>).val === value
+                    : e === value
+                ) as { text?: string } | string;
+                if (entry) {
+                  return typeof entry === "string"
+                    ? entry
+                    : entry.text || value;
+                }
+                return value;
+              })()}
+            />
           ))}
         </div>
       );
