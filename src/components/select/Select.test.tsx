@@ -4,7 +4,7 @@ import { render } from "@testing-library/react";
 import { Select, SelectProps, SelectTypeConstraint } from ".";
 
 function getSelect<T extends SelectTypeConstraint>(
-  props: Partial<SelectProps<T>> = {},
+  props: Partial<SelectProps<T, unknown>> = {},
   onSelect: () => void = () => {}
 ) {
   return (
