@@ -39,7 +39,11 @@ export type RadioFormProps = Omit<
   "onRadioChange" | "selectedValue" | "data" | ExcludeSharedKeys
 > & {
   data: Array<
-    string | (Omit<MetaRadioProps, "id" | "value" | "name"> & { name: string })
+    | string
+    | (Omit<MetaRadioProps, "id" | "value" | "name"> & {
+        val: unknown;
+        text?: string;
+      })
   >;
 };
 
