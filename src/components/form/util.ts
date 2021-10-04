@@ -52,7 +52,10 @@ export function getPosition<T extends FormEntryConstraint>(
 ): number {
   const key = getElementKey(entry);
   if (key !== "none") {
-    return entry[key]?.position || 0;
+    const target = entry[key] as BaseProps<T, string>;
+    if (typeof target.position !== "undefined") {
+      return target.position;
+    }
   }
   return 0;
 }
@@ -62,9 +65,15 @@ export function getInputOpts<T extends FormEntryConstraint, K extends keyof T>(
 ): [T[K], GetInputOptions<T[K], T>] | null {
   const key = getElementKey(entry);
   if (key !== "none") {
+    const target = entry[key] as BaseProps<T, K> & { required?: boolean };
+    const required = target.required || false;
     return [
-      entry[key]?.initialValue as T[K],
-      { isRequired: !!entry[key]?.required, ...entry[key]?.validation },
+      target.initialValue,
+      {
+        isRequired: required,
+        isValid: !required,
+        ...target.validation,
+      },
     ];
   }
   return null;
