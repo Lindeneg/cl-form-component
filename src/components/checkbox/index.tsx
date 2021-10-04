@@ -46,6 +46,7 @@ export type CheckboxFormProps = Omit<
   "data" | ExcludeSharedKeys
 > & {
   data: Array<ExcludedMetaProps | string>;
+  fallbackValue?: unknown;
 };
 
 export function Checkbox({

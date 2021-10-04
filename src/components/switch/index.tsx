@@ -29,6 +29,7 @@ export type SwitchFormProps = Omit<
   "data" | ExcludeSharedKeys
 > & {
   data: Array<ExcludedMetaProps | string>;
+  fallbackValue?: unknown;
 };
 
 export function Switch({ data, ...props }: SwitchProps) {
