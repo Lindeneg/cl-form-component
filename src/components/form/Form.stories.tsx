@@ -53,9 +53,7 @@ export function SimpleInputForm() {
             label: "Visibility",
             helperEl: "Please specify visibility settings",
             errorEl: "A visibility option must be selected",
-            validation: {
-              customRule: (v) => v !== "",
-            },
+            required: true,
             muiFormGroupOpts: { style: { flexDirection: "row" } },
           },
         },
@@ -110,13 +108,6 @@ export function SignUpForm() {
             label: "Full Name",
             helperEl: "Optionally provide your name",
             errorEl: "Length 0-32 with no numbers",
-            validation: {
-              // the initial state is valid, as this field is optional
-              isValid: true,
-              minLength: 0,
-              maxLength: 32,
-              maxNumericalSymbols: 0,
-            },
             adornment: {
               start: <FaceIcon />,
             },
@@ -265,9 +256,6 @@ export function LoginForm() {
             initialValue: "",
             position: 3,
             data: [{ val: "in", text: "Stay Logged In" }],
-            validation: {
-              isRequired: false,
-            },
           },
         },
       }}
@@ -285,65 +273,161 @@ export function LoginForm() {
   );
 }
 
-/*
+enum PaymentCycle {
+  BIWEEKLY = "BIWEEKLY",
+  MONTHLY = "MONTHLY",
+}
 
-export function SimpleForm({ ...args }: FormProps<Inputs>) {
+enum Department {
+  TECH,
+  MARKETING,
+  DESIGN,
+  HR,
+  SUPPORT,
+  MANAGEMENT,
+}
+
+enum Activity {
+  INACTIVE = "",
+  ACTIVE = "ACTIVE",
+}
+
+type CreateEmployeeFormInputs = {
+  firstname: string;
+  surname: string;
+  age: number;
+  salary?: number;
+  paymentCycle?: PaymentCycle;
+  email: string;
+  active: Activity;
+  hireDate: string;
+  departments: Department[];
+};
+
+export function CreateEmployeeForm() {
+  const sharedProps = { fullWidth: true, wrapperStyle: { width: "250px" } };
   return (
-    <Form<Inputs>
-      {...args}
-      header="Form Header"
-      wrapperStyle={{ display: "flex", flexDirection: "column" }}
-      onFormSubmit={(e, i) => console.log(e, i)}
+    <Form<CreateEmployeeFormInputs>
+      wrapperStyle={{
+        width: "100%",
+        display: "flex",
+        flexFlow: "column wrap",
+        alignItems: "center",
+      }}
+      formStyle={{
+        maxWidth: "850px",
+        marginTop: "2rem",
+        display: "inline-flex",
+        flexFlow: "row wrap",
+        gap: "1rem 2rem",
+        placeContent: "center",
+        alignItems: "center",
+      }}
+      header="Create Employee"
       entries={{
-        username: {
+        firstname: {
           input: {
+            ...sharedProps,
             initialValue: "",
-            validation: {
-              minLength: 1,
-            },
-            wrapperStyle: { marginTop: "1rem", marginBottom: "2rem" },
-            fullWidth: true,
-            label: "Input Form",
-            helperEl: "Write something",
+            label: "Firstname",
+            required: true,
           },
         },
-        car: {
-          checkbox: {
+        surname: {
+          input: {
+            ...sharedProps,
             initialValue: "",
-            data: [
-              "Ferrari",
-              { name: "Porsche", muiCheckboxOpts: { disabled: true } },
-            ],
-            wrapperStyle: { display: "inline-flex", justifyContent: "center" },
-            label: "Checkbox Form",
-            helperEl: "Pick a car",
-          },
-        },
-        mood: {
-          initialValue: "Content",
-          radio: {
-            data: [{ name: "Happy" }, "Content"],
-            label: "Radio Form",
-            helperEl: "Pick a mood",
-          },
-        },
-        private: {
-          initialValue: "",
-          switch: {
-            data: ["Private", "Public"],
-            label: "Switch Form",
-            helperEl: "Switch a value",
+            label: "Surname",
+            required: true,
           },
         },
         age: {
-          initialValue: [],
-          select: {
-            type: "chip",
-            data: [20, 21, 22, { val: "2" }],
+          input: {
+            ...sharedProps,
+            initialValue: NaN,
+            type: "number",
+            label: "Age",
           },
         },
+        email: {
+          input: {
+            ...sharedProps,
+            initialValue: "",
+            type: "email",
+            label: "Email",
+            required: true,
+          },
+        },
+        hireDate: {
+          input: {
+            ...sharedProps,
+            initialValue: "",
+            type: "date",
+            label: "Hire Date",
+            required: true,
+            muiInputLabelOpts: {
+              shrink: true,
+            },
+          },
+        },
+        salary: {
+          input: {
+            ...sharedProps,
+            initialValue: NaN,
+            type: "number",
+            label: "Salary",
+            required: true,
+          },
+        },
+        departments: {
+          select: {
+            ...sharedProps,
+            // using an array allows multiple entries to be selected
+            initialValue: [],
+            label: "Departments",
+            required: true,
+            type: "chip",
+            data: [
+              { val: Department.TECH, text: "Tech" },
+              { val: Department.MARKETING, text: "Marketing" },
+              { val: Department.DESIGN, text: "Design" },
+              { val: Department.HR, text: "HR" },
+              { val: Department.SUPPORT, text: "Support" },
+              { val: Department.MANAGEMENT, text: "Management" },
+            ],
+          },
+        },
+        paymentCycle: {
+          radio: {
+            ...sharedProps,
+            initialValue: PaymentCycle.MONTHLY,
+            label: "Payment Cycle",
+            data: [
+              { val: PaymentCycle.BIWEEKLY, text: "Biweekly" },
+              { val: PaymentCycle.MONTHLY, text: "Monthly" },
+            ],
+            validation: {
+              isValid: true,
+            },
+            required: true,
+            muiRadioGroupOpts: { style: { flexDirection: "row" } },
+          },
+        },
+        active: {
+          switch: {
+            ...sharedProps,
+            initialValue: Activity.INACTIVE,
+            data: [{ val: Activity.ACTIVE, text: "Active" }],
+          },
+        },
+      }}
+      onFormSubmit={(isValid, inputs) => {
+        action("onFormSubmit")({ isValid, inputs });
+      }}
+      submitBtnOpts={{
+        style: { width: "100%", margin: "2rem 0 1rem" },
+        text: "CREATE",
       }}
     />
   );
 }
-*/
