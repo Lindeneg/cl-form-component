@@ -5,7 +5,7 @@ import { RadioFormProps } from "../radio";
 import { SelectFormProps } from "../select";
 import { SwitchFormProps } from "../switch";
 
-type BaseProps<T extends FormEntryConstraint, K extends keyof T> = {
+export type BaseProps<T extends FormEntryConstraint, K extends keyof T> = {
   initialValue: T[K];
   position?: number;
   validation?: GetInputOptions<T[K], T>;
