@@ -22,6 +22,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
+      - run: yarn add react react-dom @material-ui/core
       - run: yarn install --frozen-lockfile
-      - run: yarn add react react-dom @material-ui
       - run: yarn test
