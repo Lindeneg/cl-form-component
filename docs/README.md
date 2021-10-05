@@ -1,255 +1,142 @@
-### Stories
+## cl-form-component docs
 
-Play around with some stories using StoryBook [here](https://lindeneg.github.io/cl-form-component).
-
----
+Check out [this](https://lindeneg.github.io/cl-form-component) link for [StoryBook](https://storybook.js.org/) examples.
 
 ### Form
 
-Props for the `<Form />` component exposed by this library.
-
-| prop             | type                                                                                          | required | default     | note                                               |
-| ---------------- | --------------------------------------------------------------------------------------------- | -------- | ----------- | -------------------------------------------------- |
-| `entries`        | [Entries](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#entries)   | `Yes`    | -           | object with inputs and options                     |
-| `onSubmit`       | [Function](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#onsubmit) | `Yes`    | -           | submission result always passed on as an argument  |
-| `onCancel`       | `Function`                                                                                    | `No`     | `undefined` | -                                                  |
-| `width`          | `string`                                                                                      | `No`     | `undefined` | width of the form, such as '100px'                 |
-| `headerText`     | `string`                                                                                      | `No`     | `undefined` | text used by the form header                       |
-| `cancelText`     | `string`                                                                                      | `No`     | `'CANCEL'`  | text used by the form cancel button                |
-| `submissionText` | `string`                                                                                      | `No`     | `'SUBMIT'`  | text used by the form submit button                |
-| `variant`        | `'dark' \| 'light' `                                                                          | `No`     | `'light'`   |                                                    |
-| `resetOnSubmit`  | `boolean`                                                                                     | `No`     | `false`     | if true, all input values are reset on form submit |
+| prop          | type                                                                                                                                       | required | default   | note                                    |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------- | --------- | --------------------------------------- |
+| entries       | [Entries](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#entries)                                                | yes      | -         | _object with inputs and options_        |
+| onFormSubmit  | [Function](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#onformsubmit)                                          | yes      | -         | _state always passed on as an argument_ |
+| header        | string \| React.ReactElement                                                                                                               | no       | undefined | _form header label or element_          |
+| submitBtnOpts | [ButtonProps](https://v4.mui.com/api/button/#props) & { text?: string; disableOnInvalidForm?: boolean; resetFormOnValidSubmit?: boolean; } | no       | undefined | _submit button props_                   |
+| wrapperClass  | string                                                                                                                                     | no       | undefined | _className for div form wrapper_        |
+| wrapperStyle  | React.CSSProperties                                                                                                                        | no       | undefined | _styles for div form wrapper_           |
+| formClass     | string                                                                                                                                     | no       | undefined | _className for form element_            |
+| formStyle     | React.CSSProperties                                                                                                                        | no       | undefined | _styles for form element_               |
 
 ---
 
 ### Entries
 
-`Entries` is an object where inputs and associated options can be defined.
-
-```ts
-type FormValueType                          = string | number | boolean | string[] | File | null | undefined;
-type FormEntryConstraint                    = { [key: string]: FormValueType };
-
-type Entries<T extends FormEntryConstraint> = { [K in keyof T]: Entry<T> };
-```
-
-A bare-minimum `Entries` object with a single `Entry` without any options, could be like so:
-
-`{username: {}}`
-
-However, that isn't much fun. Lets look at some options!
-
-There are four `Entry` elements supported `'input' | 'text-field' | 'selection' | 'image'` and while they each offer [their own options](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#specific-options), they all have the following in common:
-
-##### `Entry`
-
-| name              | type                                                                                              | required | default     | note                                                                                                        |
-| ----------------- | ------------------------------------------------------------------------------------------------- | -------- | ----------- | ----------------------------------------------------------------------------------------------------------- |
-| `elementType`     | `'input' \| 'text-field' \| 'selection' \| 'image'`                                               | `No`     | `'input'`   | -                                                                                                           |
-| `value`           | `T[K]`                                                                                            | `No`     | -           | initial value of the element                                                                                |
-| `options`         | [Validation](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#validation) | `No`     | `undefined` | validation options from [cl-use-form-state](https://github.com/Lindeneg/cl-use-form-state#getinput-options) |
-| `label`           | `string`                                                                                          | `No`     | `undefined` | text label appearing over the input                                                                         |
-| `placeholder`     | `string`                                                                                          | `No`     | `undefined` | text appearing in the input (if applicable)                                                                 |
-| `helperText`      | `string`                                                                                          | `No`     | `undefined` | text appearing under the input                                                                              |
-| `validFeedback`   | `string`                                                                                          | `No`     | `undefined` | text appearing when input is valid                                                                          |
-| `invalidFeedback` | `string`                                                                                          | `No`     | `undefined` | text appearing when input is invalid                                                                        |
-| `width`           | `string`                                                                                          | `No`     | `undefined` | width of the input, such as '20%'                                                                           |
-| `noValidation`    | `boolean`                                                                                         | `No`     | `false`     | turn off all validation for input                                                                           |
-
-So now we can add, say, a label, a placeholder and some validation to that username entry:
+`Form` always takes an `entries` prop that defines all given inputs. Five different components are supported: `'input' | 'checkbox' | 'switch' | 'select' | 'radio'`.
 
 ```ts
 {
-    username: {
-        placeholder: 'Enter Username',
-        label: 'Username',
-        helperText: '4-16 characters with no numbers',
-        invalidFeedback: 'Please enter a valid username.',
-        validFeedback: 'Looks ok!',
-        options: {
-            minLength: 4,
-            maxLength: 16,
-            maxNumericalSymbols: 0
-        }
-    }
-}
-
-```
-
----
-
-### Validation
-
-The `options` object can take the following validation properties
-
-| name                     | type                                                   | default     | note                                                          |
-| ------------------------ | ------------------------------------------------------ | ----------- | ------------------------------------------------------------- |
-| `isValid`                | `boolean`                                              | `false`     | initial validity state                                        |
-| `isTouched`              | `boolean`                                              | `false`     | initial focus state                                           |
-| `minLength`              | `number`                                               | `undefined` | -                                                             |
-| `maxLength`              | `number`                                               | `undefined` | -                                                             |
-| `minValue`               | `number`                                               | `undefined` | -                                                             |
-| `maxValue`               | `number`                                               | `undefined` | -                                                             |
-| `minUppercaseCharacters` | `number`                                               | `undefined` | -                                                             |
-| `maxUppercaseCharacters` | `number`                                               | `undefined` | -                                                             |
-| `minNumericalSymbols`    | `number`                                               | `undefined` | -                                                             |
-| `maxNumericalSymbols`    | `number`                                               | `undefined` | -                                                             |
-| `customRule`             | `(value: InputValueType, state: FormState) => boolean` | `undefined` | can be used to create any validation rule for any input field |
-| `connectFields`          | `string[]`                                             | `undefined` | can be used to make fields dependant upon each other          |
-
-An example for a `customRule` could be to check that a `passwordConfirmation` field is equal to a `password` field.
-
-```tsx
-type Auth = {
-    password: string;
-    passwordConfirmation: string;
+  someInput: {
+    // here we can specify one of the different components, lets say 'checkbox':
+    checkbox: {
+      ...checkboxEntry,
+    },
+    // or input
+    input: {
+      ...inputEntry,
+    },
+  },
 };
-
-<Form<Auth>
-    entries={{
-        password: {
-            type: 'password',
-            label: 'Password',
-            placeholder: 'Enter password here..',
-            options: {
-                minLength: 6,
-                connectFields: ['passwordConfirmation']
-            }
-        },
-        passwordConfirmation: {
-            type: 'password',
-            label: 'Confirm Password',
-            placeholder: 'Confirm password here..',
-            invalidFeedback: 'Please confirm a valid password',
-            options: {
-                customRule: (value, state) =>
-                    state.inputs.password.isValid && state.inputs.password.value === value
-            }
-        }
-    }}
-    onSubmit={(result) => console.log(result)}
-/>
 ```
 
-The `connectFields` option forces the validation of connected fields to run each time the parent field changes. In this case the validation for `passwordConfirmation` runs each time the valu`password` changes.
+In the below `props` tables, the type `T` denotes the input types provided, an object like so: `{[key: string]: unknown}`. `K` is a map with `keyof T`.
+
+#### Input Entry
+
+Takes [Shared Props](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#sharedprops) and the following:
+
+| prop              | type                                                                                                                                                                   | required | default     | note                                 |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | ------------------------------------ |
+| element           | `standard` \| `filled` \| `outlined`                                                                                                                                   | no       | `standard`  | _input element variant_              |
+| type              | `text` \| `number` \| `password` \| `color` \| `date` \| `datetime-local` \| `file` \| `month` \| `week` \| `range` \| `search` \| `tel` \| `time` \| `url` \| `email` | no       | `text`      | _input element type_                 |
+| placeholder       | `string`                                                                                                                                                               | no       | `undefined` | _input element placeholder_          |
+| minRows           | `string` \| `number`                                                                                                                                                   | no       | `undefined` | _minimum rows for element_           |
+| maxRows           | `string` \| `number`                                                                                                                                                   | no       | `undefined` | _maximum rows for element_           |
+| multiline         | `boolean`                                                                                                                                                              | no       | `false`     | _uses textarea element_              |
+| adornment         | `{start?: React.ReactElement; end?: React.ReactElement}`                                                                                                               | no       | `undefined` | _component adornment(s) for element_ |
+| muiInputProps     | [InputProps](https://v4.mui.com/api/input/#props)                                                                                                                      | no       | `undefined` | _props for material-ui_              |
+| muiInputLabelOpts | [InputLabelProps](https://v4.mui.com/api/input-label/#props)                                                                                                           | no       | `undefined` | _props for material-ui_              |
+
+#### (Checkbox | Switch) Entry
+
+Takes [Shared Props](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#sharedprops) and the following:
+
+| prop             | type                                                       | required | default     | note                                     |
+| ---------------- | ---------------------------------------------------------- | -------- | ----------- | ---------------------------------------- |
+| data             | `Array<Data \| string>`                                    | yes      | -           | _checkbox or switch data_                |
+| fallbackValue    | `unknown`                                                  | no       | `""`        | _value used when no entries are checked_ |
+| muiFormLabelOpts | [FormLabelProps](https://v4.mui.com/api/form-label/#props) | no       | `undefined` | _props for material-ui_                  |
+| muiFormGroupOpts | [FormGroupProps](https://v4.mui.com/api/form-group/#props) | no       | `undefined` | _props for material-ui_                  |
+
+##### Data
+
+| prop                             | type                                                                                                           | required | default     | note                       |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------- | ----------- | -------------------------- |
+| val                              | `unknown`                                                                                                      | yes      | -           | _value used_               |
+| text                             | `string`                                                                                                       | no       | `undefined` | _text label shown_         |
+| controlComponent                 | `React.ReactElement`                                                                                           | no       | `undefined` | _custom control component_ |
+| muiFormControlLabelOpts          | [FormControlLabel](https://v4.mui.com/api/form-control-label/#props)                                           | no       | `undefined` | _props for material-ui_    |
+| muiCheckboxOpts \| muiSwitchOpts | [CheckboxProps](https://v4.mui.com/api/checkbox/#props) \| [SwitchProps](https://v4.mui.com/api/switch/#props) | no       | `undefined` | _props for material-ui_    |
+
+#### Select Entry
+
+Takes [Shared Props](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#sharedprops) and the following:
+
+| prop              | type                                                         | required | default     | note                     |
+| ----------------- | ------------------------------------------------------------ | -------- | ----------- | ------------------------ |
+| data              | `Array<Data \| T[K]>`                                        | yes      | -           | _select data_            |
+| type              | `menu` \| `tag` \| `chip` \| `native`                        | no       | `menu`      | _select element variant_ |
+| containerStyle    | `React.CSSProperties`                                        | no       | `undefined` | _container div style_    |
+| tagRenderValueCb  | `(selected: string[]) => string`                             | no       | `undefined` | _customize render value_ |
+| muiSelectOpts     | [SelectProps](https://v4.mui.com/api/select/#props)          | no       | `undefined` | _props for material-ui_  |
+| muiChipOpts       | [ChipProps](https://v4.mui.com/api/chip/#props)              | no       | `undefined` | _props for material-ui_  |
+| muiInputLabelOpts | [InputLabelProps](https://v4.mui.com/api/input-label/#props) | no       | `undefined` | _props for material-ui_  |
+
+##### Data
+
+| prop                | type                                                              | required | default     | note                      |
+| ------------------- | ----------------------------------------------------------------- | -------- | ----------- | ------------------------- |
+| val                 | `T[K]`                                                            | yes      | -           | _value used_              |
+| text                | `string`                                                          | no       | `undefined` | _text label shown_        |
+| muiMenuItemProps    | [MenuItemProps](https://v4.mui.com/api/menu-item/#props)          | no       | `undefined` | _props for material-ui_   |
+| muiCheckboxOpts     | [CheckboxProps](https://v4.mui.com/api/checkbox/#props)           | no       | `undefined` | _props for material-ui_   |
+| muiListItemTextOpts | [ListItemTextProps](https://v4.mui.com/api/list-item-text/#props) | no       | `undefined` | _props for material-ui_   |
+| muiOptionOpts       | `React.OptionHTMLAttributes<HTMLOptionElement>`                   | no       | `undefined` | _props for native option_ |
+
+#### Radio Entry
+
+Takes [Shared Props](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#sharedprops) and the following:
+
+| prop              | type                                                         | required | default     | note                    |
+| ----------------- | ------------------------------------------------------------ | -------- | ----------- | ----------------------- |
+| data              | `Array<Data \| string>`                                      | yes      | -           | _radio data_            |
+| muiRadioGroupOpts | [RadioGroupProps](https://v4.mui.com/api/radio-group/#props) | no       | `undefined` | _props for material-ui_ |
+| muiFormLabelOpts  | [FormLabelProps](https://v4.mui.com/api/form-label/#props)   | no       | `undefined` | _props for material-ui_ |
+
+##### Data
+
+| prop                    | type                                                              | required | default     | note                    |
+| ----------------------- | ----------------------------------------------------------------- | -------- | ----------- | ----------------------- |
+| val                     | `T[K]`                                                            | yes      | -           | _value used_            |
+| text                    | `string`                                                          | no       | `undefined` | _text label shown_      |
+| muiFormControlLabelOpts | [MenuItemProps](https://v4.mui.com/api/form-control-label/#props) | no       | `undefined` | _props for material-ui_ |
+| muiRadioOpts            | [CheckboxProps](https://v4.mui.com/api/radio/#props)              | no       | `undefined` | _props for material-ui_ |
+
+#### Shared Props
+
+| prop                  | type                                                                  | required | default     | note                                   |
+| --------------------- | --------------------------------------------------------------------- | -------- | ----------- | -------------------------------------- |
+| initialValue          | T[K]                                                                  | yes      | -           | _initial value of element_             |
+| position              | number                                                                | no       | `0`         | _position of element in rendered form_ |
+| validation            | [Validation](https://github.com/lindeneg/cl-use-form-state#cl)        | no       | `{}`        | _validation options_                   |
+| label                 | string                                                                | no       | `""`        | _element text label_                   |
+| required              | boolean                                                               | no       | `false`     | _visually shows element as required_   |
+| fullWidth             | boolean                                                               | no       | `false`     | _element expands full container width_ |
+| disabled              | boolean                                                               | no       | `false`     | _disables element_                     |
+| validEl               | string \| React.ReactElement                                          | no       | `undefined` | _element to be shown on valid state_   |
+| errorEl               | string \| React.ReactElement                                          | no       | `undefined` | _element to be shown on invalid state_ |
+| helperEl              | string \| React.ReactElement                                          | no       | `undefined` | _element to be shown on neutral state_ |
+| wrapperStyle          | React.CSSProperties                                                   | no       | `undefined` | _styles for element wrapper div_       |
+| muiFormControlOpts    | [FormControlProps](https://v4.mui.com/api/form-control/#props)        | no       | `undefined` | _props for material-ui_                |
+| muiFormHelperTextOpts | [FormHelperTextProps](https://v4.mui.com/api/form-helper-text/#props) | no       | `undefined` | _props for material-ui_                |
 
 ---
 
-### Specific Options
-
-Here's a overview of the individual options each `elementType` takes.
-
-| elementType      | name               | type                                          | required | default                     | note                                                           |
-| ---------------- | ------------------ | --------------------------------------------- | -------- | --------------------------- | -------------------------------------------------------------- |
-| **`input`**      | -                  | -                                             | -        | -                           | -                                                              |
-| -                | `type`             | `'text' \| 'password' \| 'number' \| 'email'` | `No`     | `'text'`                    | `type` attribute passed on to the html input element           |
-| **`text-field`** | -                  | -                                             | -        | -                           | -                                                              |
-| -                | `rows`             | `number`                                      | `No`     | `3`                         | `rows` attribute passed on to the html textarea element        |
-| -                | `cols`             | `number`                                      | `No`     | `1`                         | `cols` attribute passed on to the html textarea element        |
-| -                | `wrap`             | `'soft' \| 'hard'`                            | `No`     | `undefined`                 | `wrap` attribute passed on to the html textarea element        |
-| **`image`**      | -                  | -                                             | -        | -                           | -                                                              |
-| -                | `imagePreviewText` | `string`                                      | `No`     | `'Please choose an image.'` | text shown in the preview div before image upload              |
-| -                | `imageButtonText`  | `string`                                      | `No`     | `'UPLOAD'`                  | text shown in the image upload button                          |
-| -                | `center`           | `boolean`                                     | `No`     | `false`                     | if true, image upload will be centered relative to the form    |
-| **`selection`**  | -                  | -                                             | -        | -                           | -                                                              |
-| -                | `selectOptions`    | `Array<FormSelectOption \| string>`           | `No`     | `undefined`                 | -                                                              |
-| -                | `multipleSelect`   | `boolean`                                     | `No`     | `false`                     | allows the selection of multiple `selectOption` entries        |
-| -                | `center`           | `boolean`                                     | `No`     | `false`                     | if true, selection input will be centered relative to the form |
-
-### FormSelectOption
-
-`FormSelectOption` are the `<option />` values for the `selection` element type.
-
-| name           | type      | required | default     | note                                         |
-| -------------- | --------- | -------- | ----------- | -------------------------------------------- |
-| `value`        | `string`  | `Yes`    | -           | `value` attribute of the html option element |
-| `displayValue` | `string`  | `No`     | `undefined` | actual text displayed on the option element, if undefined the text shown is `value` capitalized  |
-| `selected`     | `boolean` | `No`     | `false`     | if true, the element is preselected.         |
-
-Thus, `selectOptions` can be created either by using an array of strings or by using a `FormSelectOption` object, which allows for the above options.
-
-So lets say we want to add a `selection` to the `Entries` object we created before with the single `Entry` named `username`.
-
-```ts
-{
-    username: {
-        placeholder: 'Enter Username',
-        label: 'Username',
-        helperText: '4-16 characters with no numbers',
-        invalidFeedback: 'Please enter a valid username.',
-        validFeedback: 'Looks ok!',
-        options: {
-            minLength: 4,
-            maxLength: 16,
-            maxNumericalSymbols: 0
-        }
-    },
-    mood: {
-        // now we need to specify the elementType because
-        // the default value if undefined is 'input'
-        elementType: 'selection',
-        selectOptions: ['Happy', 'Content', 'Over the Moon!']
-    }
-}
-```
-
-Suppose we want `Content` as the default selected value. Then we can make use of the `FormSelectOption` object.
-
-```ts
-{
-    username: {
-        placeholder: 'Enter Username',
-        label: 'Username',
-        helperText: '4-16 characters with no numbers',
-        invalidFeedback: 'Please enter a valid username.',
-        validFeedback: 'Looks ok!',
-        options: {
-            minLength: 4,
-            maxLength: 16,
-            maxNumericalSymbols: 0
-        }
-    },
-    mood: {
-        elementType: 'selection',
-        selectOptions: [
-            'Happy',
-            {
-                value: 'Content',
-                selected: true
-            },
-            'Over the Moon!'
-        ]
-    }
-}
-```
-
----
-
-### onSubmit
-
-`onSubmit` is called when a form satisfying the given validation option is submitted.
-
-```ts
-type FormValueType                                   = string | number | boolean | string[] | File | null | undefined;
-type FormEntryConstraint                             = { [key: string]: FormValueType };
-
-type SubmissionResult<T extends FormEntryConstraint> = { [K in keyof T]: T[K] };
-
-type OnSubmit                                        = (result: SubmissionResult<T>) => void;
-```
-
-It **requires** one argument, lets call it `result`.
-
-The `result` argument is an object with input names as keys and its value at submission time as value.
-
-In other words, if the above `Entries` object is what is used to create the `<Form />`, and we assume some user input action, then
-
-```js
-onSubmit(result) => console.log(result);
-```
-
-will output this:
-
-```js
-{username: 'someValue', mood: 'Content'}
-```
+### onFormSubmit

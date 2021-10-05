@@ -1,0 +1,13 @@
+__mocks__
+src
+docs
+node_modules
+.storybook
+storybook-static
+story
+jest-setup.ts
+jest.config.js
+rollup.config.js
+tsconfig.json
+tsconfig.prod.json
+yarn.lock
