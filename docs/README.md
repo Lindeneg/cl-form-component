@@ -46,7 +46,7 @@ Takes [Shared Props]() and the following:
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | ------------------------------------ |
 | element           | `standard` \| `filled` \| `outlined`                                                                                                                                   | no       | `standard`  | _input element variant_              |
 | type              | `text` \| `number` \| `password` \| `color` \| `date` \| `datetime-local` \| `file` \| `month` \| `week` \| `range` \| `search` \| `tel` \| `time` \| `url` \| `email` | no       | `text`      | _input element type_                 |
-| placeholder       | string                                                                                                                                                                 | no       | `undefined` | _input element placeholder_          |
+| placeholder       | `string`                                                                                                                                                               | no       | `undefined` | _input element placeholder_          |
 | minRows           | `string` \| `number`                                                                                                                                                   | no       | `undefined` | _minimum rows for element_           |
 | maxRows           | `string` \| `number`                                                                                                                                                   | no       | `undefined` | _maximum rows for element_           |
 | multiline         | `boolean`                                                                                                                                                              | no       | `false`     | _uses textarea element_              |
@@ -101,6 +101,23 @@ Takes [Shared Props]() and the following:
 | muiOptionOpts       | `React.OptionHTMLAttributes<HTMLOptionElement>`                   | no       | `undefined` | _props for native option_ |
 
 #### Radio Entry
+
+Takes [Shared Props]() and the following:
+
+| prop              | type                                                         | required | default     | note                    |
+| ----------------- | ------------------------------------------------------------ | -------- | ----------- | ----------------------- |
+| data              | `Array<Data \| string>`                                      | yes      | -           | _radio data_            |
+| muiRadioGroupOpts | [RadioGroupProps](https://v4.mui.com/api/radio-group/#props) | no       | `undefined` | _props for material-ui_ |
+| muiFormLabelOpts  | [FormLabelProps](https://v4.mui.com/api/form-label/#props)   | no       | `undefined` | _props for material-ui_ |
+
+##### Data
+
+| prop                    | type                                                              | required | default     | note                    |
+| ----------------------- | ----------------------------------------------------------------- | -------- | ----------- | ----------------------- |
+| val                     | `T[K]`                                                            | yes      | -           | _value used_            |
+| text                    | `string`                                                          | no       | `undefined` | _text label shown_      |
+| muiFormControlLabelOpts | [MenuItemProps](https://v4.mui.com/api/form-control-label/#props) | no       | `undefined` | _props for material-ui_ |
+| muiRadioOpts            | [CheckboxProps](https://v4.mui.com/api/radio/#props)              | no       | `undefined` | _props for material-ui_ |
 
 #### Shared Props
 

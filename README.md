@@ -24,7 +24,7 @@ This library is built on top of [cl-use-form-state](https://github.com/Lindeneg/
 
 Check out [this](https://lindeneg.github.io/cl-form-component) link for [StoryBook](https://storybook.js.org/) examples.
 
-Check out full documentation [here]().
+Check out full documentation [here](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md).
 
 ---
 
