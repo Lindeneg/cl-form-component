@@ -1,5 +1,7 @@
 import React from "react";
 import { FormEntryConstraint, FormEntryState } from "cl-use-form-state";
+import Button, { ButtonProps } from "@material-ui/core/Button";
+import { Divider } from "@material-ui/core";
 import { FormEntry, onArrayChange } from "./util";
 import { Input } from "../input";
 import { Radio, RadioFormProps, RadioProps } from "../radio";
@@ -12,7 +14,7 @@ import {
   SelectTypeConstraint,
 } from "../select";
 
-type SharedProps<T extends FormEntryConstraint> = {
+type SharedElementProps<T extends FormEntryConstraint> = {
   id: string;
   entry: FormEntry<T, string>;
   input: FormEntryState<unknown, T>;
@@ -21,6 +23,68 @@ type SharedProps<T extends FormEntryConstraint> = {
   onTouchHandler: React.FocusEventHandler;
 };
 
+export type FormButtonProps<T extends FormEntryConstraint> = {
+  onFormSubmit: (isValid: boolean, values: T) => void;
+  submitBtnOpts?: Omit<ButtonProps, "onClick" | "disabled"> & {
+    text?: string;
+    disableOnInvalidForm?: boolean;
+    resetFormOnValidSubmit?: boolean;
+  };
+};
+
+export function FormHeader({
+  header,
+}: {
+  header?: string | React.ReactElement;
+}) {
+  if (header) {
+    if (typeof header === "string") {
+      return (
+        <>
+          <h2>{header}</h2>
+          <Divider />
+        </>
+      );
+    }
+    return header;
+  }
+  return null;
+}
+
+export function FormButton<T extends FormEntryConstraint>({
+  isValid,
+  hasSubmitted,
+  setHasSubmitted,
+  getInputValues,
+  onResetFormInputs,
+  onFormSubmit,
+  submitBtnOpts,
+}: FormButtonProps<T> & {
+  isValid: boolean;
+  hasSubmitted: boolean;
+  setHasSubmitted: (value: React.SetStateAction<boolean>) => void;
+  getInputValues: () => T;
+  onResetFormInputs: () => void;
+}) {
+  const { text, disableOnInvalidForm, resetFormOnValidSubmit, ...rest } =
+    submitBtnOpts || {};
+  return (
+    <Button
+      {...rest}
+      disabled={!!disableOnInvalidForm && !isValid}
+      onClick={(e) => {
+        e.preventDefault();
+        onFormSubmit(isValid, getInputValues());
+        !hasSubmitted && setHasSubmitted(true);
+        isValid && !!resetFormOnValidSubmit && onResetFormInputs();
+      }}
+      role="button"
+    >
+      {text || "Submit"}
+    </Button>
+  );
+}
+
 export function FormInput<T extends FormEntryConstraint>({
   id,
   entry,
@@ -28,7 +92,7 @@ export function FormInput<T extends FormEntryConstraint>({
   hasSubmitted,
   updateInput,
   onTouchHandler,
-}: SharedProps<T>) {
+}: SharedElementProps<T>) {
   const getValue = () => {
     if (entry.input?.type === "date" && input.value instanceof Date) {
       const month = input.value.getMonth() + 1;
@@ -75,7 +139,7 @@ export function FormCheckbox<T extends FormEntryConstraint>({
   hasSubmitted,
   updateInput,
   onTouchHandler,
-}: SharedProps<T> & { formElement: "checkbox" | "switch" }) {
+}: SharedElementProps<T> & { formElement: "checkbox" | "switch" }) {
   const { data, fallbackValue, ...props } = entry[formElement] as
     | CheckboxFormProps
     | SwitchFormProps;
@@ -123,7 +187,8 @@ export function FormRadio<T extends FormEntryConstraint>({
   hasSubmitted,
   onRadioChange,
   onTouchHandler,
-}: Omit<SharedProps<T>, "updateInput"> & Pick<RadioProps, "onRadioChange">) {
+}: Omit<SharedElementProps<T>, "updateInput"> &
+  Pick<RadioProps, "onRadioChange">) {
   const { data, ...props } = entry.radio as RadioFormProps;
   const validData = data.map((el) => {
     const { val, text, ...rest } =
@@ -155,7 +220,7 @@ export function FormSelect<T extends FormEntryConstraint>({
   hasSubmitted,
   updateInput,
   onTouchHandler,
-}: SharedProps<T>) {
+}: SharedElementProps<T>) {
   const { data, type, ...props } = entry.select as SelectFormProps;
   const validData = data.map((el) => {
     const { val, text, ...rest } =
