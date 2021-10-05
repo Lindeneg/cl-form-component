@@ -14,6 +14,7 @@ export default {
     entries: { control: "none" },
     onFormSubmit: { control: "none" },
     header: { control: "none" },
+    submitBtnOpts: { control: "none" },
   },
 };
 
