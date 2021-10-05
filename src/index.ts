@@ -20,10 +20,4 @@ export type {
   SharedProps,
   MetaSharedProps,
 } from "./components/Shared";
-export type {
-  FormProps,
-  FormElement,
-  FormElementConstraint,
-  FormElementProps,
-  FormEntryConstraint,
-} from "./components/form";
+export type { FormProps } from "./components/form";
