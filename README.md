@@ -69,44 +69,75 @@ type FormInputs = {
   someInput: {
     // here we can specify one of the different components, lets say 'checkbox':
     checkbox: {
-      ...checkboxProps,
+      ...checkboxEntry,
     },
     // or input
     input: {
-      ...inputProps,
+      ...inputEntry,
     },
   },
 };
 ```
 
-In the below `props` tables, the type `T` denotes the input types provided, an object like so: `{[key: string]: unknown}`
+In the below `props` tables, the type `T` denotes the input types provided, an object like so: `{[key: string]: unknown}`. `K` is a map with `keyof T`.
 
-##### Input Entry
+#### Input Entry
 
-| prop                  | type                                                                                                                                                                   | required | default     | note                                   |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | -------------------------------------- |
-| initialValue          | `T[string]`                                                                                                                                                            | yes      | -           | _initial value of element_             |
-| element               | `standard` \| `filled` \| `outlined`                                                                                                                                   | no       | `standard`  | _input element variant_                |
-| type                  | `text` \| `number` \| `password` \| `color` \| `date` \| `datetime-local` \| `file` \| `month` \| `week` \| `range` \| `search` \| `tel` \| `time` \| `url` \| `email` | no       | `text`      | _input element type_                   |
-| position              | `number`                                                                                                                                                               | no       | `0`         | _position of element in rendered form_ |
-| validation            | [Validation](https://github.com/lindeneg/cl-use-form-state#cl)                                                                                                         | no       | `{}`        | _validation options_                   |
-| label                 | `string`                                                                                                                                                               | no       | `""`        | _element text label_                   |
-| required              | `string`                                                                                                                                                               | no       | `false`     | _visually shows element as required_   |
-| fullWidth             | `boolean`                                                                                                                                                              | no       | `false`     | _element expands full container width_ |
-| disabled              | `boolean`                                                                                                                                                              | no       | `false`     | _disables element_                     |
-| validEl               | `string` \| `React.ReactElement`                                                                                                                                       | no       | `undefined` | _element to be shown on valid state_   |
-| errorEl               | `string` \| `React.ReactElement`                                                                                                                                       | no       | `undefined` | _element to be shown on invalid state_ |
-| helperEl              | `string` \| `React.ReactElement`                                                                                                                                       | no       | `undefined` | _element to be shown on neutral state_ |
-| wrapperStyle          | `React.CSSProperties`                                                                                                                                                  | no       | `undefined` | _styles for element wrapper div_       |
-| muiFormControlOpts    | [FormControlProps](https://v4.mui.com/api/form-control/#props)                                                                                                         | no       | `undefined` | _props for material-ui_                |
-| muiFormHelperTextOpts | [FormHelperTextProps](https://v4.mui.com/api/form-helper-text/#props)                                                                                                  | no       | `undefined` | _props for material-ui_                |
-| muiInputLabelOpts     | [InputLabelProps](https://v4.mui.com/api/input-label/#props)                                                                                                           | no       | `undefined` | _props for material-ui_                |
+Takes [Shared Props]() and the following props:
 
-##### (Checkbox | Switch) Entry
+| prop              | type                                                                                                                                                                   | required | default     | note                                 |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | ------------------------------------ |
+| element           | `standard` \| `filled` \| `outlined`                                                                                                                                   | no       | `standard`  | _input element variant_              |
+| type              | `text` \| `number` \| `password` \| `color` \| `date` \| `datetime-local` \| `file` \| `month` \| `week` \| `range` \| `search` \| `tel` \| `time` \| `url` \| `email` | no       | `text`      | _input element type_                 |
+| placeholder       | string                                                                                                                                                                 | no       | `undefined` | _input element placeholder_          |
+| minRows           | `string` \| `number`                                                                                                                                                   | no       | `undefined` | _minimum rows for element_           |
+| maxRows           | `string` \| `number`                                                                                                                                                   | no       | `undefined` | _maximum rows for element_           |
+| multiline         | `boolean`                                                                                                                                                              | no       | `false`     | _uses textarea element_              |
+| adornment         | `{start?: React.ReactElement; end?: React.ReactElement}`                                                                                                               | no       | `undefined` | _component adornment(s) for element_ |
+| muiInputProps     | [InputProps](https://v4.mui.com/api/input/#props)                                                                                                                      | no       | `undefined` | _props for material-ui_              |
+| muiInputLabelOpts | [InputLabelProps](https://v4.mui.com/api/input-label/#props)                                                                                                           | no       | `undefined` | _props for material-ui_              |
 
-##### Select Entry
+#### (Checkbox | Switch) Entry
 
-##### Radio Entry
+Takes [Shared Props]() and the following props:
+
+| prop          | type                    | required | default | note                                     |
+| ------------- | ----------------------- | -------- | ------- | ---------------------------------------- |
+| data          | `Array<Data \| string>` | yes      | -       | _checkbox or switch data_                |
+| fallbackValue | `unknown`               | no       | `""`    | _value used when no entries are checked_ |
+
+##### Data
+
+| prop                    | type                                                                 | required | default     | note                       |
+| ----------------------- | -------------------------------------------------------------------- | -------- | ----------- | -------------------------- |
+| val                     | `unknown`                                                            | no       | `undefined` | _value used_               |
+| text                    | `string`                                                             | no       | `undefined` | _text label shown_         |
+| controlComponent        | `React.ReactElement`                                                 | no       | -           | _custom control component_ |
+| muiFormControlLabelOpts | [FormControlLabel](https://v4.mui.com/api/form-control-label/#props) | no       | `{}`        | _props for material-ui_    |
+| muiCheckboxOpts         | [CheckboxProps](https://v4.mui.com/api/checkbox/#props)              | no       | `{}`        | _props for material-ui_    |
+| muiSwitchOpts           | [SwitchProps](https://v4.mui.com/api/switch/#props)                  | no       | `{}`        | _props for material-ui_    |
+
+#### Select Entry
+
+#### Radio Entry
+
+#### Shared Props
+
+| prop                  | type                                                                  | required | default     | note                                   |
+| --------------------- | --------------------------------------------------------------------- | -------- | ----------- | -------------------------------------- |
+| initialValue          | T[string]                                                             | yes      | -           | _initial value of element_             |
+| position              | number                                                                | no       | `0`         | _position of element in rendered form_ |
+| validation            | [Validation](https://github.com/lindeneg/cl-use-form-state#cl)        | no       | `{}`        | _validation options_                   |
+| label                 | string                                                                | no       | `""`        | _element text label_                   |
+| required              | boolean                                                               | no       | `false`     | _visually shows element as required_   |
+| fullWidth             | boolean                                                               | no       | `false`     | _element expands full container width_ |
+| disabled              | boolean                                                               | no       | `false`     | _disables element_                     |
+| validEl               | string \| React.ReactElement                                          | no       | `undefined` | _element to be shown on valid state_   |
+| errorEl               | string \| React.ReactElement                                          | no       | `undefined` | _element to be shown on invalid state_ |
+| helperEl              | string \| React.ReactElement                                          | no       | `undefined` | _element to be shown on neutral state_ |
+| wrapperStyle          | React.CSSProperties                                                   | no       | `undefined` | _styles for element wrapper div_       |
+| muiFormControlOpts    | [FormControlProps](https://v4.mui.com/api/form-control/#props)        | no       | `undefined` | _props for material-ui_                |
+| muiFormHelperTextOpts | [FormHelperTextProps](https://v4.mui.com/api/form-helper-text/#props) | no       | `undefined` | _props for material-ui_                |
 
 ---
 
