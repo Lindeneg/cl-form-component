@@ -2,6 +2,8 @@
 
 Check out [this](https://lindeneg.github.io/cl-form-component) link for [StoryBook](https://storybook.js.org/) examples.
 
+Check out [this](https://codesandbox.io/s/cl-form-component-b9u4k?file=/src/App.tsx) sandbox for an example.
+
 ### Form
 
 | prop          | type                                                                                                                                       | required | default   | note                                    |
