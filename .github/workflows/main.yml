@@ -25,3 +25,4 @@ jobs:
       - run: yarn add react react-dom @material-ui/core
       - run: yarn install --frozen-lockfile
       - run: yarn test
+      - run: yarn build
