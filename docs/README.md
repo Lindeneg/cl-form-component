@@ -40,7 +40,7 @@ In the below `props` tables, the type `T` denotes the input types provided, an o
 
 #### Input Entry
 
-Takes [Shared Props]() and the following:
+Takes [Shared Props](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#sharedprops) and the following:
 
 | prop              | type                                                                                                                                                                   | required | default     | note                                 |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | ------------------------------------ |
@@ -56,7 +56,7 @@ Takes [Shared Props]() and the following:
 
 #### (Checkbox | Switch) Entry
 
-Takes [Shared Props]() and the following:
+Takes [Shared Props](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#sharedprops) and the following:
 
 | prop             | type                                                       | required | default     | note                                     |
 | ---------------- | ---------------------------------------------------------- | -------- | ----------- | ---------------------------------------- |
@@ -77,7 +77,7 @@ Takes [Shared Props]() and the following:
 
 #### Select Entry
 
-Takes [Shared Props]() and the following:
+Takes [Shared Props](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#sharedprops) and the following:
 
 | prop              | type                                                         | required | default     | note                     |
 | ----------------- | ------------------------------------------------------------ | -------- | ----------- | ------------------------ |
@@ -102,7 +102,7 @@ Takes [Shared Props]() and the following:
 
 #### Radio Entry
 
-Takes [Shared Props]() and the following:
+Takes [Shared Props](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#sharedprops) and the following:
 
 | prop              | type                                                         | required | default     | note                    |
 | ----------------- | ------------------------------------------------------------ | -------- | ----------- | ----------------------- |
