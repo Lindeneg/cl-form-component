@@ -6,36 +6,26 @@ export default {
   title: "Components/Select ",
   component: Select,
   argTypes: {
+    validEl: { control: "none" },
+    errorEl: { control: "none" },
+    helperEl: { control: "none" },
     type: { control: "none" },
     data: { control: "none" },
     value: { control: "none" },
     id: { control: "none" },
     multiple: { control: "none" },
+    onSelectBlur: { control: "none" },
+    tagRenderValueCb: { control: "none" },
   },
 };
 
-export function SimpleSelect({ ...args }: SelectProps<"menu", unknown>) {
+export function SelectExample({ ...args }: SelectProps<"menu", unknown>) {
   return (
     <Select {...args} type="menu" data={["Some Option", "Another Option"]} />
   );
 }
 
-export function SimpleSelectWithHelperAndLabel({
-  label = "Delivery",
-  helperEl = "Please choose a delivery option",
-  ...args
-}: SelectProps<"menu", unknown>) {
-  return (
-    <Select
-      {...args}
-      label={label}
-      helperEl={helperEl}
-      data={["Fastest", "Cheapest"]}
-    />
-  );
-}
-
-export function MultipleSelectTagWithValidation() {
+export function SelectMultipleWithOptions() {
   // using library: 'cl-use-form-state'
   const { inputs, updateInput, onTouchHandler } = useForm<{
     selected: string[];
@@ -61,7 +51,7 @@ export function MultipleSelectTagWithValidation() {
   );
 }
 
-export function MultipleSelectChip() {
+export function SelectMultipleWithChip() {
   // using library: 'cl-use-form-state'
   const { inputs, updateInput, onTouchHandler } = useForm<{
     selected: string[];

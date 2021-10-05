@@ -21,14 +21,14 @@ export default {
   },
 };
 
-export function EmptySingleLineInput({
+export function InputExample({
   id = "story-single-input-el",
   ...args
 }: InputProps) {
   return <Input {...args} id={id} />;
 }
 
-export function EmptyOutlinedMultiLineInput({
+export function InputMultilineOutlined({
   id = "story-multi-input-el",
   helperEl = "Please enter something..",
   element = "outlined",
@@ -48,52 +48,15 @@ export function EmptyOutlinedMultiLineInput({
   );
 }
 
-export function SingleInputWithValidationAndAdornment({
-  id = "fullName",
-  label = "Full name",
-  helperEl = "please enter your full name",
-  errorEl = "between 2-52 characters with no numbers",
-  validEl = <span style={{ color: "#0ca60c" }}>Looks good!</span>,
-  ...args
-}: InputProps) {
-  // using library: 'cl-use-form-state'
-  const { inputs, onChangeHandler, onTouchHandler } = useForm<{
-    fullName: string;
-  }>((cl) => ({
-    fullName: cl("", { minLength: 2, maxNumericalSymbols: 0 }),
-  }));
-  return (
-    <Input
-      {...args}
-      id={id}
-      label={label}
-      helperEl={helperEl}
-      errorEl={errorEl}
-      validEl={validEl}
-      valid={inputs.fullName.isValid}
-      error={inputs.fullName.isTouched && !inputs.fullName.isValid}
-      value={inputs.fullName.value}
-      onInputChange={onChangeHandler}
-      onInputBlur={onTouchHandler}
-      adornment={{
-        start: <AccountCircleIcon />,
-      }}
-      required
-    />
-  );
-}
-
 export function InputsWithValidationAndAdornment() {
   // using library: 'cl-use-form-state'
   const { inputs, updateInput, onChangeHandler, onTouchHandler } = useForm<{
     username: string;
-    description: string;
     password: { entry: string; visible: boolean };
     passwordConfirm: { entry: string; visible: boolean };
     age: number | null;
   }>((cl) => ({
     username: cl("", { minLength: 2, maxNumericalSymbols: 0 }),
-    description: cl("", { maxLength: 128 }),
     password: cl(
       { entry: "", visible: false },
       {
@@ -120,7 +83,7 @@ export function InputsWithValidationAndAdornment() {
     ),
     age: cl(null, { isValid: true }),
   }));
-  const { username, password, passwordConfirm, age, description } = inputs;
+  const { username, password, passwordConfirm, age } = inputs;
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ display: "inline-flex", justifyContent: "space-evenly" }}>
@@ -239,30 +202,6 @@ export function InputsWithValidationAndAdornment() {
               />
             ),
           }}
-          required
-        />
-      </div>
-      <div
-        style={{
-          display: "inline-flex",
-          justifyContent: "space-evenly",
-          marginTop: "2rem",
-        }}
-      >
-        <Input
-          id="description"
-          label="Description"
-          helperEl="please enter a description"
-          errorEl="description is required and cannot exceed 128 characters.."
-          validEl={<span style={{ color: "#0ca60c" }}>Looks good!</span>}
-          wrapperStyle={{ width: "40rem" }}
-          valid={description.isValid}
-          error={description.isTouched && !description.isValid}
-          value={description.value}
-          onInputBlur={onTouchHandler}
-          onInputChange={onChangeHandler}
-          fullWidth
-          multiline
           required
         />
       </div>

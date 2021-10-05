@@ -1,4 +1,5 @@
 import React from "react";
+import { action } from "@storybook/addon-actions";
 import { useForm } from "cl-use-form-state";
 import { Checkbox, CheckboxProps } from ".";
 
@@ -13,7 +14,7 @@ export default {
   },
 };
 
-export function SingleCheckbox({ ...args }: CheckboxProps) {
+export function CheckboxExample({ ...args }: CheckboxProps) {
   const { inputs, updateInput } = useForm<{
     checkbox: boolean;
   }>((cl) => ({
@@ -26,13 +27,17 @@ export function SingleCheckbox({ ...args }: CheckboxProps) {
         id: "checkbox",
         val: "Check",
         checked: inputs.checkbox.value,
-        onChange: () => updateInput("checkbox", !inputs.checkbox.value),
+        onChange: () => {
+          const value = !inputs.checkbox.value;
+          updateInput("checkbox", value);
+          action("onChange")({ value });
+        },
       }}
     />
   );
 }
 
-export function SingleCheckboxWithLabelAndHelper() {
+export function CheckboxSingleWithOptions() {
   // using library: 'cl-use-form-state'
   const { inputs, updateInput } = useForm<{ private: boolean }>((cl) => ({
     private: cl(false, { isValid: true }),
@@ -51,7 +56,7 @@ export function SingleCheckboxWithLabelAndHelper() {
   );
 }
 
-export function MultipleCheckboxesWithLabelAndHelper() {
+export function CheckboxMultipleWithOptions() {
   // using library: 'cl-use-form-state'
   const { inputs, updateInput } = useForm<{
     ferrari: boolean;

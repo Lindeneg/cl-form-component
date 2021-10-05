@@ -225,7 +225,7 @@ export function LoginForm() {
     <Form<{
       user: string;
       pass: string;
-      stayLoggedIn: string;
+      stayLoggedIn: boolean;
     }>
       wrapperStyle={{
         display: "flex",
@@ -253,9 +253,11 @@ export function LoginForm() {
         },
         stayLoggedIn: {
           checkbox: {
-            initialValue: "",
+            initialValue: false,
+            // fallbackValue is used when all entries are unselected
+            fallbackValue: false,
             position: 3,
-            data: [{ val: "in", text: "Stay Logged In" }],
+            data: [{ val: true, text: "Stay Logged In" }],
           },
         },
       }}
@@ -287,27 +289,48 @@ enum Department {
   MANAGEMENT,
 }
 
-enum Activity {
-  INACTIVE = "",
-  ACTIVE = "ACTIVE",
+function CustomRadioIcon({ checked = false }: { checked?: boolean }) {
+  return (
+    <span
+      style={{
+        display: "block",
+        borderRadius: "50%",
+        width: 16,
+        height: 16,
+        backgroundColor: checked ? "rgb(220, 0, 78)" : "#ccc",
+        backgroundImage: "radial-gradient(#fff,#fff 28%,transparent 32%)",
+      }}
+    />
+  );
 }
 
-type CreateEmployeeFormInputs = {
-  firstname: string;
-  surname: string;
-  age: number;
-  salary?: number;
-  paymentCycle?: PaymentCycle;
-  email: string;
-  active: Activity;
-  hireDate: string;
-  departments: Department[];
-};
+function isEmail(target: string) {
+  return /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(
+    target
+  );
+}
 
 export function CreateEmployeeForm() {
   const sharedProps = { fullWidth: true, wrapperStyle: { width: "250px" } };
+  // customized radio icons
+  const radioProps = {
+    muiRadioOpts: {
+      checkedIcon: <CustomRadioIcon checked />,
+      icon: <CustomRadioIcon />,
+    },
+  };
   return (
-    <Form<CreateEmployeeFormInputs>
+    <Form<{
+      firstname: string;
+      surname: string;
+      phone: number;
+      salary: number;
+      paymentCycle: PaymentCycle;
+      email: string;
+      active: boolean;
+      hireDate: Date;
+      departments: Department[];
+    }>
       wrapperStyle={{
         width: "100%",
         display: "flex",
@@ -341,12 +364,18 @@ export function CreateEmployeeForm() {
             required: true,
           },
         },
-        age: {
+        phone: {
           input: {
             ...sharedProps,
+            // NaN can be safely passed in if no
+            // initial numeric value is desired
             initialValue: NaN,
             type: "number",
-            label: "Age",
+            label: "Phone",
+            validation: {
+              customRule: (v) => !Number.isNaN(v),
+            },
+            required: true,
           },
         },
         email: {
@@ -355,16 +384,24 @@ export function CreateEmployeeForm() {
             initialValue: "",
             type: "email",
             label: "Email",
+            validation: {
+              customRule: (v) => isEmail(v),
+            },
             required: true,
           },
         },
         hireDate: {
           input: {
             ...sharedProps,
-            initialValue: "",
+            initialValue: new Date(),
             type: "date",
             label: "Hire Date",
             required: true,
+            // if 'required' is true then 'isValid' is automatically false
+            // however we can overwrite that behavior like so
+            validation: {
+              isValid: true,
+            },
             muiInputLabelOpts: {
               shrink: true,
             },
@@ -375,7 +412,10 @@ export function CreateEmployeeForm() {
             ...sharedProps,
             initialValue: NaN,
             type: "number",
-            label: "Salary",
+            label: "Annual Salary",
+            validation: {
+              customRule: (v) => !Number.isNaN(v),
+            },
             required: true,
           },
         },
@@ -386,7 +426,7 @@ export function CreateEmployeeForm() {
             initialValue: [],
             label: "Departments",
             required: true,
-            type: "chip",
+            type: "tag",
             data: [
               { val: Department.TECH, text: "Tech" },
               { val: Department.MARKETING, text: "Marketing" },
@@ -403,8 +443,16 @@ export function CreateEmployeeForm() {
             initialValue: PaymentCycle.MONTHLY,
             label: "Payment Cycle",
             data: [
-              { val: PaymentCycle.BIWEEKLY, text: "Biweekly" },
-              { val: PaymentCycle.MONTHLY, text: "Monthly" },
+              {
+                ...radioProps,
+                val: PaymentCycle.BIWEEKLY,
+                text: "Biweekly",
+              },
+              {
+                ...radioProps,
+                val: PaymentCycle.MONTHLY,
+                text: "Monthly",
+              },
             ],
             validation: {
               isValid: true,
@@ -416,8 +464,10 @@ export function CreateEmployeeForm() {
         active: {
           switch: {
             ...sharedProps,
-            initialValue: Activity.INACTIVE,
-            data: [{ val: Activity.ACTIVE, text: "Active" }],
+            initialValue: true,
+            fallbackValue: false,
+            label: "Status",
+            data: [{ val: true, text: "Active" }],
           },
         },
       }}
