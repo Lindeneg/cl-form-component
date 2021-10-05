@@ -30,16 +30,16 @@ Check out [this](https://lindeneg.github.io/cl-form-component) link for [StoryBo
 
 ### Form
 
-| prop            | type                                                                                                                                   | required            | default     | note                                              |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | ----------- | ------------------------------------------------- | ---------------------------- |
-| `entries`       | [Entries](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#entries)                                            | `Yes`               | -           | object with inputs and options                    |
-| `onFormSubmit`  | [Function](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#onformsubmit)                                      | `Yes`               | -           | submission result always passed on as an argument |                              |
-| `header`        | `string                                                                                                                                | React.ReactElement` | `No`        | `undefined`                                       | form header label or element |
-| `submitBtnOpts` | [ButtonProps](https://v4.mui.com/api/button/) `& { text?: string; disableOnInvalidForm?: boolean; resetFormOnValidSubmit?: boolean; }` | `No`                | `undefined` | submit button props                               |
-| `wrapperClass`  | `string`                                                                                                                               | `No`                | `undefined` | className for div form wrapper                    |
-| `wrapperStyle`  | `React.CSSProperties`                                                                                                                  | `No`                | `undefined` | styles for div form wrapper                       |
-| `formClass`     | `string`                                                                                                                               | `No`                | `undefined` | className for form element                        |
-| `formStyle`     | `React.CSSProperties`                                                                                                                  | `No`                | `undefined` | styles for form element                           |
+| prop            | type                                                                                                                                   | required | default     | note                                              |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | ------------------------------------------------- | --- |
+| `entries`       | [Entries](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#entries)                                            | `Yes`    | -           | object with inputs and options                    |
+| `onFormSubmit`  | [Function](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#onformsubmit)                                      | `Yes`    | -           | submission result always passed on as an argument |     |
+| `header`        | `string \| React.ReactElement`                                                                                                         | `No`     | `undefined` | form header label or element                      |
+| `submitBtnOpts` | [ButtonProps](https://v4.mui.com/api/button/) `& { text?: string; disableOnInvalidForm?: boolean; resetFormOnValidSubmit?: boolean; }` | `No`     | `undefined` | submit button props                               |
+| `wrapperClass`  | `string`                                                                                                                               | `No`     | `undefined` | className for div form wrapper                    |
+| `wrapperStyle`  | `React.CSSProperties`                                                                                                                  | `No`     | `undefined` | styles for div form wrapper                       |
+| `formClass`     | `string`                                                                                                                               | `No`     | `undefined` | className for form element                        |
+| `formStyle`     | `React.CSSProperties`                                                                                                                  | `No`     | `undefined` | styles for form element                           |
 
 ---
 
