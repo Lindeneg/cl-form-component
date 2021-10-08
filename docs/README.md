@@ -6,6 +6,21 @@ Check out [this](https://codesandbox.io/s/cl-form-component-b9u4k?file=/src/App.
 
 ### Form
 
+```tsx
+
+type SomeInput = {
+  username: string;
+  password: string;
+  rememberUser: boolean;
+
+  // pass in inputs for better type support
+  <Form<SomeInput>
+    {...props}
+  />
+}
+
+```
+
 | prop          | type                                                                                                                                         | required | default     | note                                    |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | --------------------------------------- |
 | entries       | [Entries](https://github.com/Lindeneg/cl-form-component/blob/master/docs/README.md#entries)                                                  | yes      | -           | _object with inputs and options_        |
@@ -142,3 +157,7 @@ Takes [Shared Props](https://github.com/Lindeneg/cl-form-component/blob/master/d
 ---
 
 ### onFormSubmit
+
+`(isValid: boolean, inputs: T) => void`
+
+`isValid` is true if all `entries` are valid i.e the entire form is valid. `inputs` will be an object containing a key/value pair of each input at submission time.
